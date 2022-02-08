@@ -5,6 +5,7 @@
     <item android:drawable="@drawable/hero1_idle3" android:duration="100"/>
     <item android:drawable="@drawable/hero1_idle5" android:duration="100"/>
     <item android:drawable="@drawable/hero1_idle6" android:duration="100"/>
+    <item android:drawable="@drawable/hero1_idle7" android:duration="100"/>
     <item android:drawable="@drawable/hero1_idle8" android:duration="100"/>
     <item android:drawable="@drawable/hero1_idle9" android:duration="100"/>
     <item android:drawable="@drawable/hero1_idle10" android:duration="100"/>

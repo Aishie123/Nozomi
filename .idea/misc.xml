@@ -3,9 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/clip_source1.xml" value="0.4351851851851852" />
+        <entry key="app/src/main/res/drawable/hp_bluebg.xml" value="0.265625" />
+        <entry key="app/src/main/res/drawable/hp_redbg.xml" value="0.265625" />
+        <entry key="app/src/main/res/drawable/mp_barbg.xml" value="0.265625" />
         <entry key="app/src/main/res/drawable/pinkchara_idleanim.xml" value="0.26197916666666665" />
+        <entry key="app/src/main/res/drawable/shape.xml" value="0.4351851851851852" />
         <entry key="app/src/main/res/drawable/skeletonidle_anim.xml" value="0.4427083333333333" />
+        <entry key="app/src/main/res/layout/activity_intro_screen.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/intro.xml" value="0.28072916666666664" />
       </map>
     </option>
   </component>

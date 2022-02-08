@@ -21,8 +21,8 @@
 
     <View
         android:id="@+id/bgRectangle"
-        android:layout_width="748dp"
-        android:layout_height="54dp"
+        android:layout_width="782dp"
+        android:layout_height="46dp"
         android:background="@drawable/darkgroundbg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -55,29 +55,63 @@
         app:srcCompat="@drawable/hero1_idle1" />
 
     <ImageButton
-        android:id="@+id/btnDefend"
-        android:layout_width="88dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
+        android:id="@+id/btnSS1"
+        android:layout_width="62dp"
+        android:layout_height="58dp"
+        android:padding="1dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.139"
+        app:layout_constraintStart_toEndOf="@+id/txtbox"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.917"
+        app:srcCompat="@drawable/swordskill2"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/btnSS2"
+        android:layout_width="62dp"
+        android:layout_height="58dp"
+        android:padding="1dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toEndOf="@+id/btnSS1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.917"
+        app:srcCompat="@drawable/swordskill1"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/btnAttk"
+        android:layout_width="131dp"
+        android:layout_height="60dp"
         android:padding="0dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txtbox"
+        app:layout_constraintHorizontal_bias="0.747"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAttack"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.923"
         app:srcCompat="@drawable/btn_unpressed"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
-        android:id="@+id/btnAttack"
-        android:layout_width="88dp"
-        android:layout_height="48dp"
+        android:id="@+id/btnReset"
+        android:layout_width="99dp"
+        android:layout_height="54dp"
         android:padding="0dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/btnDefend"
-        app:layout_constraintEnd_toEndOf="@+id/btnDefend"
-        app:layout_constraintStart_toStartOf="@+id/btnDefend"
-        app:layout_constraintTop_toBottomOf="@+id/hero1_idleSprite"
-        app:layout_constraintVertical_chainStyle="packed"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.918"
         app:srcCompat="@drawable/btn_unpressed"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -86,22 +120,203 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nicobold_regular"
-        android:text="Attack"
-        app:layout_constraintBottom_toBottomOf="@+id/btnAttack"
-        app:layout_constraintEnd_toEndOf="@+id/btnAttack"
-        app:layout_constraintStart_toStartOf="@+id/btnAttack"
-        app:layout_constraintTop_toTopOf="@+id/btnAttack" />
+        android:text="Start Battle"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAttk"
+        app:layout_constraintEnd_toEndOf="@+id/btnAttk"
+        app:layout_constraintStart_toStartOf="@+id/btnAttk"
+        app:layout_constraintTop_toTopOf="@+id/btnAttk" />
 
     <TextView
-        android:id="@+id/txtDefend"
+        android:id="@+id/txtReset"
+        android:layout_width="57dp"
+        android:layout_height="42dp"
+        android:fontFamily="@font/nicobold_regular"
+        android:gravity="center"
+        android:text="Reset Game"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btnReset"
+        app:layout_constraintEnd_toEndOf="@+id/btnReset"
+        app:layout_constraintStart_toStartOf="@+id/btnReset"
+        app:layout_constraintTop_toTopOf="@+id/btnReset" />
+
+    <ImageView
+        android:id="@+id/txtbox"
+        android:layout_width="278dp"
+        android:layout_height="117dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/txtbox" />
+
+    <TextView
+        android:id="@+id/txtCombatLog"
+        android:layout_width="243dp"
+        android:layout_height="56dp"
+        android:fontFamily="@font/nicoclean_regular"
+        android:text="Ready for Battle!"
+        app:layout_constraintBottom_toBottomOf="@+id/txtbox"
+        app:layout_constraintEnd_toEndOf="@+id/txtbox"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="@+id/txtbox"
+        app:layout_constraintTop_toTopOf="@+id/txtbox"
+        app:layout_constraintVertical_bias="0.551" />
+
+    <TextView
+        android:id="@+id/txtEnemy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nicobold_regular"
-        android:text="Defend"
-        app:layout_constraintBottom_toBottomOf="@+id/btnDefend"
-        app:layout_constraintEnd_toEndOf="@+id/btnDefend"
-        app:layout_constraintStart_toStartOf="@+id/btnDefend"
-        app:layout_constraintTop_toTopOf="@+id/btnDefend" />
+        android:fontFamily="@font/nicoclean_regular"
+        android:text="Enemy"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/enemy1_idleSprite"
+        app:layout_constraintEnd_toEndOf="@+id/enemy1_idleSprite"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="@+id/enemy1_idleSprite"
+        app:layout_constraintTop_toTopOf="@+id/enemy1_idleSprite"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/txtUser"
+        android:layout_width="137dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/nicoclean_regular"
+        android:text="Hero"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/txtHeroHP"
+        android:layout_width="36dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/nicoclean_regular"
+        android:text="HP"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/txtEnemyHP"
+        android:layout_width="45dp"
+        android:layout_height="14dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/nicoclean_regular"
+        android:gravity="center"
+        android:text="HP"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/txtHeroMP"
+        android:layout_width="36dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/nicoclean_regular"
+        android:text="MP"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+    <View
+        android:id="@+id/heroHPBar"
+        android:layout_width="106dp"
+        android:layout_height="17dp"
+        android:background="@drawable/hp_barbg"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <View
+        android:id="@+id/heroMPBar"
+        android:layout_width="106dp"
+        android:layout_height="17dp"
+        android:background="@drawable/mp_barbg"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+    <View
+        android:id="@+id/enemyHPBar"
+        android:layout_width="77dp"
+        android:layout_height="12dp"
+        android:background="@drawable/hp_barbg"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="139dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.033"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.067"
+        app:srcCompat="@drawable/hp_bar" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="139dp"
+        android:layout_height="24dp"
+
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/mp_bar" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/enemy1_idleSprite"
+        app:layout_constraintEnd_toEndOf="@+id/enemy1_idleSprite"
+        app:layout_constraintStart_toStartOf="@+id/enemy1_idleSprite"
+        app:srcCompat="@drawable/enemyhpbar" />
+
+    <ImageView
+        android:id="@+id/hero1_attkSprite"
+        android:layout_width="198dp"
+        android:layout_height="214dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/hero1_runSprite"
+        app:layout_constraintEnd_toEndOf="@+id/hero1_runSprite"
+        app:layout_constraintStart_toStartOf="@+id/hero1_runSprite"
+        app:layout_constraintTop_toTopOf="@+id/hero1_runSprite"
+        app:srcCompat="@drawable/hero1_attack1" />
+
+    <ImageView
+        android:id="@+id/hero1_runSprite"
+        android:layout_width="125dp"
+        android:layout_height="157dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/txtbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.189"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:srcCompat="@drawable/hero1_run1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
