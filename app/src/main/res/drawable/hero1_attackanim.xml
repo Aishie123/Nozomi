@@ -3,7 +3,8 @@
     <item android:drawable="@drawable/hero1_attack1" android:duration="100"/>
     <item android:drawable="@drawable/hero1_attack2" android:duration="100"/>
     <item android:drawable="@drawable/hero1_attack3" android:duration="100"/>
+    <item android:drawable="@drawable/hero1_attack4" android:duration="100"/>
     <item android:drawable="@drawable/hero1_attack5" android:duration="100"/>
-    <item android:drawable="@drawable/hero1_attack6" android:duration="100"/>
-    <item android:drawable="@drawable/hero1_attack7" android:duration="100"/>
+    <item android:drawable="@drawable/hero1_attack6" android:duration="250"/>
+    <item android:drawable="@drawable/hero1_attack7" android:duration="400"/>
 </animation-list>
