@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "User's current MP is " + curHeroMP);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     //adjusting Enemy HP Bar
     public void enemyHPBar(){
         enemyHPB = ((double) curEnemyHP / (double) fullEnemyHP) * 10000;
@@ -185,10 +186,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (curEnemyHP<=fullEnemyHP && curEnemyHP>(fullEnemyHP*0.50)){
             enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_greenbarbg));
         }
-        else if (curEnemyHP<=(fullEnemyHP*0.50) && curEnemyHP>(fullEnemyHP*0.20)){
+        else if (curEnemyHP<=(fullEnemyHP*0.60) && curEnemyHP>(fullEnemyHP*0.25)){
             enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_yellowbarbg));
         }
-        else if (curEnemyHP<=(fullEnemyHP*0.20) && curEnemyHP>=0){
+        else if (curEnemyHP<=(fullEnemyHP*0.25) && curEnemyHP>=0){
             enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_redbarbg));
         }
 
