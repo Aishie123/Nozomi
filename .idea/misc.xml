@@ -12,7 +12,10 @@
         <entry key="app/src/main/res/drawable/hero1_ss1anim.xml" value="0.2713541666666667" />
         <entry key="app/src/main/res/drawable/hero1_ss2anim.xml" value="0.24479166666666666" />
         <entry key="app/src/main/res/drawable/hp_bluebg.xml" value="0.265625" />
+        <entry key="app/src/main/res/drawable/hp_greembg.xml" value="0.39351851851851855" />
+        <entry key="app/src/main/res/drawable/hp_greencolorbg.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable/hp_redbg.xml" value="0.265625" />
+        <entry key="app/src/main/res/drawable/hp_yellowcolorbg.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable/mp_barbg.xml" value="0.265625" />
         <entry key="app/src/main/res/drawable/pinkchara_idleanim.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/drawable/shape.xml" value="0.4351851851851852" />

@@ -9,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -151,9 +150,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //---------------------------------------------------------------------------------------------------------------------------------
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     //adjusting Hero HP Bar
     public void heroHPBar(){
         heroHPB = ((double) curHeroHP / (double) fullHeroHP) * 10000;
+
+        if (curHeroHP<=fullHeroHP && curHeroHP>(fullHeroHP*0.60)){
+            heroHPBar.setBackground(getResources().getDrawable(R.drawable.hp_greenbarbg));
+        }
+        else if (curHeroHP<=(fullHeroHP*0.60) && curHeroHP>(fullHeroHP*0.25)){
+            heroHPBar.setBackground(getResources().getDrawable(R.drawable.hp_yellowbarbg));
+        }
+        else if (curHeroHP<=(fullHeroHP*0.25) && curHeroHP>=0){
+            heroHPBar.setBackground(getResources().getDrawable(R.drawable.hp_redbarbg));
+        }
+
         heroHPBar.getBackground().setLevel((int) heroHPB);
         txtHeroHP.setText(String.valueOf(curHeroHP));
         Log.d(TAG, "User's current HP is " + curHeroHP);
@@ -170,6 +181,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //adjusting Enemy HP Bar
     public void enemyHPBar(){
         enemyHPB = ((double) curEnemyHP / (double) fullEnemyHP) * 10000;
+
+        if (curEnemyHP<=fullEnemyHP && curEnemyHP>(fullEnemyHP*0.50)){
+            enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_greenbarbg));
+        }
+        else if (curEnemyHP<=(fullEnemyHP*0.50) && curEnemyHP>(fullEnemyHP*0.20)){
+            enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_yellowbarbg));
+        }
+        else if (curEnemyHP<=(fullEnemyHP*0.20) && curEnemyHP>=0){
+            enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_redbarbg));
+        }
+
         enemyHPBar.getBackground().setLevel((int) enemyHPB);
         txtEnemyHP.setText(String.valueOf(curEnemyHP));
         Log.d(TAG, "Enemy's current HP is " + curEnemyHP);
@@ -659,5 +681,3 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 }
-
-
