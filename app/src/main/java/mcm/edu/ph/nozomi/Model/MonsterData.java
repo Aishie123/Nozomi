@@ -1,4 +1,4 @@
-package mcm.edu.ph.nozomi;
+package mcm.edu.ph.nozomi.Model;
 
 public class MonsterData extends GameData{
 

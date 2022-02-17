@@ -1,4 +1,4 @@
-package mcm.edu.ph.nozomi;
+package mcm.edu.ph.nozomi.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +20,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Random;
+
+import mcm.edu.ph.nozomi.Controller.BattleAlgorithm;
+import mcm.edu.ph.nozomi.Model.HeroData;
+import mcm.edu.ph.nozomi.Model.MonsterData;
+import mcm.edu.ph.nozomi.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 

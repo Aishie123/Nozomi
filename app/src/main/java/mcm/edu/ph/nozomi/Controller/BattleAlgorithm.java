@@ -1,4 +1,4 @@
-package mcm.edu.ph.nozomi;
+package mcm.edu.ph.nozomi.Controller;
 
 import java.util.Random;
 

@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nozomi">
         <activity
-            android:name=".MainActivity"
+            android:name=".View.MainActivity"
             android:exported="false"
             android:theme="@style/SplashTheme"
             android:launchMode = "singleInstance"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".IntroScreen"
+            android:name=".View.IntroScreen"
             android:exported="true"
             android:theme="@style/SplashTheme"
             android:screenOrientation="landscape">

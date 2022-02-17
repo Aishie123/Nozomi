@@ -1,4 +1,4 @@
-package mcm.edu.ph.nozomi;
+package mcm.edu.ph.nozomi.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import mcm.edu.ph.nozomi.Model.HeroData;
+import mcm.edu.ph.nozomi.R;
 
 public class IntroScreen extends AppCompatActivity {
 
@@ -62,7 +65,7 @@ public class IntroScreen extends AppCompatActivity {
                             public void onClick(View v) {
                                 enemyName = userInput.getText().toString();
                                 Log.d(TAG, "The enemy's name is " + enemyName);
-                                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                                 i.putExtra("enemy", enemyName);
                                 i.putExtra("user", userName);
                                 startActivity(i);
