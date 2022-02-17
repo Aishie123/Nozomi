@@ -12,14 +12,16 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
+            android:theme="@style/SplashTheme"
+            android:launchMode = "singleInstance"
             android:screenOrientation="landscape"/>
         <activity
             android:name=".IntroScreen"
             android:exported="true"
+            android:theme="@style/SplashTheme"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
