@@ -634,7 +634,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                                         enemy1_deathAnim.stop();
                                                         enemy1_deathSprite.setImageResource(R.drawable.enemy1_death4);
-                                                        txtLog.setText(hero.getName() + " used Double Sword, and dealt " + (hero1AtkN * 2) + " damage to the enemy. You won!");
+                                                        txtLog.setText(hero.getName() + " used Double Slash, and dealt " + (hero1AtkN * 2) + " damage to the enemy. You won!");
                                                         counter = 0;
                                                         txtBtn.setText("Reset Game");
                                                     }
