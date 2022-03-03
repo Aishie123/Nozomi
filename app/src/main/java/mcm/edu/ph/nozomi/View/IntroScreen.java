@@ -1,11 +1,15 @@
 package mcm.edu.ph.nozomi.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
+import android.content.ComponentName;
 import android.content.Intent;
-
-import android.media.MediaPlayer;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -15,10 +19,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import mcm.edu.ph.nozomi.Controller.MusicPlayerService;
 import mcm.edu.ph.nozomi.Model.HeroData;
 import mcm.edu.ph.nozomi.R;
 
-public class IntroScreen extends AppCompatActivity {
+public class IntroScreen extends AppCompatActivity implements ServiceConnection{
 
     private TextView nameQuestion, enemyQuestion;
     private EditText userInput;
@@ -26,16 +31,17 @@ public class IntroScreen extends AppCompatActivity {
     private ImageButton btnNext;
     private String userName, enemyName;
     private String TAG = "IntroScreen";
-    private MediaPlayer music;
+    MusicPlayerService musicPlayerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getSupportActionBar().hide(); //hide the action bar
+        setImmersiveMode();
 
         setContentView(R.layout.activity_intro_screen);
+
+        Intent musicIntent = new Intent(this, MusicPlayerService.class);
+        bindService(musicIntent, (ServiceConnection) this, BIND_AUTO_CREATE);
 
         nameQuestion = findViewById(R.id.nameQuestion);
         enemyQuestion = findViewById(R.id.enemyQuestion);
@@ -43,17 +49,23 @@ public class IntroScreen extends AppCompatActivity {
         userInput = findViewById(R.id.userInput);
         btnNext = findViewById(R.id.btnStart);
 
-        playBGMusic();
         userInput();
 
 
     }
 
-    public void playBGMusic(){
-        music = MediaPlayer.create(this, R.raw.music_intro);
-        music.setLooping(true); // Set looping
-        music.setVolume(100,100);
-        music.start();
+    public void setImmersiveMode(){
+        WindowInsetsControllerCompat windowInsetsController =
+                ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+        if (windowInsetsController == null) {
+            return;
+        }
+        // Configure the behavior of the hidden system bars
+        windowInsetsController.setSystemBarsBehavior(
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        );
+        // Hide both the status bar and the navigation bar
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
     }
 
     public void userInput(){
@@ -83,7 +95,6 @@ public class IntroScreen extends AppCompatActivity {
                                 startActivity(i);
                                 finish();
                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                music.release();
 
                             }
                         });
@@ -105,5 +116,39 @@ public class IntroScreen extends AppCompatActivity {
         userInput();
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(musicPlayerService!=null){
+            musicPlayerService.pauseMusic();
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(musicPlayerService!=null){
+            if(musicPlayerService.currentTrack == 2){
+                musicPlayerService.unpauseMusic();
+            }else{
+                musicPlayerService.playMusic(2);
+            }
+
+        }
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        MusicPlayerService.MyBinder binder = (MusicPlayerService.MyBinder) iBinder;
+        if(binder != null) {
+            musicPlayerService = binder.getService();
+            musicPlayerService.playMusic(2);
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+
+    }
 
 }

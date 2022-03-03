@@ -3,5 +3,5 @@
     <item android:drawable="@drawable/hero1_hit1" android:duration="150"/>
     <item android:drawable="@drawable/hero1_hit2" android:duration="150"/>
     <item android:drawable="@drawable/hero1_hit3" android:duration="150"/>
-    <item android:drawable="@drawable/hero1_hit4" android:duration="150"/>
+    <item android:drawable="@drawable/hero1_hit4" android:duration="200"/>
 </animation-list>

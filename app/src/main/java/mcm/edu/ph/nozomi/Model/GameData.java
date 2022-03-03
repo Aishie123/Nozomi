@@ -19,7 +19,6 @@ public class GameData {
         public void setAtkMax(int atkMax) { this.atkMax = atkMax; }
         public void setLvl(int lvl) { this.lvl = lvl; }
 
-
         //GETTERS
         public int getHealthPt() { return healthPt; }
         public int getManaPt() { return manaPt; }
@@ -27,7 +26,6 @@ public class GameData {
         public int getAtkMin() { return atkMin; }
         public int getAtkMax() { return atkMax; }
         public int getLvl() { return lvl; }
-
 
 }
 

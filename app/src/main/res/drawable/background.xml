@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background Color -->
+    <item
+        android:drawable="@color/black"
+        android:height="1080dp"
+        android:width="1920dp"
+        />
+
+    <!-- Logo -->
     <item>
         <bitmap
-            android:src="@drawable/splashscreen"
             android:gravity="center"
-             />
+            android:src="@drawable/applogo2"/>
     </item>
+
 </layer-list>

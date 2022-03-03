@@ -8,7 +8,7 @@
     tools:context=".View.SplashScreen">
 
     <ImageView
-        android:id="@+id/bg_lightHills"
+        android:id="@+id/bg_homeScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.1"
@@ -34,8 +34,9 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="150dp"
         android:layout_height="22dp"
-        android:scaleY="7"
+        android:adjustViewBounds="true"
         android:progressTint="#FFFFFF"
+        android:scaleY="7"
         app:layout_constraintBottom_toBottomOf="@+id/splashProgress_bar"
         app:layout_constraintEnd_toEndOf="@+id/splashProgress_bar"
         app:layout_constraintHorizontal_bias="0.478"
@@ -47,7 +48,7 @@
         android:id="@+id/splashProgress_bar"
         android:layout_width="173dp"
         android:layout_height="31dp"
-        app:layout_constraintBottom_toBottomOf="@+id/bg_lightHills"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_homeScreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/splashAppLogo"

@@ -1,16 +1,26 @@
 package mcm.edu.ph.nozomi.View;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,26 +29,32 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import mcm.edu.ph.nozomi.Controller.BattleAlgorithm;
+import mcm.edu.ph.nozomi.Controller.MusicPlayerService;
 import mcm.edu.ph.nozomi.Controller.QuoteRandomizer;
 import mcm.edu.ph.nozomi.Controller.SfxRandomizer;
 import mcm.edu.ph.nozomi.Model.HeroData;
 import mcm.edu.ph.nozomi.Model.MonsterData;
 import mcm.edu.ph.nozomi.R;
 
-public class BattleScreen extends AppCompatActivity implements View.OnClickListener{
+public class BattleScreen extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
     ImageView enemy1_idleSprite, enemy1_hitSprite, enemy1_deathSprite, enemy1_walkSprite, enemy1_atkSprite,
             hero1_idleSprite, hero1_runSprite, hero1_atkSprite, hero1_ss1Sprite, hero1_ss2Sprite, hero1_hitSprite, hero1_deathSprite,
-            enemyHPBar_base;
+            enemyHPBar_base, btnHome;
     ImageButton btnSS1, btnSS2, btnTurn, btnReset;
-    TextView txtLog, txtBtn, txtReset, txtEnemy, txtUser, txtHeroHP, txtHeroMP, txtEnemyHP;
+    TextView txtLog, txtQuote, txtBtn, txtReset, txtEnemy, txtUser, txtHeroHP, txtHeroMP, txtEnemyHP;
     View heroHPBar, heroMPBar, enemyHPBar;
     double heroHPB, heroMPB, enemyHPB; //for HP bar
     int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n;
     String TAG = "BattleScreen";
-    MediaPlayer music, heroSS1SFX, heroSS2SFX;
+    Intent goToHome;
+    Context context;
+
+    MusicPlayerService musicPlayerService;
+    MediaPlayer heroSS1SFX, heroSS2SFX;
     MediaPlayer [] heroAtkSFX = new MediaPlayer[3];
     MediaPlayer [] enemyAtkSFX = new MediaPlayer[3];
 
@@ -63,12 +79,11 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getSupportActionBar().hide(); //hide the action bar
+        setImmersiveMode();
 
         setContentView(R.layout.activity_battle_screen);
 
+        btnHome = findViewById(R.id.btnHome);
         btnReset = findViewById(R.id.btnReset);
         btnTurn = findViewById(R.id.btnStart);
         btnSS1 = findViewById(R.id.btnSS1);
@@ -79,6 +94,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         txtEnemy = findViewById(R.id.txtEnemy);
         txtUser = findViewById(R.id.txtUser);
         txtLog = findViewById(R.id.txtCombatLog);
+        txtQuote = findViewById(R.id.txtQuoteLog);
         txtEnemyHP = findViewById(R.id.txtEnemyHP);
         txtHeroHP = findViewById(R.id.txtHeroHP);
         txtHeroMP = findViewById(R.id.txtHeroMP);
@@ -135,6 +151,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         hero1_hitSprite.setImageResource(R.drawable.hero1_hitanim);
         hero1_deathSprite.setImageResource(R.drawable.hero1_deathanim);
 
+        btnHome.setOnClickListener(this);
         btnTurn.setOnClickListener(this);
         btnSS1.setOnClickListener(this);
         btnSS2.setOnClickListener(this);
@@ -158,8 +175,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         bold = getResources().getFont(R.font.nicobold_regular);
         txtLog.setTypeface(clean);
 
+        Intent musicIntent = new Intent(this, MusicPlayerService.class);
+        bindService(musicIntent, (ServiceConnection) this, BIND_AUTO_CREATE);
+
         enableTurnOnly();
-        playBGMusic();
         idleSprite();
         heroHPBar();
         heroMPBar();
@@ -167,64 +186,34 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         press();
     }
 
-//---------------------------------------------------------------------------------------------------------------------------------
-
-    public void playBGMusic(){
-        music = MediaPlayer.create(this, R.raw.music_battle);
-        music.setLooping(true); // Set looping
-        music.setVolume(100,100);
-        music.start();
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        if(music.isPlaying())
-            music.pause();
-        else
-            return;
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        if(music.isPlaying())
-            music.pause();
-        else
-            return;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if(!music.isPlaying())
-            music.start();
-        else
-            return;
-    }
-
-    @Override
-    public void onBackPressed() {
-    }
 
 //---------------------------------------------------------------------------------------------------------------------------------
-
+    public void setImmersiveMode(){
+    WindowInsetsControllerCompat windowInsetsController =
+            ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+    if (windowInsetsController == null) {
+        return;
+    }
+    // Configure the behavior of the hidden system bars
+    windowInsetsController.setSystemBarsBehavior(
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    );
+    // Hide both the status bar and the navigation bar
+    windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+    }
     @SuppressLint("UseCompatLoadingForDrawables")
     //adjusting Hero HP Bar
     public void heroHPBar(){
         heroHPB = ((double) curHeroHP / (double) fullHeroHP) * 10000; // 100% HP = 10000
 
         if (curHeroHP<=fullHeroHP && curHeroHP>(fullHeroHP*0.60)){
-            heroHPBar.setBackground(getResources().getDrawable(R.drawable.hp_greenbarbg));
+            heroHPBar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.hp_greenbarbg, null));
         }
         else if (curHeroHP<=(fullHeroHP*0.60) && curHeroHP>(fullHeroHP*0.25)){
-            heroHPBar.setBackground(getResources().getDrawable(R.drawable.hp_yellowbarbg));
+            heroHPBar.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.hp_yellowbarbg, null));
         }
         else if (curHeroHP<=(fullHeroHP*0.25) && curHeroHP>=0){
-            heroHPBar.setBackground(getResources().getDrawable(R.drawable.hp_redbarbg));
+            heroHPBar.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.hp_redbarbg, null));
         }
 
         heroHPBar.getBackground().setLevel((int) heroHPB);
@@ -248,13 +237,13 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         enemyHPB = ((double) curEnemyHP / (double) fullEnemyHP) * 10000;
 
         if (curEnemyHP<=fullEnemyHP && curEnemyHP>(fullEnemyHP*0.60)){
-            enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_greenbarbg));
+            enemyHPBar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.hp_greenbarbg, null));
         }
         else if (curEnemyHP<=(fullEnemyHP*0.60) && curEnemyHP>(fullEnemyHP*0.25)){
-            enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_yellowbarbg));
+            enemyHPBar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.hp_yellowbarbg, null));
         }
         else if (curEnemyHP<=(fullEnemyHP*0.25) && curEnemyHP>=0){
-            enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_redbarbg));
+            enemyHPBar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.hp_redbarbg, null));
         }
 
         enemyHPBar.getBackground().setLevel((int) enemyHPB);
@@ -306,6 +295,20 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
+
+        btnHome.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btnTurn.setImageResource(R.drawable.btn_p_home);
+                    Log.d(TAG, "btnTurn pressed");
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    btnTurn.setImageResource(R.drawable.btn_up_home);
+                    Log.d(TAG, "btnTurn unpressed");
+                }
+                return false;
+            }
+        });
+
 
     }
 
@@ -374,7 +377,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         hero_hitAnim = (AnimationDrawable)hero1_hitSprite.getDrawable();
         heroHit = ObjectAnimator.ofFloat(hero1_hitSprite,"translationX",0f); // stays at the same position
         // ObjectAnimator is used as a timer instead
-        heroHit.setDuration(600); // sets duration of movement to 0.6 seconds, same as the animation duration
+        heroHit.setDuration(650); // sets duration of movement to 0.6 seconds, same as the animation duration
 
         heroHit.start(); // moves the position of the sprite
         hero_hitAnim.start(); // starts "take hit" animation
@@ -441,7 +444,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         enemy_atkAnim = (AnimationDrawable) enemy1_atkSprite.getDrawable();
         enemyAtk = ObjectAnimator.ofFloat(enemy1_atkSprite,"translationX",-900f); // stays at the same position as Walk sprite
-        enemyAtk.setDuration(400); // sets duration of movement to 0.4 seconds
+        enemyAtk.setDuration(300); // sets duration of movement to 0.3 seconds
         // ObjectAnimator is used as a timer instead
 
         enemyAtk.start(); // moves the position of the sprite
@@ -485,13 +488,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
                 //start of battle --------------------------------------------------------------------------------------------
                 if (counter == -1){
-                    music.release();
-                    heroAtkSFX[n].release();
-                    enemyAtkSFX[n].release();
-                    releaseHeroSSSFX();
-                    Intent goToIntroScreen = new Intent(BattleScreen.this, SplashScreen.class);
-                    finish();
-                    startActivity(goToIntroScreen);
+                    recreate();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
 
@@ -509,8 +506,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 //hero's turn --------------------------------------------------------------------------------------------
                 else if(counter%2 == 1){
                     txtBtn.setText("Next Turn");
-                    txtLog.setTypeface(bold);
-                    txtLog.setText(quote.quoteHeroAtk(quoteCounter));
+                    txtQuote.setText("'" + quote.quoteHeroAtk(quoteCounter) + "'");
                     heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX",850f);
                     disableButtons();
                     heroRunSprite();
@@ -532,7 +528,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                          public void onAnimationEnd(Animator animation) {
                                              enableTurnOnly();
 
-                                             txtLog.setTypeface(clean);
                                              txtLog.setText(hero.getName() + " dealt "+ hero1AtkN + " damage to the enemy.");
                                              curEnemyHP -= hero1AtkN;
                                              negativeHealthCheck();
@@ -550,9 +545,8 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                              quoteCounter = quote.quoteCounter();
 
                                              if(curEnemyHP <= 0){
-                                                 music.pause();
-                                                 music = MediaPlayer.create(getApplicationContext(), R.raw.music_win);
-                                                 music.start();
+                                                 musicPlayerService.pauseMusic();
+                                                 musicPlayerService.playMusic(4);
 
                                                  enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
                                                  enemyDeathSprite();
@@ -560,11 +554,12 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                  enemyDeath.addListener(new AnimatorListenerAdapter() {
                                                      public void onAnimationEnd(Animator animation){
                                                          enableTurnOnly();
+                                                         txtQuote.setText("");
                                                          enemy_deathAnim.stop();
                                                          enemy1_deathSprite.setImageResource(R.drawable.enemy1_death4);
                                                          txtLog.setText(hero.getName() + " dealt "+ hero1AtkN + " damage to the enemy.\nYou won!");
                                                          counter = -1;
-                                                         txtBtn.setText("Exit");
+                                                         txtBtn.setText("Exit Game");
                                                      }
                                                  });
                                              }
@@ -580,8 +575,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 //enemy's turn --------------------------------------------------------------------------------------------
                 else if(counter%2 !=1) {
                     txtBtn.setText("Attack");
-                    txtLog.setTypeface(bold);
-                    txtLog.setText(quote.quoteEnemyAtk(quoteCounter));
+                    txtQuote.setText("'" + quote.quoteEnemyAtk(quoteCounter) + "'");
                     disableButtons();
                     enemyWalkSprite();
 
@@ -602,7 +596,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                         public void onAnimationEnd(Animator animation) {
                                             enableButtons();
 
-                                            txtLog.setTypeface(clean);
                                             txtLog.setText(enemy.getName() + " dealt " + enemy1AtkN + " damage to the hero.");
                                             curHeroHP -= enemy1AtkN;
                                             negativeHealthCheck();
@@ -619,10 +612,8 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                             counter++;
 
                                             if(curHeroHP <= 0){
-                                                music.pause();
-                                                music = MediaPlayer.create(getApplicationContext(), R.raw.music_lose);
-                                                music.setLooping(false);
-                                                music.start();
+                                                musicPlayerService.pauseMusic();
+                                                musicPlayerService.playMusic(5);
 
                                                 hero1_deathSprite.setImageResource(R.drawable.hero1_deathanim);
                                                 disableButtons();
@@ -632,11 +623,12 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                 heroDeath.addListener(new AnimatorListenerAdapter() {
                                                     public void onAnimationEnd(Animator animation) {
                                                         enableTurnOnly();
+                                                        txtQuote.setText("");
                                                         hero_deathAnim.stop();
                                                         hero1_deathSprite.setImageResource(R.drawable.hero1_death11);
                                                         txtLog.setText(enemy.getName() + " dealt " + enemy1AtkN + " damage to the hero.\nGame over!");
                                                         counter = -1;
-                                                        txtBtn.setText("Exit");
+                                                        txtBtn.setText("Exit Game");
                                                     }
                                                 });
                                             }
@@ -660,8 +652,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 else{
                     curHeroMP-=SS1C;
                     heroMPBar();
-                    txtLog.setTypeface(bold);
-                    txtLog.setText(quote.quoteHeroSS());
+                    txtQuote.setText(quote.quoteHeroSS());
                     txtBtn.setText("Next Turn");
                     heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX",725f);
                     heroRunSprite();
@@ -683,7 +674,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                         public void onAnimationEnd(Animator animation) {
                                             enableTurnOnly();
 
-                                            txtLog.setTypeface(clean);
                                             txtLog.setText(hero.getName() + " used Double Slash, and dealt " + (hero1AtkN * 2) + " damage to the enemy.");
                                             curEnemyHP -= (hero1AtkN * 2);
                                             negativeHealthCheck();
@@ -699,10 +689,8 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                             counter++;
 
                                             if (curEnemyHP <= 0) {
-                                                music.pause();
-                                                music = MediaPlayer.create(getApplicationContext(), R.raw.music_win);
-                                                music.setLooping(false);
-                                                music.start();
+                                                musicPlayerService.pauseMusic();
+                                                musicPlayerService.playMusic(4);
 
                                                 enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
                                                 disableButtons();
@@ -712,11 +700,12 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                 enemyDeath.addListener(new AnimatorListenerAdapter() {
                                                     public void onAnimationEnd(Animator animation) {
                                                         enableTurnOnly();
+                                                        txtQuote.setText("");
                                                         enemy_deathAnim.stop();
                                                         enemy1_deathSprite.setImageResource(R.drawable.enemy1_death4);
                                                         txtLog.setText(hero.getName() + " used Double Slash, and dealt " + (hero1AtkN * 2) + " damage to the enemy. You won!");
                                                         counter = -1;
-                                                        txtBtn.setText("Exit");
+                                                        txtBtn.setText("Exit Game");
                                                     }
                                                 });
                                             }
@@ -745,8 +734,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                     }
 
                     disableButtons();
-                    txtLog.setTypeface(bold);
-                    txtLog.setText(quote.quoteHeroSS());
+                    txtQuote.setText(quote.quoteHeroSS());
                     playHeroSS2SFX();
                     heroSS2Sprite();
                     heroSS2.addListener(new AnimatorListenerAdapter() {
@@ -754,7 +742,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                             enableTurnOnly();
                             hero1_ss2Sprite.setVisibility(View.INVISIBLE);
                             hero_ss2Anim.stop();
-                            txtLog.setTypeface(clean);
                             txtLog.setText(hero.getName() + " used Healing Shield, and regained 50% health");
                             txtBtn.setText("Next Turn");
                             heroHPBar();
@@ -765,6 +752,37 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
                 }
                 break;
+
+            case R.id.btnHome:
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (!isFinishing()){
+                            new AlertDialog.Builder(BattleScreen.this)
+                                    .setTitle("Exit Battle")
+                                    .setMessage("Go back to home screen?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                            goToHome = new Intent(BattleScreen.this, HomeScreen.class);
+                                            startActivity(goToHome);
+                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Toast.makeText(getApplicationContext(),"You remained in battle.",Toast.LENGTH_LONG).show();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                });
+
         }
     }
 
@@ -832,6 +850,41 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         btnTurn.setEnabled(true);
         btnSS1.setEnabled(false);
         btnSS2.setEnabled(false);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(musicPlayerService!=null){
+            musicPlayerService.pauseMusic();
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(musicPlayerService!=null){
+            if(musicPlayerService.currentTrack ==  3){
+                musicPlayerService.unpauseMusic();
+            }else{
+                musicPlayerService.playMusic(3);
+            }
+
+        }
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        MusicPlayerService.MyBinder binder = (MusicPlayerService.MyBinder) iBinder;
+        if(binder != null) {
+            musicPlayerService = binder.getService();
+            musicPlayerService.playMusic(3);
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+
     }
 
 
