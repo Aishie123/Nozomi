@@ -29,17 +29,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView enemy1_idleSprite, enemy1_hitSprite, enemy1_deathSprite, enemy1_walkSprite, enemy1_atkSprite,
             hero1_idleSprite, hero1_runSprite, hero1_atkSprite, hero1_ss1Sprite, hero1_ss2Sprite, hero1_hitSprite, hero1_deathSprite;
-    ImageButton btnSS1, btnSS2, btnAttack, btnReset;
+    ImageButton btnSS1, btnSS2, btnTurn, btnReset;
     TextView txtLog, txtBtn, txtReset, txtEnemy, txtUser, txtHeroHP, txtHeroMP, txtEnemyHP;
     View heroHPBar, heroMPBar, enemyHPBar;
     double heroHPB, heroMPB, enemyHPB; //for HP bar
     int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP;
     String TAG = "MainActivity";
 
-    AnimationDrawable hero1_idleAnim, hero1_runAnim, hero1_atkAnim, hero1_ss1Anim, hero1_ss2Anim, hero1_hitAnim, hero1_deathAnim,
-            enemy1_idleAnim, enemy1_walkAnim, enemy1_atkAnim, enemy1_hitAnim, enemy1_deathAnim;
-    ObjectAnimator hero1Run, hero1Atk, hero1SS1, hero1SS2, hero1Hit, hero1Death,
-            enemy1Walk, enemy1Atk, enemy1Hit, enemy1Death;
+    AnimationDrawable hero_idleAnim, hero_runAnim, hero_atkAnim, hero_ss1Anim, hero_ss2Anim, hero_hitAnim, hero_deathAnim,
+            enemy_idleAnim, enemy_walkAnim, enemy_atkAnim, enemy_hitAnim, enemy_deathAnim;
+    ObjectAnimator heroRun, heroAtk, heroSS1, heroSS2, heroHit, heroDeath,
+            enemyWalk, enemyAtk, enemyHit, enemyDeath;
 
     HeroData hero = new HeroData();
     MonsterData enemy = new MonsterData();
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         btnReset = findViewById(R.id.btnReset);
-        btnAttack = findViewById(R.id.btnAttk);
+        btnTurn = findViewById(R.id.btnAttk);
         btnSS1 = findViewById(R.id.btnSS1);
         btnSS2 = findViewById(R.id.btnSS2);
 
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hero1_hitSprite.setImageResource(R.drawable.hero1_hitanim);
         hero1_deathSprite.setImageResource(R.drawable.hero1_deathanim);
 
-        btnAttack.setOnClickListener(this);
+        btnTurn.setOnClickListener(this);
         btnSS1.setOnClickListener(this);
         btnSS2.setOnClickListener(this);
 
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void enemyHPBar(){
         enemyHPB = ((double) curEnemyHP / (double) fullEnemyHP) * 10000;
 
-        if (curEnemyHP<=fullEnemyHP && curEnemyHP>(fullEnemyHP*0.50)){
+        if (curEnemyHP<=fullEnemyHP && curEnemyHP>(fullEnemyHP*0.60)){
             enemyHPBar.setBackground(getResources().getDrawable(R.drawable.hp_greenbarbg));
         }
         else if (curEnemyHP<=(fullEnemyHP*0.60) && curEnemyHP>(fullEnemyHP*0.25)){
@@ -230,14 +230,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        btnAttack.setOnTouchListener(new View.OnTouchListener() {
+        btnTurn.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    btnAttack.setImageResource(R.drawable.btn_pressed);
-                    Log.d(TAG, "btnAttack pressed");
+                    btnTurn.setImageResource(R.drawable.btn_pressed);
+                    Log.d(TAG, "btnTurn pressed");
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    btnAttack.setImageResource(R.drawable.btn_unpressed);
-                    Log.d(TAG, "btnAttack unpressed");
+                    btnTurn.setImageResource(R.drawable.btn_unpressed);
+                    Log.d(TAG, "btnTurn unpressed");
                 }
                 return false;
             }
@@ -262,32 +262,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //idle sprites of characters --------------------------------------------------------------------------------------------------
     public void idleSprite(){
-        enemy1_idleAnim = (AnimationDrawable)enemy1_idleSprite.getDrawable();
-        enemy1_idleAnim.start();
+        enemy_idleAnim = (AnimationDrawable)enemy1_idleSprite.getDrawable();
+        enemy_idleAnim.start();
 
-        hero1_idleAnim = (AnimationDrawable)hero1_idleSprite.getDrawable();
-        hero1_idleAnim.start();
+        hero_idleAnim = (AnimationDrawable)hero1_idleSprite.getDrawable();
+        hero_idleAnim.start();
     }
 
 
     //HERO SPRITES ----------------------------------------------------------------------------------------------------------------
     public void heroRunSprite(){
-        btnAttack.setEnabled(false);
-        btnSS1.setEnabled(false);
-        btnSS2.setEnabled(false);
         hero1_runSprite.setVisibility(View.VISIBLE);
         hero1_idleSprite.setVisibility(View.INVISIBLE);
 
-        hero1_runAnim = (AnimationDrawable)hero1_runSprite.getDrawable();
-        hero1Run.setDuration(800);
+        hero_runAnim = (AnimationDrawable)hero1_runSprite.getDrawable();
+        heroRun.setDuration(800);
 
-        hero1Run.start();
-        hero1_runAnim.start();
+        heroRun.start();
+        hero_runAnim.start();
 
-        hero1Run.addListener(new AnimatorListenerAdapter() {
+        heroRun.addListener(new AnimatorListenerAdapter() {
             public void onAnimationEnd(Animator animation) {
                 hero1_runSprite.setVisibility(View.INVISIBLE);
-                hero1_runAnim.stop();
+                hero_runAnim.stop();
                 hero1_runSprite.setX(0f);
             }
         });
@@ -296,84 +293,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void heroAtkSprite(){
         hero1_atkSprite.setVisibility(View.VISIBLE);
 
-        hero1_atkAnim = (AnimationDrawable) hero1_atkSprite.getDrawable();
-        hero1Atk = ObjectAnimator.ofFloat(hero1_atkSprite,"translationX",850f);
-        hero1Atk.setDuration(400);
+        hero_atkAnim = (AnimationDrawable) hero1_atkSprite.getDrawable();
+        heroAtk = ObjectAnimator.ofFloat(hero1_atkSprite,"translationX",850f);
+        heroAtk.setDuration(400);
 
-        hero1Atk.start();
-        hero1_atkAnim.start();
+        heroAtk.start();
+        hero_atkAnim.start();
     }
 
     public void heroHitSprite(){
         hero1_hitSprite.setVisibility(View.VISIBLE);
 
-        hero1_hitAnim = (AnimationDrawable)hero1_hitSprite.getDrawable();
-        hero1Hit = ObjectAnimator.ofFloat(hero1_hitSprite,"translationX",0f);
-        hero1Hit.setDuration(600);
+        hero_hitAnim = (AnimationDrawable)hero1_hitSprite.getDrawable();
+        heroHit = ObjectAnimator.ofFloat(hero1_hitSprite,"translationX",0f);
+        heroHit.setDuration(600);
 
-        hero1Hit.start();
-        hero1_hitAnim.start();
+        heroHit.start();
+        hero_hitAnim.start();
     }
 
     public void heroSS1Sprite(){
         hero1_ss1Sprite.setVisibility(View.VISIBLE);
 
-        hero1_ss1Anim = (AnimationDrawable) hero1_ss1Sprite.getDrawable();
-        hero1SS1 = ObjectAnimator.ofFloat(hero1_ss1Sprite,"translationX",725f);
-        hero1SS1.setDuration(400);
+        hero_ss1Anim = (AnimationDrawable) hero1_ss1Sprite.getDrawable();
+        heroSS1 = ObjectAnimator.ofFloat(hero1_ss1Sprite,"translationX",725f);
+        heroSS1.setDuration(400);
 
-        hero1SS1.start();
-        hero1_ss1Anim.start();
+        heroSS1.start();
+        hero_ss1Anim.start();
     }
 
     public void heroSS2Sprite(){
-        btnAttack.setEnabled(false);
-        btnSS1.setEnabled(false);
-        btnSS2.setEnabled(false);
         hero1_ss2Sprite.setVisibility(View.VISIBLE);
 
-        hero1_ss2Anim = (AnimationDrawable)hero1_ss2Sprite.getDrawable();
-        hero1SS2 = ObjectAnimator.ofFloat(hero1_ss2Sprite,"translationX",0f);
-        hero1SS2.setDuration(600);
+        hero_ss2Anim = (AnimationDrawable)hero1_ss2Sprite.getDrawable();
+        heroSS2 = ObjectAnimator.ofFloat(hero1_ss2Sprite,"translationX",0f);
+        heroSS2.setDuration(600);
 
-        hero1SS2.start();
-        hero1_ss2Anim.start();
+        heroSS2.start();
+        hero_ss2Anim.start();
     }
 
     public void heroDeathSprite(){
-        btnAttack.setEnabled(false);
-        btnSS1.setEnabled(false);
-        btnSS2.setEnabled(false);
         hero1_deathSprite.setVisibility(View.VISIBLE);
 
-        hero1_deathAnim = (AnimationDrawable)hero1_deathSprite.getDrawable();
-        hero1Death = ObjectAnimator.ofFloat(hero1_deathSprite,"translationX",0f);
-        hero1Death.setDuration(1400);
+        hero_deathAnim = (AnimationDrawable)hero1_deathSprite.getDrawable();
+        heroDeath = ObjectAnimator.ofFloat(hero1_deathSprite,"translationX",0f);
+        heroDeath.setDuration(1400);
 
-        hero1Death.start();
-        hero1_deathAnim.start();
+        heroDeath.start();
+        hero_deathAnim.start();
     }
 
 
     //ENEMY SPRITES ---------------------------------------------------------------------------------------------------------------
     public void enemyWalkSprite(){
-        btnAttack.setEnabled(false);
-        btnSS1.setEnabled(false);
-        btnSS2.setEnabled(false);
         enemy1_walkSprite.setVisibility(View.VISIBLE);
         enemy1_idleSprite.setVisibility(View.INVISIBLE);
 
-        enemy1_walkAnim = (AnimationDrawable)enemy1_walkSprite.getDrawable();
-        enemy1Walk = ObjectAnimator.ofFloat(enemy1_walkSprite,"translationX",-900f);
-        enemy1Walk.setDuration(1200);
+        enemy_walkAnim = (AnimationDrawable)enemy1_walkSprite.getDrawable();
+        enemyWalk = ObjectAnimator.ofFloat(enemy1_walkSprite,"translationX",-900f);
+        enemyWalk.setDuration(1200);
 
-        enemy1Walk.start();
-        enemy1_walkAnim.start();
+        enemyWalk.start();
+        enemy_walkAnim.start();
 
-        enemy1Walk.addListener(new AnimatorListenerAdapter() {
+        enemyWalk.addListener(new AnimatorListenerAdapter() {
             public void onAnimationEnd(Animator animation) {
                 enemy1_walkSprite.setVisibility(View.INVISIBLE);
-                enemy1_walkAnim.stop();
+                enemy_walkAnim.stop();
                 enemy1_walkSprite.setX(1200f);
             }
         });
@@ -383,39 +371,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void enemyAtkSprite(){
         enemy1_atkSprite.setVisibility(View.VISIBLE);
 
-        enemy1_atkAnim = (AnimationDrawable) enemy1_atkSprite.getDrawable();
-        enemy1Atk = ObjectAnimator.ofFloat(enemy1_atkSprite,"translationX",-900f);
-        enemy1Atk.setDuration(400);
+        enemy_atkAnim = (AnimationDrawable) enemy1_atkSprite.getDrawable();
+        enemyAtk = ObjectAnimator.ofFloat(enemy1_atkSprite,"translationX",-900f);
+        enemyAtk.setDuration(400);
 
-        enemy1Atk.start();
-        enemy1_atkAnim.start();
+        enemyAtk.start();
+        enemy_atkAnim.start();
 
     }
 
     public void enemyDeathSprite(){
-        btnAttack.setEnabled(false);
-        btnSS1.setEnabled(false);
-        btnSS2.setEnabled(false);
         enemy1_deathSprite.setVisibility(View.VISIBLE);
 
-        enemy1_deathAnim = (AnimationDrawable)enemy1_deathSprite.getDrawable();
-        enemy1Death = ObjectAnimator.ofFloat(enemy1_deathSprite,"translationX",0f);
-        enemy1Death.setDuration(600);
+        enemy_deathAnim = (AnimationDrawable)enemy1_deathSprite.getDrawable();
+        enemyDeath = ObjectAnimator.ofFloat(enemy1_deathSprite,"translationX",0f);
+        enemyDeath.setDuration(600);
 
-        enemy1Death.start();
-        enemy1_deathAnim.start();
+        enemyDeath.start();
+        enemy_deathAnim.start();
 
     }
 
     public void enemyHitSprite(){
         enemy1_hitSprite.setVisibility(View.VISIBLE);
 
-        enemy1_hitAnim = (AnimationDrawable)enemy1_hitSprite.getDrawable();
-        enemy1Hit = ObjectAnimator.ofFloat(enemy1_hitSprite,"translationX",0f);
-        enemy1Hit.setDuration(600);
+        enemy_hitAnim = (AnimationDrawable)enemy1_hitSprite.getDrawable();
+        enemyHit = ObjectAnimator.ofFloat(enemy1_hitSprite,"translationX",0f);
+        enemyHit.setDuration(600);
 
-        enemy1Hit.start();
-        enemy1_hitAnim.start();
+        enemyHit.start();
+        enemy_hitAnim.start();
     }
 
 
@@ -445,44 +430,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     enemyHPBar();
                     txtBtn.setText("Attack");
                     txtLog.setText("Ready for Battle!");
-                    btnSS1.setEnabled(true);
-                    btnSS2.setEnabled(true);
+                    enableButtons();
                     counter++;
                 }
 
                 //hero's turn --------------------------------------------------------------------------------------------
                 else if(counter%2 == 1){
-                    btnSS1.setEnabled(false);
-                    btnSS2.setEnabled(false);
                     txtBtn.setText("Next Turn");
-                    hero1Run = ObjectAnimator.ofFloat(hero1_runSprite,"translationX",850f);
+                    heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX",850f);
+                    disableButtons();
                     heroRunSprite();
 
-                    hero1Run.addListener(new AnimatorListenerAdapter() {
+                    heroRun.addListener(new AnimatorListenerAdapter() {
                         public void onAnimationEnd(Animator animation) {
+
                             heroAtkSprite();
 
-                            hero1Atk.addListener(new AnimatorListenerAdapter() {
+                            heroAtk.addListener(new AnimatorListenerAdapter() {
                                 public void onAnimationEnd(Animator animation) {
                                     enemy1_idleSprite.setVisibility(View.INVISIBLE);
 
                                     enemyHitSprite();
 
-                                    enemy1Hit.addListener(new AnimatorListenerAdapter() {
+                                    enemyHit.addListener(new AnimatorListenerAdapter() {
 
                                          public void onAnimationEnd(Animator animation) {
-                                             btnAttack.setEnabled(true);
+                                             enableTurnOnly();
 
                                              txtLog.setText(hero.getName() + " dealt "+ hero1AtkN + " damage to the enemy.");
                                              curEnemyHP -= hero1AtkN;
                                              negativeHealthCheck();
                                              enemyHPBar();
 
-                                             hero1_atkAnim.stop();
+                                             hero_atkAnim.stop();
                                              hero1_atkSprite.setVisibility(View.INVISIBLE);
                                              hero1_idleSprite.setVisibility(View.VISIBLE);
 
-                                             enemy1_hitAnim.stop();
+                                             enemy_hitAnim.stop();
                                              enemy1_hitSprite.setVisibility(View.INVISIBLE);
                                              enemy1_idleSprite.setVisibility(View.VISIBLE);
 
@@ -492,11 +476,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                  enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
                                                  enemyDeathSprite();
                                                  enemy1_idleSprite.setVisibility(View.INVISIBLE);
-                                                 enemy1Death.addListener(new AnimatorListenerAdapter() {
+                                                 enemyDeath.addListener(new AnimatorListenerAdapter() {
                                                      public void onAnimationEnd(Animator animation){
-                                                         btnAttack.setEnabled(true);
-
-                                                         enemy1_deathAnim.stop();
+                                                         enableTurnOnly();
+                                                         enemy_deathAnim.stop();
                                                          enemy1_deathSprite.setImageResource(R.drawable.enemy1_death4);
                                                          txtLog.setText(hero.getName() + " dealt "+ hero1AtkN + " damage to the enemy.\nYou won!");
                                                          counter = 0;
@@ -515,40 +498,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //enemy's turn --------------------------------------------------------------------------------------------
                 else if(counter%2 !=1) {
-                    btnAttack.setEnabled(true);
-                    btnSS1.setEnabled(true);
-                    btnSS2.setEnabled(true);
                     txtBtn.setText("Attack");
+                    disableButtons();
                     enemyWalkSprite();
 
-                    enemy1Walk.addListener(new AnimatorListenerAdapter() {
+                    enemyWalk.addListener(new AnimatorListenerAdapter() {
                         public void onAnimationEnd(Animator animation) {
 
                             enemyAtkSprite();
 
-                            enemy1Atk.addListener(new AnimatorListenerAdapter() {
+                            enemyAtk.addListener(new AnimatorListenerAdapter() {
                                 public void onAnimationEnd(Animator animation) {
                                     hero1_idleSprite.setVisibility(View.INVISIBLE);
 
                                     heroHitSprite();
 
-                                    hero1Hit.addListener(new AnimatorListenerAdapter() {
+                                    heroHit.addListener(new AnimatorListenerAdapter() {
 
                                         public void onAnimationEnd(Animator animation) {
-                                            btnAttack.setEnabled(true);
-                                            btnSS1.setEnabled(true);
-                                            btnSS2.setEnabled(true);
+                                            enableButtons();
 
                                             txtLog.setText(enemy.getName() + " dealt " + enemy1AtkN + " damage to the hero.");
                                             curHeroHP -= enemy1AtkN;
                                             negativeHealthCheck();
                                             heroHPBar();
 
-                                            enemy1_atkAnim.stop();
+                                            enemy_atkAnim.stop();
                                             enemy1_atkSprite.setVisibility(View.INVISIBLE);
                                             enemy1_idleSprite.setVisibility(View.VISIBLE);
 
-                                            hero1_hitAnim.stop();
+                                            hero_hitAnim.stop();
                                             hero1_hitSprite.setVisibility(View.INVISIBLE);
                                             hero1_idleSprite.setVisibility(View.VISIBLE);
 
@@ -556,14 +535,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                             if(curHeroHP <= 0){
                                                 hero1_deathSprite.setImageResource(R.drawable.hero1_deathanim);
+                                                disableButtons();
                                                 heroDeathSprite();
                                                 hero1_idleSprite.setVisibility(View.INVISIBLE);
 
-                                                hero1Death.addListener(new AnimatorListenerAdapter() {
+                                                heroDeath.addListener(new AnimatorListenerAdapter() {
                                                     public void onAnimationEnd(Animator animation) {
-                                                        btnAttack.setEnabled(true);
-
-                                                        hero1_deathAnim.stop();
+                                                        enableTurnOnly();
+                                                        hero_deathAnim.stop();
                                                         hero1_deathSprite.setImageResource(R.drawable.hero1_death11);
                                                         txtLog.setText(enemy.getName() + " dealt " + enemy1AtkN + " damage to the hero.\nGame over!");
                                                         counter = 0;
@@ -592,47 +571,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     curHeroMP-=SS1C;
                     heroMPBar();
                     txtBtn.setText("Next Turn");
-                    hero1Run = ObjectAnimator.ofFloat(hero1_runSprite,"translationX",725f);
+                    heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX",725f);
                     heroRunSprite();
+                    disableButtons();
 
-                    hero1Run.addListener(new AnimatorListenerAdapter() {
+                    heroRun.addListener(new AnimatorListenerAdapter() {
                         public void onAnimationEnd(Animator animation) {
                             heroSS1Sprite();
 
-                            hero1SS1.addListener(new AnimatorListenerAdapter() {
+                            heroSS1.addListener(new AnimatorListenerAdapter() {
                                 public void onAnimationEnd(Animator animation) {
                                     enemy1_idleSprite.setVisibility(View.INVISIBLE);
 
                                     enemyHitSprite();
 
-                                    enemy1Hit.addListener(new AnimatorListenerAdapter() {
+                                    enemyHit.addListener(new AnimatorListenerAdapter() {
 
                                         public void onAnimationEnd(Animator animation) {
-                                            btnAttack.setEnabled(true);
+                                            enableTurnOnly();
 
                                             txtLog.setText(hero.getName() + " used Double Slash, and dealt " + (hero1AtkN * 2) + " damage to the enemy.");
                                             curEnemyHP -= (hero1AtkN * 2);
                                             enemyHPBar();
 
-                                            hero1_ss1Anim.stop();
+                                            hero_ss1Anim.stop();
                                             hero1_ss1Sprite.setVisibility(View.INVISIBLE);
                                             hero1_idleSprite.setVisibility(View.VISIBLE);
 
-                                            enemy1_hitAnim.stop();
+                                            enemy_hitAnim.stop();
                                             enemy1_hitSprite.setVisibility(View.INVISIBLE);
                                             enemy1_idleSprite.setVisibility(View.VISIBLE);
                                             counter++;
 
                                             if (curEnemyHP <= 0) {
                                                 enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
+                                                disableButtons();
                                                 enemyDeathSprite();
                                                 enemy1_idleSprite.setVisibility(View.INVISIBLE);
 
-                                                enemy1Death.addListener(new AnimatorListenerAdapter() {
+                                                enemyDeath.addListener(new AnimatorListenerAdapter() {
                                                     public void onAnimationEnd(Animator animation) {
-                                                        btnAttack.setEnabled(true);
-
-                                                        enemy1_deathAnim.stop();
+                                                        enableTurnOnly();
+                                                        enemy_deathAnim.stop();
                                                         enemy1_deathSprite.setImageResource(R.drawable.enemy1_death4);
                                                         txtLog.setText(hero.getName() + " used Double Slash, and dealt " + (hero1AtkN * 2) + " damage to the enemy. You won!");
                                                         counter = 0;
@@ -655,7 +635,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if ((curHeroMP-SS2C)<0){
                     txtLog.setText("Your MP is not enough for this skill.");
                 }
-                else{
+                else {
                     curHeroMP-=SS2C;
                     if ((curHeroHP+(fullHeroHP*0.50) > fullHeroHP)){
                         curHeroHP = fullHeroHP;
@@ -663,12 +643,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     else{
                         curHeroHP+=(fullHeroHP*0.50);
                     }
+
+                    disableButtons();
                     heroSS2Sprite();
-                    hero1SS2.addListener(new AnimatorListenerAdapter() {
+                    heroSS2.addListener(new AnimatorListenerAdapter() {
                         public void onAnimationEnd(Animator animation) {
-                            btnAttack.setEnabled(true);
+                            enableTurnOnly();
                             hero1_ss2Sprite.setVisibility(View.INVISIBLE);
-                            hero1_ss2Anim.stop();
+                            hero_ss2Anim.stop();
                             txtLog.setText(hero.getName() + " used Healing Shield, and regained 50% health");
                             txtBtn.setText("Next Turn");
                             heroHPBar();
@@ -681,4 +663,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+
+    // call this method to disable buttons -----------------------------------------------------------
+    public void disableButtons(){
+        btnTurn.setEnabled(false);
+        btnSS1.setEnabled(false);
+        btnSS2.setEnabled(false);
+    }
+
+    // call this method to enable buttons -----------------------------------------------------------
+    public void enableButtons(){
+        btnTurn.setEnabled(true);
+        btnSS1.setEnabled(true);
+        btnSS2.setEnabled(true);
+    }
+
+    // call this method to enable turn button only -----------------------------------------------------------
+    public void enableTurnOnly(){
+        btnTurn.setEnabled(true);
+        btnSS1.setEnabled(false);
+        btnSS2.setEnabled(false);
+    }
+
 }

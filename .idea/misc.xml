@@ -3,7 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/drawable/background.xml" value="1.5" />
+        <entry key="app/src/main/res/drawable/background.xml" value="0.375" />
         <entry key="app/src/main/res/drawable/clip_source1.xml" value="0.4351851851851852" />
         <entry key="app/src/main/res/drawable/enemy1_attackanim.xml" value="0.446875" />
         <entry key="app/src/main/res/drawable/enemy1_walkanim.xml" value="0.16944444444444445" />
@@ -20,8 +20,8 @@
         <entry key="app/src/main/res/drawable/pinkchara_idleanim.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/drawable/shape.xml" value="0.4351851851851852" />
         <entry key="app/src/main/res/drawable/skeletonidle_anim.xml" value="0.4427083333333333" />
-        <entry key="app/src/main/res/layout/activity_intro_screen.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_intro_screen.xml" value="0.16796267496111975" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2222222222222222" />
         <entry key="app/src/main/res/layout/intro.xml" value="0.28072916666666664" />
       </map>
     </option>
