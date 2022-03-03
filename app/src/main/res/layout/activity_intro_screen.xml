@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/darkforestbg" />
+        app:srcCompat="@drawable/bg_darkforest" />
 
     <ImageView
         android:id="@+id/questionBox"
@@ -92,7 +92,7 @@
         app:layout_constraintTop_toTopOf="@+id/userInput" />
 
     <ImageButton
-        android:id="@+id/btnAttk"
+        android:id="@+id/btnStart"
         android:layout_width="122dp"
         android:layout_height="60dp"
         android:layout_marginBottom="40dp"
@@ -114,11 +114,11 @@
         android:fontFamily="@font/nicobold_regular"
         android:text="Next"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnAttk"
-        app:layout_constraintEnd_toEndOf="@+id/btnAttk"
+        app:layout_constraintBottom_toBottomOf="@+id/btnStart"
+        app:layout_constraintEnd_toEndOf="@+id/btnStart"
         app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="@+id/btnAttk"
-        app:layout_constraintTop_toTopOf="@+id/btnAttk" />
+        app:layout_constraintStart_toStartOf="@+id/btnStart"
+        app:layout_constraintTop_toTopOf="@+id/btnStart" />
 
     <ImageView
         android:id="@+id/btnBack"

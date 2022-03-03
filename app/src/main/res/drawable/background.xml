@@ -4,7 +4,6 @@
         <bitmap
             android:src="@drawable/splashscreen"
             android:gravity="center"
-            android:duration="5000"
              />
     </item>
 </layer-list>

@@ -3,6 +3,8 @@ package mcm.edu.ph.nozomi.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,7 @@ public class IntroScreen extends AppCompatActivity {
     private ImageButton btnNext;
     private String userName, enemyName;
     private String TAG = "IntroScreen";
+    private MediaPlayer music;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +41,19 @@ public class IntroScreen extends AppCompatActivity {
         enemyQuestion = findViewById(R.id.enemyQuestion);
         btnBack = findViewById(R.id.btnBack);
         userInput = findViewById(R.id.userInput);
-        btnNext = findViewById(R.id.btnAttk);
+        btnNext = findViewById(R.id.btnStart);
 
+        playBGMusic();
         userInput();
 
+
+    }
+
+    public void playBGMusic(){
+        music = MediaPlayer.create(this, R.raw.music_intro);
+        music.setLooping(true); // Set looping
+        music.setVolume(100,100);
+        music.start();
     }
 
     public void userInput(){
@@ -49,7 +61,7 @@ public class IntroScreen extends AppCompatActivity {
             btnNext.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     HeroData hero = new HeroData();
-                    if (v.getId() == R.id.btnAttk){
+                    if (v.getId() == R.id.btnStart){
 
                         enemyQuestion.setVisibility(View.VISIBLE);
                         nameQuestion.setVisibility(View.INVISIBLE);
@@ -65,11 +77,14 @@ public class IntroScreen extends AppCompatActivity {
                             public void onClick(View v) {
                                 enemyName = userInput.getText().toString();
                                 Log.d(TAG, "The enemy's name is " + enemyName);
-                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                Intent i = new Intent(IntroScreen.this, BattleScreen.class);
                                 i.putExtra("enemy", enemyName);
                                 i.putExtra("user", userName);
                                 startActivity(i);
+                                finish();
                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                music.release();
+
                             }
                         });
                     }
@@ -89,4 +104,6 @@ public class IntroScreen extends AppCompatActivity {
         userInput.setText("");
         userInput();
     }
+
+
 }

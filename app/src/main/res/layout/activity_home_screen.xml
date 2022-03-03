@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".View.HomeScreen">
+
+    <ImageView
+        android:id="@+id/bg_lightHills"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.9"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_lighthills"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/appLogo"
+        android:layout_width="439dp"
+        android:layout_height="122dp"
+        android:alpha="0.9"
+        app:layout_constraintBottom_toTopOf="@+id/btnStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bg_lightHills"
+        app:srcCompat="@drawable/applogo" />
+
+    <TextView
+        android:id="@+id/appSlogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/nicobold_regular"
+        android:text="A game for your worries"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/appLogo"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/appLogo"
+        app:layout_constraintTop_toBottomOf="@+id/appLogo"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/btnStart"
+        android:layout_width="126dp"
+        android:layout_height="47dp"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnInfo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appLogo"
+        app:srcCompat="@drawable/btn_unpressed"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/txtStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nicobold_regular"
+        android:autoSizeMaxTextSize="15sp"
+        android:autoSizeTextType="uniform"
+        android:text="Start Game"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnStart"
+        app:layout_constraintEnd_toEndOf="@+id/btnStart"
+        app:layout_constraintStart_toStartOf="@+id/btnStart"
+        app:layout_constraintTop_toTopOf="@+id/btnStart"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/btnInfo"
+        android:layout_width="126dp"
+        android:layout_height="47dp"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/btnSettings"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnStart"
+        app:layout_constraintTop_toTopOf="@+id/btnStart"
+        app:srcCompat="@drawable/btn_unpressed"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/txtInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nicobold_regular"
+        android:autoSizeTextType="uniform"
+        android:text="Game Info"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnInfo"
+        app:layout_constraintEnd_toEndOf="@+id/btnInfo"
+        app:layout_constraintStart_toStartOf="@+id/btnInfo"
+        app:layout_constraintTop_toTopOf="@+id/btnInfo"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:layout_width="126dp"
+        android:layout_height="47dp"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/btnCredits"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnInfo"
+        app:layout_constraintTop_toTopOf="@+id/btnInfo"
+        app:srcCompat="@drawable/btn_unpressed"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/txtSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nicobold_regular"
+        android:autoSizeTextType="uniform"
+        android:text="Settings"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSettings"
+        app:layout_constraintEnd_toEndOf="@+id/btnSettings"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="@+id/btnSettings"
+        app:layout_constraintTop_toTopOf="@+id/btnSettings"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/btnCredits"
+        android:layout_width="126dp"
+        android:layout_height="47dp"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnSettings"
+        app:layout_constraintTop_toTopOf="@+id/btnSettings"
+        app:srcCompat="@drawable/btn_unpressed"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/txtCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nicobold_regular"
+        android:autoSizeTextType="uniform"
+        android:text="Credits"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCredits"
+        app:layout_constraintEnd_toEndOf="@+id/btnCredits"
+        app:layout_constraintStart_toStartOf="@+id/btnCredits"
+        app:layout_constraintTop_toTopOf="@+id/btnCredits"
+        tools:ignore="HardcodedText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

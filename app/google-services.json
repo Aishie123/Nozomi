@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "385818377344",
+    "project_id": "nozomi-758ba",
+    "storage_bucket": "nozomi-758ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385818377344:android:5bc84b7b9aaa148fec3a65",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385818377344-f5ju78mlnr1st81q4cl0cdvsslecsdng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGyxL4E-zfzMO08Rn3B4zVSHzrxiMMI5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385818377344-f5ju78mlnr1st81q4cl0cdvsslecsdng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
