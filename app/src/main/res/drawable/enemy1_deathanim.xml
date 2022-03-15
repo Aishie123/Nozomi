@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/enemy1_death1" android:duration="200"/>
-    <item android:drawable="@drawable/enemy1_death2" android:duration="200"/>
-    <item android:drawable="@drawable/enemy1_death3" android:duration="200"/>
-    <item android:drawable="@drawable/enemy1_death4" android:duration="200"/>
-</animation-list>
