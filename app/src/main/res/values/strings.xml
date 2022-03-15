@@ -1,0 +1,151 @@
+<resources>
+    <string name="app_name">Nozomi</string>
+
+    <string name="heroAtk1">
+        "I will write my own luck and have all the happiness in it."
+    </string>
+    <string name="heroAtk2">
+        "I AM doing my best."
+    </string>
+    <string name="heroAtk3">
+        "Happiness is a choice. There is always a reason to smile."
+    </string>
+    <string name="heroAtk4">
+        "It's okay to make mistakes. Mistakes are how I grow."
+    </string>
+    <string name="heroAtk5">
+        "I believe in myself."
+    </string>
+    <string name="heroAtk6">
+        "Bad emotions will pass. I am going to get through this."
+    </string>
+    <string name="heroAtk7">
+        "It's okay to not know everything."
+    </string>
+    <string name="heroAtk8">
+        "I AM enough."
+    </string>
+    <string name="heroAtk9">
+        "I will focus on what I can control."
+    </string>
+    <string name="heroAtk10">
+        "I am healing and strengthening every day."
+    </string>
+
+    <string-array name="heroAtk">
+        <item>@string/heroAtk1</item>
+        <item>@string/heroAtk2</item>
+        <item>@string/heroAtk3</item>
+        <item>@string/heroAtk4</item>
+        <item>@string/heroAtk5</item>
+        <item>@string/heroAtk6</item>
+        <item>@string/heroAtk7</item>
+        <item>@string/heroAtk8</item>
+        <item>@string/heroAtk9</item>
+        <item>@string/heroAtk10</item>
+    </string-array>
+
+    <string name="enemyAtk1">
+        "You really have bad luck."
+    </string>
+    <string name="enemyAtk2">
+        "You will fail."
+    </string>
+    <string name="enemyAtk3">
+        "There's nothing you can be happy about."
+    </string>
+    <string name="enemyAtk4">
+        "You keep making mistakes."
+    </string>
+    <string name="enemyAtk5">
+        "Your head\'s too high up in the clouds."
+    </string>
+    <string name="enemyAtk6">
+        "You'll just stay feeling bad."
+    </string>
+    <string name="enemyAtk7">
+        "There's still a lot of things you don't know."
+    </string>
+    <string name="enemyAtk8">
+        "You're still not enough."
+    </string>
+    <string name="enemyAtk9">
+        "You can't do anything about your problems."
+    </string>
+    <string name="enemyAtk10">
+        "Your past scars still affect you."
+    </string>
+
+    <string-array name="enemyAtk">
+        <item>@string/enemyAtk1</item>
+        <item>@string/enemyAtk2</item>
+        <item>@string/enemyAtk3</item>
+        <item>@string/enemyAtk4</item>
+        <item>@string/enemyAtk5</item>
+        <item>@string/enemyAtk6</item>
+        <item>@string/enemyAtk7</item>
+        <item>@string/enemyAtk8</item>
+        <item>@string/enemyAtk9</item>
+        <item>@string/enemyAtk10</item>
+    </string-array>
+
+
+    <string name="heroSS1">
+        I am in the right place at the right time, doing the right thing.
+        \n - LOUIS HAY
+    </string>
+    <string name="heroSS2">
+        You are loved just for being who you are, just for existing.
+        \n - RAM DASS
+    </string>
+    <string name="heroSS3">
+        The chance to love and be loved exists no matter where you are.
+        \n - OPRAH
+    </string>
+    <string name="heroSS4">
+        Who you are inside is what helps you make and do everything in life.
+        \n - FRED ROGERS
+    </string>
+    <string name="heroSS5">
+        Your perspective is unique. It’s important and it counts.
+        \n - GLENN CLOSE
+    </string>
+    <string name="heroSS6">
+        Nothing can dim the light that shines from within.
+        \n - MAYA ANGELOU
+    </string>
+    <string name="heroSS7">
+        The secret of attraction is to love yourself.
+        \n - DEEPAK CHOPRA
+    </string>
+    <string name="heroSS8">
+        I say looking on the bright side of life never killed anybody.
+        \n - JENNY HAN
+    </string>
+    <string name="heroSS9">
+        We must accept finite disappointment, but never lose infinite hope.
+        \n - MARTIN LUTHER KING JR.
+    </string>
+    <string name="heroSS10">
+        We must accept finite disappointment, but never lose infinite hope.
+        \n - MARTIN LUTHER KING JR.
+    </string>
+
+    <string-array name="heroSS">
+        <item>@string/heroSS1</item>
+        <item>@string/heroSS2</item>
+        <item>@string/heroSS3</item>
+        <item>@string/heroSS4</item>
+        <item>@string/heroSS5</item>
+        <item>@string/heroSS6</item>
+        <item>@string/heroSS7</item>
+        <item>@string/heroSS8</item>
+        <item>@string/heroSS9</item>
+        <item>@string/heroSS10</item>
+    </string-array>
+    <string name="title_activity_home_screen">HomeScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+
+</resources>
