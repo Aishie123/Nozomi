@@ -1,9 +1,6 @@
 package mcm.edu.ph.dones_turnbasedgame.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import android.annotation.SuppressLint;
 import android.content.ServiceConnection;
@@ -21,16 +18,12 @@ import android.widget.ImageButton;
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
+@SuppressWarnings({"FieldCanBeLocal", "ConstantConditions"})
 public class HomeScreen extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
-    Intent svc;
-    ImageButton btnStart, btnInfo, btnSettings, btnCredits;
-    Intent goToGame, goToInfo, goToSettings, goToCredits;
-    MusicPlayerService musicPlayerService;
-
-    int track = 1;
-
-    String TAG = "Home";
+    private ImageButton btnStart, btnInfo, btnSettings, btnCredits;
+    private Intent goToGame, goToInfo, goToSettings, goToCredits;
+    private MusicPlayerService musicPlayerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

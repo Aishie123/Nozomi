@@ -27,15 +27,14 @@ import android.widget.SeekBar;
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class SettingsScreen extends AppCompatActivity implements ServiceConnection  {
-    AudioManager audioManager;
-    ImageView btnBack;
-    SeekBar musicVolBar, brightBar;
-    Intent goToHome;
-    Context context;
-    MusicPlayerService musicPlayerService;
-
-    int brightness;
+    private AudioManager audioManager;
+    private ImageView btnBack;
+    private SeekBar musicVolBar, brightBar;
+    private Intent goToHome;
+    private MusicPlayerService musicPlayerService;
+    private int brightness;
 
     //Content resolver used as a handle to the system's settings
     private ContentResolver cResolver;
@@ -45,7 +44,6 @@ public class SettingsScreen extends AppCompatActivity implements ServiceConnecti
     private static final String SCREEN_BRIGHTNESS_MODE = "screen_brightness_mode";
     private static final int SCREEN_BRIGHTNESS_MODE_MANUAL = 0;
     private static final int SCREEN_BRIGHTNESS_MODE_AUTOMATIC = 1;
-
 
 
     @Override
@@ -65,8 +63,6 @@ public class SettingsScreen extends AppCompatActivity implements ServiceConnecti
         //Binding to music service to allow music to unpause. Refer to onServiceConnected method
         Intent musicIntent = new Intent(this, MusicPlayerService.class);
         bindService(musicIntent, this, BIND_AUTO_CREATE);
-
-        context = getApplicationContext();
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setVolume();

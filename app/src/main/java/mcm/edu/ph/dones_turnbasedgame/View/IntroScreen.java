@@ -23,6 +23,7 @@ import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
+@SuppressWarnings("ConstantConditions")
 public class IntroScreen extends AppCompatActivity implements ServiceConnection{
 
     private TextView nameQuestion, enemyQuestion;
@@ -30,8 +31,8 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
     private ImageView btnBack;
     private ImageButton btnNext;
     private String userName, enemyName;
-    private String TAG = "IntroScreen";
-    MusicPlayerService musicPlayerService;
+    private final String TAG = "IntroScreen";
+    private MusicPlayerService musicPlayerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
