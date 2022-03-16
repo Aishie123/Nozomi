@@ -435,7 +435,7 @@
         android:id="@+id/btnHome"
         android:layout_width="47dp"
         android:layout_height="50dp"
-        android:onClick="settings"
+        android:onClick="home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.977"

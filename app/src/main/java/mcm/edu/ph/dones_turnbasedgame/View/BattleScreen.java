@@ -62,7 +62,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
             enemy_idleAnim, enemy_walkAnim, enemy_atkAnim, enemy_hitAnim, enemy_deathAnim;
     ObjectAnimator heroRun, heroAtk, heroSS1, heroSS2, heroHit, heroDeath,
             enemyWalk, enemyAtk, enemyHit, enemyDeath;
-    Typeface bold, clean;
 
     HeroData hero = new HeroData();
     MonsterData enemy = new MonsterData();
@@ -171,10 +170,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         hero1_idleSprite.setVisibility(View.VISIBLE);
 
         quoteCounter = quote.quoteCounter();
-
-        clean = getResources().getFont(R.font.nicoclean_regular);
-        bold = getResources().getFont(R.font.nicobold_regular);
-        txtLog.setTypeface(clean);
 
         Intent musicIntent = new Intent(this, MusicPlayerService.class);
         bindService(musicIntent, (ServiceConnection) this, BIND_AUTO_CREATE);
@@ -756,7 +751,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             finish();
-                                            goToHome = new Intent(BattleScreen.this, HomeScreen.class);
+                                            goToHome = new Intent(BattleScreen.this, SplashScreen.class);
                                             startActivity(goToHome);
                                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                         }
@@ -771,7 +766,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 });
-
+                break;
         }
     }
 

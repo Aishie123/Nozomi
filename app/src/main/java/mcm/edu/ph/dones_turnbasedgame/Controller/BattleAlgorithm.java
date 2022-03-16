@@ -4,13 +4,12 @@ import java.util.Random;
 
 public class BattleAlgorithm {
 
-
-        Random randomizer = new Random();
+        private final Random random = new Random();
 
         public BattleAlgorithm() {}
 
         public int attack(int atkMin,int atkMax){
-            return randomizer.nextInt(atkMax - atkMin) + atkMin;
+            return random.nextInt(atkMax - atkMin) + atkMin;
         }
 
 }

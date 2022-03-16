@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
 public class MusicPlayerService extends Service {
-    MediaPlayer player;
+    private MediaPlayer player;
     private IBinder mBinder = new MyBinder();
     private Boolean mIsPaused;
     public int currentTrack;

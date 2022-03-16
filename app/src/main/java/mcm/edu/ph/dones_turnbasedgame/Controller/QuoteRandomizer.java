@@ -8,7 +8,6 @@ public class QuoteRandomizer {
 
     private final Random random = new Random();
     private final Context context;
-    String qHeroAtk, qEnemyAtk, qHeroSS;
 
 
     public QuoteRandomizer(Context current){
@@ -22,24 +21,22 @@ public class QuoteRandomizer {
     public String quoteHeroAtk(int quoteCounter){
 
         String[] quoteArray_heroAtk = context.getResources().getStringArray(R.array.heroAtk);
-        qHeroAtk = quoteArray_heroAtk[quoteCounter];
 
-        return qHeroAtk;
+        return quoteArray_heroAtk[quoteCounter];
     }
 
     public String quoteEnemyAtk(int quoteCounter){
 
         String[] quoteArray_enemyAtk = context.getResources().getStringArray(R.array.enemyAtk);
-        qEnemyAtk = quoteArray_enemyAtk[quoteCounter];
 
-        return qEnemyAtk;
+        return quoteArray_enemyAtk[quoteCounter];
     }
 
     public String quoteHeroSS(){
 
         int quoteCounter = random.nextInt(10);
-        String[] quoteArray_enemyAtk = context.getResources().getStringArray(R.array.heroSS);
-        qHeroSS = quoteArray_enemyAtk[quoteCounter];
+        String[] quoteArray_heroSS = context.getResources().getStringArray(R.array.heroSS);
+        String qHeroSS = quoteArray_heroSS[quoteCounter];
 
         return qHeroSS;
     }
