@@ -1,9 +1,6 @@
 package mcm.edu.ph.dones_turnbasedgame.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import android.annotation.SuppressLint;
 import android.content.ServiceConnection;
@@ -16,21 +13,19 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
+@SuppressWarnings({"FieldCanBeLocal", "ConstantConditions"})
 public class HomeScreen extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
-    Intent svc;
-    ImageButton btnStart, btnInfo, btnSettings, btnCredits;
-    Intent goToGame, goToInfo, goToSettings, goToCredits;
-    MusicPlayerService musicPlayerService;
-
-    int track = 1;
-
-    String TAG = "Home";
+    private TextView txtInfo;
+    private ImageButton btnStart, btnInfo, btnSettings, btnCredits;
+    private Intent goToGame, goToInfo, goToSettings, goToCredits;
+    private MusicPlayerService musicPlayerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +39,11 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         btnInfo = findViewById(R.id.btnInfo);
         btnSettings = findViewById(R.id.btnSettings);
         btnCredits = findViewById(R.id.btnCredits);
+        txtInfo = findViewById(R.id.txtInfo);
 
-        btnInfo.setEnabled(false); // not yet done
-        btnCredits.setEnabled(false); // not yet done
+        // not yet available
+        btnInfo.setVisibility(View.GONE);
+        txtInfo.setVisibility(View.GONE);
 
         btnStart.setOnClickListener(this);
         btnInfo.setOnClickListener(this);
@@ -89,10 +86,9 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
 
-            // temporary
             case R.id.btnCredits:
 
-                goToCredits = new Intent(HomeScreen.this, IntroScreen.class);
+                goToCredits = new Intent(HomeScreen.this, CreditsScreen.class);
                 startActivity(goToCredits);
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

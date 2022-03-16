@@ -3,20 +3,15 @@ package mcm.edu.ph.dones_turnbasedgame.View;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -39,39 +34,38 @@ import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
 import mcm.edu.ph.dones_turnbasedgame.Model.MonsterData;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
+@SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
 public class BattleScreen extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
-    ImageView enemy1_idleSprite, enemy1_hitSprite, enemy1_deathSprite, enemy1_walkSprite, enemy1_atkSprite,
-            hero1_idleSprite, hero1_runSprite, hero1_atkSprite, hero1_ss1Sprite, hero1_ss2Sprite, hero1_hitSprite, hero1_deathSprite,
-            enemyHPBar_base, btnHome;
-    ImageButton btnSS1, btnSS2, btnTurn, btnReset;
-    TextView txtLog, txtQuote, txtBtn, txtReset, txtEnemy, txtUser, txtHeroHP, txtHeroMP, txtEnemyHP;
-    View heroHPBar, heroMPBar, enemyHPBar;
-    double heroHPB, heroMPB, enemyHPB; //for HP bar
-    int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n;
-    String TAG = "BattleScreen";
-    Intent goToHome;
-    Context context;
+    private ImageView enemy1_idleSprite, enemy1_hitSprite, enemy1_deathSprite, enemy1_walkSprite, enemy1_atkSprite,
+            hero1_idleSprite, hero1_runSprite, hero1_atkSprite, hero1_ss1Sprite, hero1_ss2Sprite, hero1_hitSprite, hero1_deathSprite, btnHome;
+    private ImageButton btnSS1, btnSS2, btnTurn;
+    private TextView txtLog, txtQuote, txtBtn, txtEnemy, txtUser, txtHeroHP, txtHeroMP, txtEnemyHP;
+    private View heroHPBar, heroMPBar, enemyHPBar;
+    private double heroHPB, heroMPB, enemyHPB; //for HP bar
+    private int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n;
+    private final String TAG = "BattleScreen";
+    private Intent goToHome;
 
-    MusicPlayerService musicPlayerService;
-    MediaPlayer heroSS1SFX, heroSS2SFX;
-    MediaPlayer [] heroAtkSFX = new MediaPlayer[3];
-    MediaPlayer [] enemyAtkSFX = new MediaPlayer[3];
+    private MusicPlayerService musicPlayerService;
+    private MediaPlayer heroSS1SFX, heroSS2SFX;
+    private MediaPlayer [] heroAtkSFX = new MediaPlayer[3];
+    private MediaPlayer [] enemyAtkSFX = new MediaPlayer[3];
 
-    AnimationDrawable hero_idleAnim, hero_runAnim, hero_atkAnim, hero_ss1Anim, hero_ss2Anim, hero_hitAnim, hero_deathAnim,
+    private AnimationDrawable hero_idleAnim, hero_runAnim, hero_atkAnim, hero_ss1Anim, hero_ss2Anim, hero_hitAnim, hero_deathAnim,
             enemy_idleAnim, enemy_walkAnim, enemy_atkAnim, enemy_hitAnim, enemy_deathAnim;
-    ObjectAnimator heroRun, heroAtk, heroSS1, heroSS2, heroHit, heroDeath,
+    private ObjectAnimator heroRun, heroAtk, heroSS1, heroSS2, heroHit, heroDeath,
             enemyWalk, enemyAtk, enemyHit, enemyDeath;
 
-    HeroData hero = new HeroData();
-    MonsterData enemy = new MonsterData();
-    BattleAlgorithm battle = new BattleAlgorithm();
-    QuoteRandomizer quote = new QuoteRandomizer(this);
-    SfxRandomizer sfx = new SfxRandomizer();
+    private HeroData hero = new HeroData();
+    private MonsterData enemy = new MonsterData();
+    private BattleAlgorithm battle = new BattleAlgorithm();
+    private QuoteRandomizer quote = new QuoteRandomizer(this);
+    private SfxRandomizer sfx = new SfxRandomizer();
 
-    int counter = 0;
-    int SS1C = 8;
-    int SS2C = 10;
+    private int counter = 0;
+    private int SS1C = 8;
+    private int SS2C = 10;
 
 
     @Override
@@ -84,12 +78,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_battle_screen);
 
         btnHome = findViewById(R.id.btnHome);
-        btnReset = findViewById(R.id.btnReset);
         btnTurn = findViewById(R.id.btnStart);
         btnSS1 = findViewById(R.id.btnSS1);
         btnSS2 = findViewById(R.id.btnSS2);
 
-        txtReset = findViewById(R.id.txtReset);
         txtBtn = findViewById(R.id.txtStart);
         txtEnemy = findViewById(R.id.txtEnemy);
         txtUser = findViewById(R.id.txtUser);
@@ -102,7 +94,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         heroHPBar = findViewById(R.id.heroHPBar);
         heroMPBar = findViewById(R.id.heroMPBar);
         enemyHPBar = findViewById(R.id.enemyHPBar);
-        enemyHPBar_base = findViewById(R.id.enemyHPBar_base);
 
         enemy1_idleSprite = findViewById(R.id.enemy1_idleSprite);
         enemy1_walkSprite = findViewById(R.id.enemy1_walkSprite);
@@ -117,6 +108,19 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         hero1_ss2Sprite = findViewById(R.id.hero1_ss2Sprite);
         hero1_hitSprite = findViewById(R.id.hero1_hitSprite);
         hero1_deathSprite = findViewById(R.id.hero1_deathSprite);
+
+        enemy1_idleSprite.setImageResource(R.drawable.enemy1_idleanim);
+        enemy1_walkSprite.setImageResource(R.drawable.enemy1_walkanim);
+        enemy1_atkSprite.setImageResource(R.drawable.enemy1_attackanim);
+        enemy1_hitSprite.setImageResource(R.drawable.enemy1_hitanim);
+        enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
+        hero1_idleSprite.setImageResource(R.drawable.hero1_idleanim);
+        hero1_runSprite.setImageResource(R.drawable.hero1_runanim);
+        hero1_atkSprite.setImageResource(R.drawable.hero1_attackanim);
+        hero1_ss1Sprite.setImageResource(R.drawable.hero1_ss1anim);
+        hero1_ss2Sprite.setImageResource(R.drawable.hero1_ss2anim);
+        hero1_hitSprite.setImageResource(R.drawable.hero1_hitanim);
+        hero1_deathSprite.setImageResource(R.drawable.hero1_deathanim);
 
         Intent intent = getIntent();
         String enemyName = intent.getExtras().getString("enemy");
@@ -137,19 +141,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         txtHeroHP.setText(String.valueOf(curHeroHP));
         txtHeroMP.setText(String.valueOf(curHeroMP));
         txtEnemyHP.setText(String.valueOf(curEnemyHP));
-
-        enemy1_idleSprite.setImageResource(R.drawable.enemy1_idleanim);
-        enemy1_walkSprite.setImageResource(R.drawable.enemy1_walkanim);
-        enemy1_atkSprite.setImageResource(R.drawable.enemy1_attackanim);
-        enemy1_hitSprite.setImageResource(R.drawable.enemy1_hitanim);
-        enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
-        hero1_idleSprite.setImageResource(R.drawable.hero1_idleanim);
-        hero1_runSprite.setImageResource(R.drawable.hero1_runanim);
-        hero1_atkSprite.setImageResource(R.drawable.hero1_attackanim);
-        hero1_ss1Sprite.setImageResource(R.drawable.hero1_ss1anim);
-        hero1_ss2Sprite.setImageResource(R.drawable.hero1_ss2anim);
-        hero1_hitSprite.setImageResource(R.drawable.hero1_hitanim);
-        hero1_deathSprite.setImageResource(R.drawable.hero1_deathanim);
 
         btnHome.setOnClickListener(this);
         btnTurn.setOnClickListener(this);

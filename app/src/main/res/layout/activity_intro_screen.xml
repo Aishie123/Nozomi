@@ -120,7 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:onClick="back"
+        android:onClick="goToHome"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/questionBox"
         app:layout_constraintEnd_toEndOf="@+id/questionBox"

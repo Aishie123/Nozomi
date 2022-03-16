@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.CreditsScreen">
+
+    <ImageView
+        android:id="@+id/bgCredits"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.9"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_lighthills"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/imgCreditsBox"
+        android:layout_width="600dp"
+        android:layout_height="329dp"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.516"
+        app:srcCompat="@drawable/bigtxtbox" />
+
+    <ImageView
+        android:id="@+id/btnCreditsBack"
+        android:layout_width="37dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="28dp"
+        android:onClick="goToHome"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/imgCreditsBox"
+        app:layout_constraintTop_toTopOf="@+id/imgCreditsBox"
+        app:srcCompat="@drawable/btn_back"
+        tools:ignore="OnClick" />
+
+    <TextView
+        android:id="@+id/txtCreditsList"
+        android:layout_width="442dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="108dp"
+        android:fontFamily="@font/nicoclean_regular"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:text="@string/credits_list"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgCreditsBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bgCredits"
+        app:layout_constraintVertical_bias="0.062" />
+
+    <TextView
+        android:id="@+id/txtTitleSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/nicobold_regular"
+        android:text="Credits"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgCreditsBox"
+        app:layout_constraintEnd_toEndOf="@+id/imgCreditsBox"
+        app:layout_constraintStart_toStartOf="@+id/imgCreditsBox"
+        app:layout_constraintTop_toTopOf="@+id/imgCreditsBox"
+        app:layout_constraintVertical_bias="0.151"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <TextView
+        android:id="@+id/txtTitleSettings2"
+        android:layout_width="117dp"
+        android:layout_height="48dp"
+        android:adjustViewBounds="true"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/nicobold_regular"
+        android:text="@string/social_accs"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgCreditsBox"
+        app:layout_constraintEnd_toEndOf="@+id/imgCreditsBox"
+        app:layout_constraintHorizontal_bias="0.168"
+        app:layout_constraintStart_toStartOf="@+id/imgCreditsBox"
+        app:layout_constraintTop_toTopOf="@+id/imgCreditsBox"
+        app:layout_constraintVertical_bias="0.86"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <ImageButton
+        android:id="@+id/btnBackHome"
+        android:layout_width="196dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="10dp"
+        android:adjustViewBounds="true"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/imgCreditsBox"
+        app:layout_constraintEnd_toEndOf="@+id/imgCreditsBox"
+        app:layout_constraintStart_toStartOf="@+id/imgCreditsBox"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitleSettings"
+        app:srcCompat="@drawable/btn_unpressed"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/txtBackHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:autoSizeMaxTextSize="20sp"
+        android:autoSizeMinTextSize="16sp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/nicobold_regular"
+        android:text="Back to Home"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBackHome"
+        app:layout_constraintEnd_toEndOf="@+id/btnBackHome"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="@+id/btnBackHome"
+        app:layout_constraintTop_toTopOf="@+id/btnBackHome" />
+
+    <ImageView
+        android:id="@+id/btn_fb"
+        android:layout_width="56dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:onClick="openFacebook"
+        app:layout_constraintStart_toEndOf="@+id/txtTitleSettings2"
+        app:layout_constraintTop_toTopOf="@+id/txtTitleSettings2"
+        app:srcCompat="@drawable/btn_fb" />
+
+    <ImageView
+        android:id="@+id/btn_ig"
+        android:layout_width="56dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:onClick="openInstagram"
+        app:layout_constraintStart_toEndOf="@+id/btn_fb"
+        app:layout_constraintTop_toTopOf="@+id/btn_fb"
+        app:srcCompat="@drawable/btn_ig" />
+
+    <ImageView
+        android:id="@+id/btn_git"
+        android:layout_width="56dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:onClick="openGithub"
+        app:layout_constraintStart_toEndOf="@+id/btn_ig"
+        app:layout_constraintTop_toTopOf="@+id/btn_ig"
+        app:srcCompat="@drawable/btn_github" />
+
+    <ImageView
+        android:id="@+id/btn_be"
+        android:layout_width="56dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:onClick="openBehance"
+        app:layout_constraintStart_toEndOf="@+id/btn_git"
+        app:layout_constraintTop_toTopOf="@+id/btn_git"
+        app:srcCompat="@drawable/btn_behance" />
+
+    <ImageView
+        android:id="@+id/btn_link"
+        android:layout_width="56dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:onClick="openLinkedIn"
+        app:layout_constraintStart_toEndOf="@+id/btn_be"
+        app:layout_constraintTop_toTopOf="@+id/btn_be"
+        app:srcCompat="@drawable/btn_linkedin" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

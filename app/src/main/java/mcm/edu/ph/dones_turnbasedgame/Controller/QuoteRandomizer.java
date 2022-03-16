@@ -15,7 +15,7 @@ public class QuoteRandomizer {
     }
 
     public int quoteCounter(){
-        return random.nextInt(10);
+        return random.nextInt(20);
     }
 
     public String quoteHeroAtk(int quoteCounter){

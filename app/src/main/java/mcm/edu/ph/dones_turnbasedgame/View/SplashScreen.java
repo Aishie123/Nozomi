@@ -10,16 +10,15 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import mcm.edu.ph.dones_turnbasedgame.R;
 
+@SuppressWarnings("FieldCanBeLocal")
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends AppCompatActivity {
-    ProgressBar splashProgress;
-    int SPLASH_TIME = 3000; //This is 3 seconds
+
+    private ProgressBar splashProgress;
+    private final int SPLASH_TIME = 3000; //This is 3 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
