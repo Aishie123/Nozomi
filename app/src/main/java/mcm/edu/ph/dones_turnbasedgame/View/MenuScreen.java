@@ -3,12 +3,15 @@ package mcm.edu.ph.dones_turnbasedgame.View;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -48,6 +51,8 @@ public class MenuScreen extends AppCompatActivity implements ServiceConnection{
         if (noRestart){
             btnRestart.setAlpha(0.5f);
         }
+
+        press();
 
     }
 
@@ -127,6 +132,56 @@ public class MenuScreen extends AppCompatActivity implements ServiceConnection{
                 }
             }
         });
+    }
+
+    //changing button shades when pressed -----------------------------------------------------------------------------------------
+    @SuppressLint("ClickableViewAccessibility")
+    public void press() {
+
+        btnContinue.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btnContinue.setImageResource(R.drawable.btn_pressed);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    btnContinue.setImageResource(R.drawable.btn_unpressed);
+                }
+                return false;
+            }
+        });
+
+        btnSettings.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btnSettings.setImageResource(R.drawable.btn_pressed);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    btnSettings.setImageResource(R.drawable.btn_unpressed);
+                }
+                return false;
+            }
+        });
+
+        btnRestart.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btnRestart.setImageResource(R.drawable.btn_pressed);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    btnRestart.setImageResource(R.drawable.btn_unpressed);
+                }
+                return false;
+            }
+        });
+
+        btnExit.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btnExit.setImageResource(R.drawable.btn_pressed);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    btnExit.setImageResource(R.drawable.btn_unpressed);
+                }
+                return false;
+            }
+        });
+
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------------------------

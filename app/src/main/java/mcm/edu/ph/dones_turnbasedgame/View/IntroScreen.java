@@ -2,12 +2,14 @@ package mcm.edu.ph.dones_turnbasedgame.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -52,8 +54,7 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
         btnMenu = findViewById(R.id.btnIntroMenu);
 
         userInput();
-
-
+        press();
     }
 
     // onClick -----------------------------------------------------------------------------------------
@@ -111,6 +112,22 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
         Intent goToMenu = new Intent(IntroScreen.this, MenuScreen.class);
         goToMenu.putExtra("no restart", noRestart);
         startActivity(goToMenu);
+    }
+
+    //changing button shades when pressed -----------------------------------------------------------------------------------------
+    @SuppressLint("ClickableViewAccessibility")
+    public void press() {
+
+        btnNext.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btnNext.setImageResource(R.drawable.btn_pressed);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    btnNext.setImageResource(R.drawable.btn_unpressed);
+                }
+                return false;
+            }
+        });
     }
 
     // ----------------------------------------------------------------------------------------------------------
