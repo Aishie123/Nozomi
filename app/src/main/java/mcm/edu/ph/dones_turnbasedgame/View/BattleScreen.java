@@ -144,8 +144,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         btnSS1.setOnClickListener(this);
         btnSS2.setOnClickListener(this);
 
-        hero1_idleSprite.setX(0f);
-        hero1_runSprite.setX(0f);
         hero1_atkSprite.setX(850f);
         hero1_ss1Sprite.setX(725f);
         enemy1_idleSprite.setX(0f);
@@ -381,7 +379,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         hero_deathAnim = (AnimationDrawable)hero1_deathSprite.getDrawable();
         heroDeath = ObjectAnimator.ofFloat(hero1_deathSprite,"translationX",0f);
-        heroDeath.setDuration(1400);
+        heroDeath.setDuration(1100);
 
         heroDeath.start(); // moves the position of the sprite
         hero_deathAnim.start();
@@ -396,7 +394,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         enemy_walkAnim = (AnimationDrawable)enemy1_walkSprite.getDrawable();
         enemyWalk = ObjectAnimator.ofFloat(enemy1_walkSprite,"translationX",-900f);
-        enemyWalk.setDuration(1200);
+        enemyWalk.setDuration(1600);
 
         enemyWalk.start(); // moves the position of the sprite
         enemy_walkAnim.start();
@@ -405,7 +403,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
             public void onAnimationEnd(Animator animation) {
                 enemy1_walkSprite.setVisibility(View.INVISIBLE);
                 enemy_walkAnim.stop();
-                enemy1_walkSprite.setX(1200f); // moves the sprite back to original position when done and invisible
+                enemy1_walkSprite.setX(900f); // moves the sprite back to original position when done and invisible
             }
         });
 
