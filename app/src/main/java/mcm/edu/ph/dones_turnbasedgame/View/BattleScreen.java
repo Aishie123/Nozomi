@@ -728,6 +728,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
 
+            // If home button is pressed
             case R.id.btnHome:
                 runOnUiThread(new Runnable() {
                     @Override
@@ -806,26 +807,28 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    // call this method to disable buttons -----------------------------------------------------------
+    // call this method to disable buttons ----------------------------------------------------------------------------------------------------------
     public void disableButtons(){
         btnTurn.setEnabled(false);
         btnSS1.setEnabled(false);
         btnSS2.setEnabled(false);
     }
 
-    // call this method to enable buttons -----------------------------------------------------------
+    // call this method to enable buttons -----------------------------------------------------------------------------------------------------------
     public void enableButtons(){
         btnTurn.setEnabled(true);
         btnSS1.setEnabled(true);
         btnSS2.setEnabled(true);
     }
 
-    // call this method to enable turn button only -----------------------------------------------------------
+    // call this method to enable turn button only ---------------------------------------------------------------------------------------------------
     public void enableTurnOnly(){
         btnTurn.setEnabled(true);
         btnSS1.setEnabled(false);
         btnSS2.setEnabled(false);
     }
+
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     @Override
     public void onPause(){

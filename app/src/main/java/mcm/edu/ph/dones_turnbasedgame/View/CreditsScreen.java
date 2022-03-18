@@ -23,7 +23,6 @@ import mcm.edu.ph.dones_turnbasedgame.R;
 public class CreditsScreen extends AppCompatActivity implements ServiceConnection {
 
     private TextView txtCredits;
-    private ImageView btnBack;
     private Intent goToHome, goToFacebook, goToInstagram, goToGitHub, goToBehance, goToLinkedIn;
     private MusicPlayerService musicPlayerService;
 
@@ -35,7 +34,6 @@ public class CreditsScreen extends AppCompatActivity implements ServiceConnectio
         getSupportActionBar().hide(); //hide the action bar
         setContentView(R.layout.activity_credits_screen);
 
-        btnBack = findViewById(R.id.btnCreditsBack);
         txtCredits = findViewById(R.id.txtCreditsList);
 
         txtCredits.setMovementMethod(new ScrollingMovementMethod());
@@ -44,6 +42,7 @@ public class CreditsScreen extends AppCompatActivity implements ServiceConnectio
         Intent musicIntent = new Intent(this, MusicPlayerService.class);
         bindService(musicIntent, this, BIND_AUTO_CREATE);
 
+        //instructs users that they can tap on the app icons at the bottom side of the screen
         Toast.makeText(getApplicationContext(),"Tap on the app icons below to redirect.",Toast.LENGTH_LONG).show();
 
         }
