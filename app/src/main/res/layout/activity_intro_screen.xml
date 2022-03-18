@@ -24,7 +24,7 @@
         android:layout_height="236dp"
         android:adjustViewBounds="true"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/btnStart"
+        app:layout_constraintBottom_toTopOf="@+id/btnIntroNext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,14 +58,14 @@
         android:adjustViewBounds="true"
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/nicobold_regular"
-        android:text="What's your name?"
         android:gravity="center"
+        android:text="What's your name?"
         app:layout_constraintBottom_toBottomOf="@+id/questionBox"
         app:layout_constraintEnd_toEndOf="@+id/questionBox"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/questionBox"
         app:layout_constraintTop_toTopOf="@+id/questionBox"
-        app:layout_constraintVertical_bias="0.411" />
+        app:layout_constraintVertical_bias="0.401" />
 
     <EditText
         android:id="@+id/userInput"
@@ -82,10 +82,11 @@
         android:textColor="#004531"
         app:layout_constraintEnd_toEndOf="@+id/nameQuestion"
         app:layout_constraintStart_toStartOf="@+id/nameQuestion"
-        app:layout_constraintTop_toBottomOf="@+id/nameQuestion" />
+        app:layout_constraintTop_toBottomOf="@+id/nameQuestion"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <ImageButton
-        android:id="@+id/btnStart"
+        android:id="@+id/btnIntroNext"
         android:layout_width="122dp"
         android:layout_height="60dp"
         android:adjustViewBounds="true"
@@ -109,19 +110,18 @@
         android:fontFamily="@font/nicobold_regular"
         android:text="Next"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnStart"
-        app:layout_constraintEnd_toEndOf="@+id/btnStart"
+        app:layout_constraintBottom_toBottomOf="@+id/btnIntroNext"
+        app:layout_constraintEnd_toEndOf="@+id/btnIntroNext"
         app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="@+id/btnStart"
-        app:layout_constraintTop_toTopOf="@+id/btnStart" />
+        app:layout_constraintStart_toStartOf="@+id/btnIntroNext"
+        app:layout_constraintTop_toTopOf="@+id/btnIntroNext" />
 
     <ImageView
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:onClick="goToHome"
         android:visibility="invisible"
+        android:onClick="back"
         app:layout_constraintBottom_toBottomOf="@+id/questionBox"
         app:layout_constraintEnd_toEndOf="@+id/questionBox"
         app:layout_constraintHorizontal_bias="0.131"
@@ -129,6 +129,20 @@
         app:layout_constraintTop_toTopOf="@+id/questionBox"
         app:layout_constraintVertical_bias="0.098"
         app:srcCompat="@drawable/btn_back" />
+
+    <ImageView
+        android:id="@+id/btnIntroMenu"
+        android:layout_width="47dp"
+        android:layout_height="50dp"
+        android:onClick="introToMenu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.977"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.051"
+        app:srcCompat="@drawable/btn_up_menu"
+        tools:ignore="OnClick,TouchTargetSizeCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

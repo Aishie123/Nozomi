@@ -16,14 +16,20 @@
         android:theme="@style/Theme.Dones_TurnBasedGame"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".View.MenuScreen"
+            android:exported="true"
+            android:theme="@style/AppDialogTheme" />
+        <activity
             android:name=".View.CreditsScreen"
-            android:exported="false" />
+            android:exported="true"
+            android:theme="@style/AppDialogTheme" />
         <activity
             android:name=".View.SettingsScreen"
             android:exported="true"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/AppDialogTheme" />
         <activity
-            android:name=".View.HomeScreen"
+            android:name=".View.StartingScreen"
             android:exported="true"
             android:screenOrientation="landscape" />
         <activity

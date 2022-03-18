@@ -1,6 +1,5 @@
 package mcm.edu.ph.dones_turnbasedgame.View;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -9,7 +8,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.AnimationDrawable;
@@ -38,14 +36,14 @@ import mcm.edu.ph.dones_turnbasedgame.R;
 public class BattleScreen extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
     private ImageView enemy1_idleSprite, enemy1_hitSprite, enemy1_deathSprite, enemy1_walkSprite, enemy1_atkSprite,
-            hero1_idleSprite, hero1_runSprite, hero1_atkSprite, hero1_ss1Sprite, hero1_ss2Sprite, hero1_hitSprite, hero1_deathSprite, btnHome;
+            hero1_idleSprite, hero1_runSprite, hero1_atkSprite, hero1_ss1Sprite, hero1_ss2Sprite, hero1_hitSprite, hero1_deathSprite, btnMenu;
     private ImageButton btnSS1, btnSS2, btnTurn;
     private TextView txtLog, txtQuote, txtBtn, txtEnemy, txtUser, txtHeroHP, txtHeroMP, txtEnemyHP;
     private View heroHPBar, heroMPBar, enemyHPBar;
     private double heroHPB, heroMPB, enemyHPB; //for HP bar
     private int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n;
     private final String TAG = "BattleScreen";
-    private Intent goToHome;
+    private boolean noRestart = false; // can restart in the menu
 
     private MusicPlayerService musicPlayerService;
     private MediaPlayer heroSS1SFX, heroSS2SFX;
@@ -77,7 +75,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_battle_screen);
 
-        btnHome = findViewById(R.id.btnHome);
+        btnMenu = findViewById(R.id.btnBattleMenu);
         btnTurn = findViewById(R.id.btnStart);
         btnSS1 = findViewById(R.id.btnSS1);
         btnSS2 = findViewById(R.id.btnSS2);
@@ -142,7 +140,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         txtHeroMP.setText(String.valueOf(curHeroMP));
         txtEnemyHP.setText(String.valueOf(curEnemyHP));
 
-        btnHome.setOnClickListener(this);
         btnTurn.setOnClickListener(this);
         btnSS1.setOnClickListener(this);
         btnSS2.setOnClickListener(this);
@@ -162,6 +159,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         quoteCounter = quote.quoteCounter();
 
+        //Binding to music service to allow music to unpause. Refer to onServiceConnected method
         Intent musicIntent = new Intent(this, MusicPlayerService.class);
         bindService(musicIntent, (ServiceConnection) this, BIND_AUTO_CREATE);
 
@@ -271,14 +269,14 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        btnHome.setOnTouchListener(new View.OnTouchListener() {
+        btnMenu.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    btnTurn.setImageResource(R.drawable.btn_p_home);
-                    Log.d(TAG, "btnTurn pressed");
+                    btnMenu.setImageResource(R.drawable.btn_p_menu);
+                    Log.d(TAG, "btnMenu pressed");
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    btnTurn.setImageResource(R.drawable.btn_up_home);
-                    Log.d(TAG, "btnTurn unpressed");
+                    btnMenu.setImageResource(R.drawable.btn_up_menu);
+                    Log.d(TAG, "btnMenu unpressed");
                 }
                 return false;
             }
@@ -286,8 +284,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
-
 
 
     // call this method to check if health goes below zero -------------------------------------------------------------------------------------------------
@@ -393,6 +389,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
 
     //ENEMY SPRITES ---------------------------------------------------------------------------------------------------------------
+
     public void enemyWalkSprite(){
         enemy1_walkSprite.setVisibility(View.VISIBLE);
         enemy1_idleSprite.setVisibility(View.INVISIBLE);
@@ -452,7 +449,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
 
 
-    //attacks + iskillz + animation TT --------------------------------------------------------------------------------------------
+    // onClick --------------------------------------------------------------------------------------------
     @SuppressLint({"SetTextI18n", "NonConstantResourceId", "ObsoleteSdkInt"})
     public void onClick(View v) {
         int hero1AtkN = battle.attack(hero.getAtkMin(),hero.getAtkMax());
@@ -622,7 +619,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
             //SS1 - Double Slash --------------------------------------------------------------------------------------------
             case R.id.btnSS1:
                 if ((curHeroMP-SS1C)<0){
-                    txtLog.setText("Your MP is not enough for this skill.");
+                    Toast.makeText(getApplicationContext(),"Your MP is not enough for this skill.",Toast.LENGTH_LONG).show();
                 }
                 else{
                     curHeroMP-=SS1C;
@@ -697,7 +694,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
             //SS2 - Healing Shield --------------------------------------------------------------------------------------------
             case R.id.btnSS2:
                 if ((curHeroMP-SS2C)<0){
-                    txtLog.setText("Your MP is not enough for this skill.");
+                    Toast.makeText(getApplicationContext(),"Your MP is not enough for this skill.",Toast.LENGTH_LONG).show();
                 }
                 else {
                     curHeroMP-=SS2C;
@@ -727,39 +724,17 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
                 }
                 break;
-
-            case R.id.btnHome:
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        if (!isFinishing()){
-                            new AlertDialog.Builder(BattleScreen.this)
-                                    .setTitle("Exit Battle")
-                                    .setMessage("Go back to home screen?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            finish();
-                                            goToHome = new Intent(BattleScreen.this, SplashScreen.class);
-                                            startActivity(goToHome);
-                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Toast.makeText(getApplicationContext(),"You remained in battle.",Toast.LENGTH_LONG).show();
-                                        }
-                                    })
-                                    .show();
-                        }
-                    }
-                });
-                break;
         }
     }
+
+    // opens menu
+    public void battleToMenu(View v){
+        Intent goToMenu = new Intent(BattleScreen.this, MenuScreen.class);
+        goToMenu.putExtra("no restart", noRestart);
+        startActivity(goToMenu);
+    }
+
+    // SFX ------------------------------------------------------------------------------------------------------
 
 
     public void playHeroAtkSFX(){
@@ -806,26 +781,32 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    // call this method to disable buttons -----------------------------------------------------------
+    // call this method to disable buttons ----------------------------------------------------------------------------------------------------------
     public void disableButtons(){
         btnTurn.setEnabled(false);
         btnSS1.setEnabled(false);
         btnSS2.setEnabled(false);
+        btnSS1.setAlpha(0.5f);
+        btnSS2.setAlpha(0.5f);
     }
 
-    // call this method to enable buttons -----------------------------------------------------------
+    // call this method to enable buttons -----------------------------------------------------------------------------------------------------------
     public void enableButtons(){
         btnTurn.setEnabled(true);
         btnSS1.setEnabled(true);
         btnSS2.setEnabled(true);
+        btnSS1.setAlpha(1f);
+        btnSS2.setAlpha(1f);
     }
 
-    // call this method to enable turn button only -----------------------------------------------------------
+    // call this method to enable turn button only ---------------------------------------------------------------------------------------------------
     public void enableTurnOnly(){
         btnTurn.setEnabled(true);
         btnSS1.setEnabled(false);
         btnSS2.setEnabled(false);
     }
+
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     @Override
     public void onPause(){

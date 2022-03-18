@@ -3,6 +3,7 @@ package mcm.edu.ph.dones_turnbasedgame.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.ServiceConnection;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -20,12 +21,13 @@ import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
 @SuppressWarnings({"FieldCanBeLocal", "ConstantConditions"})
-public class HomeScreen extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
+public class StartingScreen extends AppCompatActivity implements ServiceConnection {
 
     private TextView txtInfo;
     private ImageButton btnStart, btnInfo, btnSettings, btnCredits;
     private Intent goToGame, goToInfo, goToSettings, goToCredits;
     private MusicPlayerService musicPlayerService;
+    private ActivityOptions options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,56 +47,43 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         btnInfo.setVisibility(View.GONE);
         txtInfo.setVisibility(View.GONE);
 
-        btnStart.setOnClickListener(this);
-        btnInfo.setOnClickListener(this);
-        btnSettings.setOnClickListener(this);
-        btnCredits.setOnClickListener(this);
-
         //Binding to music service to allow music to unpause. Refer to onServiceConnected method
         Intent musicIntent = new Intent(this, MusicPlayerService.class);
         bindService(musicIntent, (ServiceConnection) this, BIND_AUTO_CREATE);
 
+        options = ActivityOptions.makeSceneTransitionAnimation(this);
+
         press();
     }
 
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    // onClick ---------------------------------------------------------------------------------------------------
 
-            case R.id.btnStart:
+    // starts game
+    public void startToGame(View v){
+        goToGame = new Intent(StartingScreen.this, IntroScreen.class);
+        startActivity(goToGame);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 
-                goToGame = new Intent(HomeScreen.this, IntroScreen.class);
-                startActivity(goToGame);
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
+    // goes to game info (how to play)
+    public void startToInfo(View v){
+        goToInfo = new Intent(StartingScreen.this, IntroScreen.class);
+        startActivity(goToInfo);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 
-            // temporary
-            case R.id.btnInfo:
+    // goes to settings
+    public void startToSettings(View v){
+        goToSettings = new Intent(StartingScreen.this, SettingsScreen.class);
+        startActivity(goToSettings);
+    }
 
-                goToInfo = new Intent(HomeScreen.this, IntroScreen.class);
-                startActivity(goToInfo);
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
-
-            case R.id.btnSettings:
-
-                goToSettings = new Intent(HomeScreen.this, SettingsScreen.class);
-                startActivity(goToSettings);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
-
-            case R.id.btnCredits:
-
-                goToCredits = new Intent(HomeScreen.this, CreditsScreen.class);
-                startActivity(goToCredits);
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
-
-        }
+    // goes to credits
+    public void startToCredits(View v){
+        goToCredits = new Intent(StartingScreen.this, CreditsScreen.class);
+        startActivity(goToCredits);
     }
 
     //changing button shades when pressed -----------------------------------------------------------------------------------------

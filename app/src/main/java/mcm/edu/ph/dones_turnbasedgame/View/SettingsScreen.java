@@ -30,9 +30,7 @@ import mcm.edu.ph.dones_turnbasedgame.R;
 @SuppressWarnings({"FieldCanBeLocal", "ConstantConditions"})
 public class SettingsScreen extends AppCompatActivity implements ServiceConnection  {
     private AudioManager audioManager;
-    private ImageView btnBack;
     private SeekBar musicVolBar, brightBar;
-    private Intent goToHome;
     private MusicPlayerService musicPlayerService;
     private int brightness;
 
@@ -56,7 +54,6 @@ public class SettingsScreen extends AppCompatActivity implements ServiceConnecti
         setContentView(R.layout.activity_settings_screen);
         checkSystemWritePermission();
 
-        btnBack = findViewById(R.id.btnSettingsBack);
         musicVolBar = findViewById(R.id.volumeBar);
         brightBar = findViewById(R.id.brightnessBar);
 
@@ -70,12 +67,9 @@ public class SettingsScreen extends AppCompatActivity implements ServiceConnecti
 
     }
 
-    // goes back to home screen when btnBack is clicked ---------------------------------------------------------------------------------------------------
-    public void goToHome(View v) {
+    // goes back to previous screen when btnBack is clicked ---------------------------------------------------------------------------------------------------
+    public void goBack(View v) {
         finish();
-        goToHome = new Intent(SettingsScreen.this, HomeScreen.class);
-        startActivity(goToHome);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     // method for setting brightness manually --------------------------------------------------------------------------------------------------------------

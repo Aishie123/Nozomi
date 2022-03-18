@@ -1,9 +1,6 @@
 package mcm.edu.ph.dones_turnbasedgame.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -23,16 +20,17 @@ import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "FieldCanBeLocal"})
 public class IntroScreen extends AppCompatActivity implements ServiceConnection{
 
     private TextView nameQuestion, enemyQuestion;
     private EditText userInput;
-    private ImageView btnBack;
+    private ImageView btnBack, btnMenu;
     private ImageButton btnNext;
+    private MusicPlayerService musicPlayerService;
     private String userName, enemyName;
     private final String TAG = "IntroScreen";
-    private MusicPlayerService musicPlayerService;
+    private final boolean noRestart = true; // can't restart in the menu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,25 +48,28 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
         enemyQuestion = findViewById(R.id.enemyQuestion);
         btnBack = findViewById(R.id.btnBack);
         userInput = findViewById(R.id.userInput);
-        btnNext = findViewById(R.id.btnStart);
+        btnNext = findViewById(R.id.btnIntroNext);
+        btnMenu = findViewById(R.id.btnIntroMenu);
 
         userInput();
 
 
     }
 
+    // onClick -----------------------------------------------------------------------------------------
+
     public void userInput(){
 
             btnNext.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     HeroData hero = new HeroData();
-                    if (v.getId() == R.id.btnStart){
+                    if (v.getId() == R.id.btnIntroNext){
 
                         enemyQuestion.setVisibility(View.VISIBLE);
                         nameQuestion.setVisibility(View.INVISIBLE);
                         btnBack.setVisibility(View.VISIBLE);
 
-                        userName = userInput.getText().toString();
+                        userName = userInput.getText().toString(); // gets user's name from user input
                         userInput.setText("");
 
                         Log.d(TAG, "The user's name is " + userName);
@@ -76,7 +77,7 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
 
                         btnNext.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
-                                enemyName = userInput.getText().toString();
+                                enemyName = userInput.getText().toString(); // gets enemy's name from enemy input
                                 Log.d(TAG, "The enemy's name is " + enemyName);
                                 Intent i = new Intent(IntroScreen.this, BattleScreen.class);
                                 i.putExtra("enemy", enemyName);
@@ -104,6 +105,15 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
         userInput.setText("");
         userInput();
     }
+
+    // opens menu
+    public void introToMenu(View v){
+        Intent goToMenu = new Intent(IntroScreen.this, MenuScreen.class);
+        goToMenu.putExtra("no restart", noRestart);
+        startActivity(goToMenu);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
 
     @Override
     public void onPause(){

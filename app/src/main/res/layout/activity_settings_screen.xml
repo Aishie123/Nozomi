@@ -7,16 +7,6 @@
     tools:context=".View.SettingsScreen">
 
     <ImageView
-        android:id="@+id/bgSettings"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.9"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/bg_lighthills"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="210dp" />
-
-    <ImageView
         android:id="@+id/imgSettingsBox"
         android:layout_width="600dp"
         android:layout_height="329dp"
@@ -27,7 +17,6 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516"
         app:srcCompat="@drawable/bigtxtbox" />
 
     <SeekBar
@@ -39,7 +28,7 @@
         android:thumb="@drawable/custom_thumb"
         app:layout_constraintBottom_toTopOf="@+id/brightnessBar"
         app:layout_constraintEnd_toEndOf="@+id/imgSettingsBox"
-        app:layout_constraintHorizontal_bias="0.746"
+        app:layout_constraintHorizontal_bias="0.772"
         app:layout_constraintStart_toStartOf="@+id/imgSettingsBox"
         app:layout_constraintTop_toBottomOf="@+id/txtTitleSettings" />
 
@@ -47,49 +36,52 @@
         android:id="@+id/brightnessBar"
         android:layout_width="262dp"
         android:layout_height="45dp"
-        android:layout_marginEnd="84dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="40dp"
         android:max="100"
         android:progressDrawable="@drawable/seekbar_style"
         android:thumb="@drawable/custom_thumb"
-        app:layout_constraintBottom_toTopOf="@+id/btnBackHome"
-        app:layout_constraintEnd_toEndOf="@+id/imgSettingsBox"
+        app:layout_constraintBottom_toBottomOf="@+id/imgSettingsBox"
+        app:layout_constraintEnd_toEndOf="@+id/volumeBar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/volumeBar"
         app:layout_constraintTop_toBottomOf="@+id/volumeBar" />
 
     <ImageView
         android:id="@+id/btnSettingsBack"
-        android:layout_width="37dp"
-        android:layout_height="44dp"
+        android:layout_width="47dp"
+        android:layout_height="57dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="28dp"
-        android:onClick="goToHome"
+        android:onClick="goBack"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/imgSettingsBox"
         app:layout_constraintTop_toTopOf="@+id/imgSettingsBox"
         app:srcCompat="@drawable/btn_back"
-        tools:ignore="OnClick" />
+        tools:ignore="OnClick,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/txtMusic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+
+        android:adjustViewBounds="true"
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/nicobold_regular"
         android:text="Music"
         android:textSize="23sp"
         app:layout_constraintBottom_toBottomOf="@+id/volumeBar"
         app:layout_constraintEnd_toStartOf="@+id/volumeBar"
-        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintHorizontal_bias="0.911"
         app:layout_constraintStart_toStartOf="@+id/imgSettingsBox"
         app:layout_constraintTop_toTopOf="@+id/volumeBar"
-        app:layout_constraintVertical_bias="0.631" />
+        app:layout_constraintVertical_bias="0.727" />
 
     <TextView
         android:id="@+id/txtTitleSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/nicobold_regular"
         android:text="Settings"
@@ -99,57 +91,23 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/imgSettingsBox"
         app:layout_constraintTop_toTopOf="@+id/imgSettingsBox"
-        app:layout_constraintVertical_bias="0.151"
         app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
         android:id="@+id/txtBrightness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:adjustViewBounds="true"
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/nicobold_regular"
         android:text="Brightness"
         android:textSize="23sp"
         app:layout_constraintBottom_toBottomOf="@+id/brightnessBar"
         app:layout_constraintEnd_toStartOf="@+id/brightnessBar"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.865"
         app:layout_constraintStart_toStartOf="@+id/imgSettingsBox"
         app:layout_constraintTop_toTopOf="@+id/brightnessBar"
-        app:layout_constraintVertical_bias="0.526" />
+        app:layout_constraintVertical_bias="0.454" />
 
-    <ImageButton
-        android:id="@+id/btnBackHome"
-        android:visibility="gone"
-        android:layout_width="196dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="10dp"
-        android:adjustViewBounds="true"
-        android:padding="0dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/imgSettingsBox"
-        app:layout_constraintEnd_toEndOf="@+id/imgSettingsBox"
-        app:layout_constraintStart_toStartOf="@+id/imgSettingsBox"
-        app:layout_constraintTop_toBottomOf="@+id/brightnessBar"
-        app:srcCompat="@drawable/btn_unpressed"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <TextView
-        android:id="@+id/txtBackHome"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:autoSizeTextType="uniform"
-        android:autoSizeMinTextSize="16sp"
-        android:autoSizeMaxTextSize="20sp"
-        android:fontFamily="@font/nicobold_regular"
-        android:text="Back to Home"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnBackHome"
-        app:layout_constraintEnd_toEndOf="@+id/btnBackHome"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="@+id/btnBackHome"
-        app:layout_constraintTop_toTopOf="@+id/btnBackHome" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

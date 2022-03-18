@@ -23,8 +23,7 @@ import mcm.edu.ph.dones_turnbasedgame.R;
 public class CreditsScreen extends AppCompatActivity implements ServiceConnection {
 
     private TextView txtCredits;
-    private ImageView btnBack;
-    private Intent goToHome, goToFacebook, goToInstagram, goToGitHub, goToBehance, goToLinkedIn;
+    private Intent launchURL;
     private MusicPlayerService musicPlayerService;
 
     @Override
@@ -35,7 +34,6 @@ public class CreditsScreen extends AppCompatActivity implements ServiceConnectio
         getSupportActionBar().hide(); //hide the action bar
         setContentView(R.layout.activity_credits_screen);
 
-        btnBack = findViewById(R.id.btnCreditsBack);
         txtCredits = findViewById(R.id.txtCreditsList);
 
         txtCredits.setMovementMethod(new ScrollingMovementMethod());
@@ -44,16 +42,14 @@ public class CreditsScreen extends AppCompatActivity implements ServiceConnectio
         Intent musicIntent = new Intent(this, MusicPlayerService.class);
         bindService(musicIntent, this, BIND_AUTO_CREATE);
 
+        //instructs users that they can tap on the app icons at the bottom side of the screen
         Toast.makeText(getApplicationContext(),"Tap on the app icons below to redirect.",Toast.LENGTH_LONG).show();
 
         }
 
     // goes back to home screen when btnBack is clicked ---------------------------------------------------------------------------------------------------
-    public void goToHome(View v) {
+    public void goBack(View v) {
         finish();
-        goToHome = new Intent(CreditsScreen.this, HomeScreen.class);
-        startActivity(goToHome);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     // goes to developer's social media accounts ----------------------------------------------------------------------------------------
@@ -61,36 +57,36 @@ public class CreditsScreen extends AppCompatActivity implements ServiceConnectio
     public void openFacebook(View v) {
         String url = getString(R.string.link_fb);
         Uri uriUrl = Uri.parse(url);
-        goToFacebook = new Intent(Intent.ACTION_VIEW, uriUrl);
-        startActivity(goToFacebook);
+        launchURL = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchURL);
     }
 
     public void openInstagram(View v) {
         String url = getString(R.string.link_ig);
         Uri uriUrl = Uri.parse(url);
-        goToInstagram = new Intent(Intent.ACTION_VIEW, uriUrl);
-        startActivity(goToInstagram);
+        launchURL = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchURL);
     }
 
     public void openGithub(View v) {
         String url = getString(R.string.link_git);
         Uri uriUrl = Uri.parse(url);
-        goToGitHub = new Intent(Intent.ACTION_VIEW, uriUrl);
-        startActivity(goToGitHub);
+        launchURL = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchURL);
     }
 
     public void openBehance(View v) {
         String url = getString(R.string.link_be);
         Uri uriUrl = Uri.parse(url);
-        goToBehance = new Intent(Intent.ACTION_VIEW, uriUrl);
-        startActivity(goToBehance);
+        launchURL = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchURL);
     }
 
     public void openLinkedIn(View v) {
         String url = getString(R.string.link_link);
         Uri uriUrl = Uri.parse(url);
-        goToLinkedIn = new Intent(Intent.ACTION_VIEW, uriUrl);
-        startActivity(goToLinkedIn);
+        launchURL = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchURL);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------------------------

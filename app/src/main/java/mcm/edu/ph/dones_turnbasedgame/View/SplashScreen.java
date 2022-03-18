@@ -28,7 +28,6 @@ public class SplashScreen extends AppCompatActivity {
         getSupportActionBar().hide(); //hide the action bar
         setContentView(R.layout.activity_splash_screen);
 
-        //This is additional feature, used to run a progress bar
         splashProgress = findViewById(R.id.splashProgress);
         playProgress();
 
@@ -36,12 +35,10 @@ public class SplashScreen extends AppCompatActivity {
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                //Do any action here. Now we are moving to next page
-                Intent mySuperIntent = new Intent(SplashScreen.this, HomeScreen.class);
+                Intent mySuperIntent = new Intent(SplashScreen.this, StartingScreen.class);
                 startActivity(mySuperIntent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-                //This 'finish()' is for exiting the app when back button pressed from Home page which is ActivityHome
                 finish();
 
             }
