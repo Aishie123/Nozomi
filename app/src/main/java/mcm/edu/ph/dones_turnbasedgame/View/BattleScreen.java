@@ -11,7 +11,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -35,7 +34,7 @@ import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
 import mcm.edu.ph.dones_turnbasedgame.Model.MonsterData;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
-@SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
+@SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal", "SwitchStatementWithoutDefaultBranch"})
 public class BattleScreen extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
     private ImageView enemy1_idleSprite, enemy1_hitSprite, enemy1_deathSprite, enemy1_walkSprite, enemy1_atkSprite,
@@ -50,15 +49,11 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     private final String TAG = "BattleScreen";
     private boolean noRestart = false; // can restart in the menu
 
-    private MusicPlayerService musicPlayerService;
-    private MediaPlayer heroSS1SFX, heroSS2SFX;
-    private MediaPlayer [] heroAtkSFX = new MediaPlayer[3];
-    private MediaPlayer [] enemyAtkSFX = new MediaPlayer[3];
-
     private AnimationDrawable hero_idleAnim, hero_runAnim, hero_atkAnim, hero_ss1Anim, hero_ss2Anim, hero_hitAnim, hero_deathAnim,
             enemy_idleAnim, enemy_walkAnim, enemy_atkAnim, enemy_hitAnim, enemy_deathAnim;
     private ObjectAnimator heroRun, enemyWalk;
 
+    private MusicPlayerService musicPlayerService;
     private HeroData hero = new HeroData();
     private MonsterData enemy = new MonsterData();
     private BattleAlgorithm battle = new BattleAlgorithm();
@@ -457,11 +452,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         enemy_hitAnim.start(); // starts "death" animation
     }
 
-
-
     // onClick --------------------------------------------------------------------------------------------
     @SuppressLint({"SetTextI18n", "NonConstantResourceId", "ObsoleteSdkInt"})
     public void onClick(View v) {
+        n = sfx.randomizeAtkSFX();
         int hero1AtkN = battle.attack(hero.getAtkMin(),hero.getAtkMax());
         int enemy1AtkN = battle.attack(enemy.getAtkMin(),enemy.getAtkMax());
 
@@ -497,7 +491,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                     heroRun.addListener(new AnimatorListenerAdapter() {
                         public void onAnimationEnd(Animator animation) {
 
-                            playHeroAtkSFX();
+                            musicPlayerService.playHeroAtkSFX(n);
                             heroAtkSprite();
 
                             timer.postDelayed(new Runnable() {
@@ -570,7 +564,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                     enemyWalk.addListener(new AnimatorListenerAdapter() {
                         public void onAnimationEnd(Animator animation) {
 
-                            playEnemyAtkSFX();
+                            musicPlayerService.playEnemyAtkSFX(n);
                             enemyAtkSprite();
 
                             timer.postDelayed(new Runnable() {
@@ -649,7 +643,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
                     heroRun.addListener(new AnimatorListenerAdapter() {
                         public void onAnimationEnd(Animator animation) {
-                            playHeroSS1SFX();
+                            musicPlayerService.playHeroSS1SFX();
                             heroSS1Sprite();
 
                             timer.postDelayed(new Runnable() {
@@ -726,7 +720,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
                     disableButtons();
                     txtQuote.setText(quote.quoteHeroSS());
-                    playHeroSS2SFX();
+                    musicPlayerService.playHeroSS2SFX();
                     heroSS2Sprite();
                     timer.postDelayed(new Runnable() {
                         @Override
@@ -750,52 +744,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         Intent goToMenu = new Intent(BattleScreen.this, MenuScreen.class);
         goToMenu.putExtra("no restart", noRestart);
         startActivity(goToMenu);
-    }
-
-    // SFX ------------------------------------------------------------------------------------------------------
-
-
-    public void playHeroAtkSFX(){
-        heroAtkSFX[0] = MediaPlayer.create(this, R.raw.sfx_heroatk1);
-        heroAtkSFX[1] = MediaPlayer.create(this, R.raw.sfx_heroatk2);
-        heroAtkSFX[2] = MediaPlayer.create(this, R.raw.sfx_heroatk3);
-        n = sfx.randomizeAtkSFX();
-        heroAtkSFX[n].setVolume(100,100);
-        heroAtkSFX[n].setLooping(false);
-        heroAtkSFX[n].start();
-    }
-
-    public void playEnemyAtkSFX(){
-        enemyAtkSFX[0] = MediaPlayer.create(this, R.raw.sfx_enemyatk1);
-        enemyAtkSFX[1] = MediaPlayer.create(this, R.raw.sfx_enemyatk2);
-        enemyAtkSFX[2] = MediaPlayer.create(this, R.raw.sfx_enemyatk3);
-        n = sfx.randomizeAtkSFX();
-        enemyAtkSFX[n].setVolume(100,100);
-        enemyAtkSFX[n].setLooping(false);
-        enemyAtkSFX[n].start();
-    }
-
-    public void playHeroSS1SFX(){
-        heroSS1SFX = MediaPlayer.create(this, R.raw.sfx_heross1);
-        heroSS1SFX.setVolume(100,100);
-        heroSS1SFX.setLooping(false);
-        heroSS1SFX.start();
-    }
-
-    public void playHeroSS2SFX(){
-        heroSS2SFX = MediaPlayer.create(this, R.raw.sfx_heross2);
-        heroSS2SFX.setVolume(100,100);
-        heroSS2SFX.setLooping(false);
-        heroSS2SFX.start();
-    }
-
-    public void releaseHeroSSSFX(){
-        if (heroSS1SFX != null && heroSS1SFX.isPlaying()){
-            heroSS1SFX.release();
-        }
-        if (heroSS2SFX != null && heroSS2SFX.isPlaying()){
-            heroSS2SFX.release();
-        }
     }
 
 

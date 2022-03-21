@@ -8,6 +8,8 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import java.util.Random;
+
 import mcm.edu.ph.dones_turnbasedgame.R;
 
 public class MusicPlayerService extends Service {
@@ -15,6 +17,8 @@ public class MusicPlayerService extends Service {
     private IBinder mBinder = new MyBinder();
     private Boolean mIsPaused;
     public int currentTrack;
+    private final MediaPlayer [] heroAtkSFX = new MediaPlayer[3];
+    private final MediaPlayer [] enemyAtkSFX = new MediaPlayer[3];
 
     public MusicPlayerService() {
     }
@@ -37,6 +41,7 @@ public class MusicPlayerService extends Service {
         }
     }
 
+    // BGM --------------------------------------------------------------------------------------------------------------------
 
     public void playMusic(final int music){
         new Thread(new Runnable() {
@@ -105,6 +110,42 @@ public class MusicPlayerService extends Service {
         player.setLooping(false);
         player.start();
     }
+
+    // SFX --------------------------------------------------------------------------------------------
+
+    public void playHeroAtkSFX(int n){
+        heroAtkSFX[0] = MediaPlayer.create(this, R.raw.sfx_heroatk1);
+        heroAtkSFX[1] = MediaPlayer.create(this, R.raw.sfx_heroatk2);
+        heroAtkSFX[2] = MediaPlayer.create(this, R.raw.sfx_heroatk3);
+        heroAtkSFX[n].setVolume(100,100);
+        heroAtkSFX[n].setLooping(false);
+        heroAtkSFX[n].start();
+    }
+
+    public void playEnemyAtkSFX(int n){
+        enemyAtkSFX[0] = MediaPlayer.create(this, R.raw.sfx_enemyatk1);
+        enemyAtkSFX[1] = MediaPlayer.create(this, R.raw.sfx_enemyatk2);
+        enemyAtkSFX[2] = MediaPlayer.create(this, R.raw.sfx_enemyatk3);
+        enemyAtkSFX[n].setVolume(100,100);
+        enemyAtkSFX[n].setLooping(false);
+        enemyAtkSFX[n].start();
+    }
+
+    public void playHeroSS1SFX(){
+        MediaPlayer heroSS1SFX = MediaPlayer.create(this, R.raw.sfx_heross1);
+        heroSS1SFX.setVolume(100,100);
+        heroSS1SFX.setLooping(false);
+        heroSS1SFX.start();
+    }
+
+    public void playHeroSS2SFX(){
+        MediaPlayer heroSS2SFX = MediaPlayer.create(this, R.raw.sfx_heross2);
+        heroSS2SFX.setVolume(100,100);
+        heroSS2SFX.setLooping(false);
+        heroSS2SFX.start();
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------
 
     public void pauseMusic(){
         player.pause();
