@@ -5,6 +5,6 @@
     <item android:drawable="@drawable/hero1_attack3" android:duration="100"/>
     <item android:drawable="@drawable/hero1_attack4" android:duration="100"/>
     <item android:drawable="@drawable/hero1_attack5" android:duration="100"/>
-    <item android:drawable="@drawable/hero1_attack6" android:duration="250"/>
-    <item android:drawable="@drawable/hero1_attack7" android:duration="400"/>
+    <item android:drawable="@drawable/hero1_attack6" android:duration="300"/>
+    <item android:drawable="@drawable/hero1_attack7" android:duration="1000"/>
 </animation-list>

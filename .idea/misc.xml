@@ -10,8 +10,10 @@
         <entry key="app/src/main/res/drawable/enemy1_attackanim.xml" value="0.446875" />
         <entry key="app/src/main/res/drawable/enemy1_hitanim.xml" value="0.406" />
         <entry key="app/src/main/res/drawable/enemy1_walkanim.xml" value="0.16944444444444445" />
+        <entry key="app/src/main/res/drawable/hero1_attackanim.xml" value="0.131" />
         <entry key="app/src/main/res/drawable/hero1_deathanim.xml" value="0.24102564102564103" />
         <entry key="app/src/main/res/drawable/hero1_hitanim.xml" value="0.446875" />
+        <entry key="app/src/main/res/drawable/hero1_idleanim.xml" value="0.406" />
         <entry key="app/src/main/res/drawable/hero1_ss1anim.xml" value="0.2713541666666667" />
         <entry key="app/src/main/res/drawable/hero1_ss2anim.xml" value="0.24479166666666666" />
         <entry key="app/src/main/res/drawable/hp_bluebg.xml" value="0.265625" />
@@ -25,7 +27,7 @@
         <entry key="app/src/main/res/drawable/seekbar_style.xml" value="0.11296296296296296" />
         <entry key="app/src/main/res/drawable/shape.xml" value="0.4351851851851852" />
         <entry key="app/src/main/res/drawable/skeletonidle_anim.xml" value="0.4427083333333333" />
-        <entry key="app/src/main/res/layout/activity_battle_screen.xml" value="0.4216163583252191" />
+        <entry key="app/src/main/res/layout/activity_battle_screen.xml" value="0.36907216494845363" />
         <entry key="app/src/main/res/layout/activity_credits_screen.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_home_screen.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_intro_screen.xml" value="0.3972179289026275" />
