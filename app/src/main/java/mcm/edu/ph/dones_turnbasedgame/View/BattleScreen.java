@@ -29,7 +29,7 @@ import android.widget.Toast;
 import mcm.edu.ph.dones_turnbasedgame.Controller.BattleAlgorithm;
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.Controller.QuoteRandomizer;
-import mcm.edu.ph.dones_turnbasedgame.Controller.SfxRandomizer;
+import mcm.edu.ph.dones_turnbasedgame.Controller.SfxController;
 import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
 import mcm.edu.ph.dones_turnbasedgame.Model.MonsterData;
 import mcm.edu.ph.dones_turnbasedgame.R;
@@ -58,7 +58,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     private MonsterData enemy = new MonsterData();
     private BattleAlgorithm battle = new BattleAlgorithm();
     private QuoteRandomizer quote = new QuoteRandomizer(this);
-    private SfxRandomizer sfx = new SfxRandomizer();
+    private SfxController sfx = new SfxController();
 
     private int counter = 0;
     private int SS1C = 8;
