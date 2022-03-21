@@ -19,6 +19,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -69,24 +70,24 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     private int SS2C = 10;
 
     private float HERO1_ORIG_POS;
-    private float HERO1_RUN1_POS = 725f;
-    private float HERO1_RUN2_POS = 500f;
-    private float HERO1_ATK_POS = 700f;
-    private float HERO1_SS1_POS = 500f;
-    private float ENEMY1_WALK_POS = -800f;
-    private float ENEMY1_ORIG_POS = -(ENEMY1_WALK_POS) + 100;
-    private float ENEMY1_ATK_POS = 200f;
+    private final float HERO1_RUN1_POS = 725f;
+    private final float HERO1_RUN2_POS = 500f;
+    private final float HERO1_ATK_POS = 700f;
+    private final float HERO1_SS1_POS = 500f;
+    private final float ENEMY1_WALK_POS = -800f;
+    private float ENEMY1_ORIG_POS;
+    private final float ENEMY1_ATK_POS = 200f;
 
-    private int HERO1_RUN_DUR = 800; // 0.8 seconds
-    private int HERO1_ATK_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
-    private int HERO1_SS1_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
-    private int HERO1_SS2_DUR = 600; // 0.6 seconds
-    private int HERO1_HIT_DUR = 650; // 0.65 seconds
-    private int HERO1_DEATH_DUR = 1100; // 1.1 seconds
-    private int ENEMY1_WALK_DUR = 1600; // 1.6 seconds
-    private int ENEMY1_ATK_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
-    private int ENEMY1_HIT_DUR = 600; // 0.6 seconds
-    private int ENEMY1_DEATH_DUR = 600; // 0.6 seconds
+    private final int HERO1_RUN_DUR = 800; // 0.8 seconds
+    private final int HERO1_ATK_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
+    private final int HERO1_SS1_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
+    private final int HERO1_SS2_DUR = 600; // 0.6 seconds
+    private final int HERO1_HIT_DUR = 650; // 0.65 seconds
+    private final int HERO1_DEATH_DUR = 1100; // 1.1 seconds
+    private final int ENEMY1_WALK_DUR = 1600; // 1.6 seconds
+    private final int ENEMY1_ATK_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
+    private final int ENEMY1_HIT_DUR = 600; // 0.6 seconds
+    private final int ENEMY1_DEATH_DUR = 600; // 0.6 seconds
 
 
     @Override
@@ -173,12 +174,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         hero1_idleSprite.setVisibility(View.VISIBLE);
 
         quoteCounter = quote.quoteCounter();
-
-        hero1_idleSprite.post(() -> {
-            int[] heroPoint = new int[2];
-            hero1_idleSprite.getLocationOnScreen(heroPoint);
-            HERO1_ORIG_POS = heroPoint[0];
-        });
 
         //Binding to music service to allow music to unpause. Refer to onServiceConnected method
         Intent musicIntent = new Intent(this, MusicPlayerService.class);
@@ -329,6 +324,20 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         enemy_idleAnim = (AnimationDrawable)enemy1_idleSprite.getDrawable();
         enemy_idleAnim.start(); // starts "idle" animation
+
+        hero1_idleSprite.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                HERO1_ORIG_POS = hero1_idleSprite.getLeft(); // gets X position of hero
+                hero1_idleSprite.getViewTreeObserver().removeOnGlobalLayoutListener(this); // removes the listener to prevent being called again
+            }
+        });
+
+        enemy1_idleSprite.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                ENEMY1_ORIG_POS = enemy1_idleSprite.getLeft(); // gets X position of enemy
+                enemy1_idleSprite.getViewTreeObserver().removeOnGlobalLayoutListener(this); // removes the listener to prevent being called again
+            }
+        });
 
     }
 
