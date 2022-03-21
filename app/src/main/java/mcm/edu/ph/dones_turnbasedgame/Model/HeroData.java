@@ -2,12 +2,10 @@ package mcm.edu.ph.dones_turnbasedgame.Model;
 
 public class HeroData extends GameData {
 
-    int courage, confidence, hope, love;
-
+    private int courage, confidence, hope, love;
     //borrowed variables
     String name;
-    int healthPt, manaPt, atkMin, atkMax, lvl;
-
+    private int healthPt, manaPt, atkMin, atkMax, lvl;
 
     public HeroData(){}
 

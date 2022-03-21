@@ -27,9 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import mcm.edu.ph.dones_turnbasedgame.Controller.BattleAlgorithm;
+import mcm.edu.ph.dones_turnbasedgame.Controller.HeroSelector;
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.Controller.QuoteRandomizer;
-import mcm.edu.ph.dones_turnbasedgame.Controller.SfxRandomizer;
+import mcm.edu.ph.dones_turnbasedgame.Controller.SfxController;
 import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
 import mcm.edu.ph.dones_turnbasedgame.Model.MonsterData;
 import mcm.edu.ph.dones_turnbasedgame.R;
@@ -58,27 +59,18 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     private MonsterData enemy = new MonsterData();
     private BattleAlgorithm battle = new BattleAlgorithm();
     private QuoteRandomizer quote = new QuoteRandomizer(this);
-    private SfxRandomizer sfx = new SfxRandomizer();
+    private SfxController sfx = new SfxController();
 
     private int counter = 0;
     private int SS1C = 8;
     private int SS2C = 10;
+    private int heroNumber = 1;
 
-    private float HERO1_ORIG_POS;
-    private final float HERO1_RUN1_POS = 725f;
-    private final float HERO1_RUN2_POS = 500f;
-    private final float HERO1_ATK_POS = 700f;
-    private final float HERO1_SS1_POS = 500f;
+    private float HERO_ORIG_POS, ENEMY_ORIG_POS, HERO_RUN1_POS, HERO_RUN2_POS, HERO_ATK_POS, HERO_SS1_POS;
     private final float ENEMY1_WALK_POS = -800f;
-    private float ENEMY1_ORIG_POS;
     private final float ENEMY1_ATK_POS = 200f;
 
-    private final int HERO1_RUN_DUR = 800; // 0.8 seconds
-    private final int HERO1_ATK_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
-    private final int HERO1_SS1_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
-    private final int HERO1_SS2_DUR = 600; // 0.6 seconds
-    private final int HERO1_HIT_DUR = 650; // 0.65 seconds
-    private final int HERO1_DEATH_DUR = 1100; // 1.1 seconds
+    private int HERO_RUN_DUR, HERO_ATK_DUR, HERO_SS1_DUR, HERO_SS2_DUR, HERO_HIT_DUR, HERO_DEATH_DUR;
     private final int ENEMY1_WALK_DUR = 1600; // 1.6 seconds
     private final int ENEMY1_ATK_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
     private final int ENEMY1_HIT_DUR = 600; // 0.6 seconds
@@ -176,6 +168,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         timer = new Handler(Looper.getMainLooper()); // for delay
 
+        generateHero();
         enableTurnOnly();
         idleSprite();
         heroHPBar();
@@ -184,6 +177,20 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         press();
     }
 
+    public void generateHero(){
+        final HeroSelector hero = new HeroSelector();
+        heroNumber--;
+        HERO_RUN1_POS = hero.getHeroRun1Pos(heroNumber);
+        HERO_RUN2_POS = hero.getHeroRun2Pos(heroNumber);
+        HERO_ATK_POS = hero.getHeroAtkPos(heroNumber);
+        HERO_SS1_POS = hero.getHeroSS1Pos(heroNumber);
+        HERO_RUN_DUR = hero.getHeroRunDur(heroNumber);
+        HERO_ATK_DUR = hero.getHeroAtkDur(heroNumber);
+        HERO_SS1_DUR = hero.getHeroSS1Dur(heroNumber);
+        HERO_SS2_DUR = hero.getHeroSS2Dur(heroNumber);
+        HERO_HIT_DUR = hero.getHeroHitDur(heroNumber);
+        HERO_DEATH_DUR = hero.getHeroDeathDur(heroNumber);
+    }
 
 //---------------------------------------------------------------------------------------------------------------------------------
 
@@ -322,14 +329,14 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         hero1_idleSprite.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
-                HERO1_ORIG_POS = hero1_idleSprite.getLeft(); // gets X position of hero
+                HERO_ORIG_POS = hero1_idleSprite.getLeft(); // gets X position of hero
                 hero1_idleSprite.getViewTreeObserver().removeOnGlobalLayoutListener(this); // removes the listener to prevent being called again
             }
         });
 
         enemy1_idleSprite.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
-                ENEMY1_ORIG_POS = enemy1_idleSprite.getLeft(); // gets X position of enemy
+                ENEMY_ORIG_POS = enemy1_idleSprite.getLeft(); // gets X position of enemy
                 enemy1_idleSprite.getViewTreeObserver().removeOnGlobalLayoutListener(this); // removes the listener to prevent being called again
             }
         });
@@ -344,7 +351,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         hero1_idleSprite.setVisibility(View.INVISIBLE);
 
         hero_runAnim = (AnimationDrawable)hero1_runSprite.getDrawable();
-        heroRun.setDuration(HERO1_RUN_DUR); // sets duration of movement to 0.8 seconds, same as the animation duration
+        heroRun.setDuration(HERO_RUN_DUR); // sets duration of movement to 0.8 seconds, same as the animation duration
 
         heroRun.start(); // moves the position of the sprite
         hero_runAnim.start(); // starts "run" animation
@@ -353,7 +360,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
             public void onAnimationEnd(Animator animation) {
                 hero1_runSprite.setVisibility(View.INVISIBLE);
                 hero_runAnim.stop();
-                hero1_runSprite.setX(HERO1_ORIG_POS); // moves the sprite back to original position when done and invisible
+                hero1_runSprite.setX(HERO_ORIG_POS); // moves the sprite back to original position when done and invisible
             }
         });
     }
@@ -361,7 +368,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     // animation for when hero attacks
     public void heroAtkSprite(){
         hero1_atkSprite.setVisibility(View.VISIBLE);
-        hero1_atkSprite.setX(HERO1_ATK_POS);
+        hero1_atkSprite.setX(HERO_ATK_POS);
 
         hero_atkAnim = (AnimationDrawable) hero1_atkSprite.getDrawable();
         hero_atkAnim.setOneShot(true);
@@ -379,7 +386,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
     public void heroSS1Sprite(){
         hero1_ss1Sprite.setVisibility(View.VISIBLE);
-        hero1_ss1Sprite.setX(HERO1_SS1_POS);
+        hero1_ss1Sprite.setX(HERO_SS1_POS);
 
         hero_ss1Anim = (AnimationDrawable) hero1_ss1Sprite.getDrawable();
         hero_ss1Anim.setOneShot(true);
@@ -420,7 +427,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
             public void onAnimationEnd(Animator animation) {
                 enemy1_walkSprite.setVisibility(View.INVISIBLE);
                 enemy_walkAnim.stop();
-                enemy1_walkSprite.setX(ENEMY1_ORIG_POS); // moves the sprite back to original position when done and invisible
+                enemy1_walkSprite.setX(ENEMY_ORIG_POS); // moves the sprite back to original position when done and invisible
             }
         });
 
@@ -470,7 +477,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
                 //start of battle --------------------------------------------------------------------------------------------
                 else if (counter == 0) {
-
                     heroHPBar();
                     heroMPBar();
                     enemyHPBar();
@@ -484,7 +490,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 else if(counter%2 == 1){
                     txtBtn.setText("Next Turn");
                     txtQuote.setText("'" + quote.quoteHeroAtk(quoteCounter) + "'");
-                    heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX", HERO1_RUN1_POS);
+                    heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX", HERO_RUN1_POS);
                     disableButtons();
                     heroRunSprite();
 
@@ -549,7 +555,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                         }
                                     }, ENEMY1_HIT_DUR);
                                 }
-                            }, HERO1_ATK_DUR);
+                            }, HERO_ATK_DUR);
                         }
                     });
                 }
@@ -614,10 +620,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
                                                     }
-                                                }, HERO1_DEATH_DUR);
+                                                }, HERO_DEATH_DUR);
                                             }
                                         }
-                                    }, HERO1_HIT_DUR);
+                                    }, HERO_HIT_DUR);
                                 }
                             }, ENEMY1_ATK_DUR);
 
@@ -637,7 +643,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                     heroMPBar();
                     txtQuote.setText(quote.quoteHeroSS());
                     txtBtn.setText("Next Turn");
-                    heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX", HERO1_RUN2_POS);
+                    heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX", HERO_RUN2_POS);
                     heroRunSprite();
                     disableButtons();
 
@@ -697,7 +703,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                         }
                                     }, ENEMY1_HIT_DUR);
                                 }
-                            }, HERO1_SS1_DUR);
+                            }, HERO_SS1_DUR);
                         }
                     });
                 }
@@ -733,7 +739,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                             heroMPBar();
                             counter++;
                         }
-                    }, HERO1_SS2_DUR);
+                    }, HERO_SS2_DUR);
                 }
                 break;
         }
@@ -770,6 +776,8 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         btnTurn.setEnabled(true);
         btnSS1.setEnabled(false);
         btnSS2.setEnabled(false);
+        btnSS1.setAlpha(0.5f);
+        btnSS2.setAlpha(0.5f);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------------------------
