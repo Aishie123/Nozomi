@@ -32,7 +32,7 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
     private MusicPlayerService musicPlayerService;
     private String userName, enemyName;
     private final String TAG = "IntroScreen";
-    private final boolean noRestart = true; // can't restart in the menu
+    private final boolean noRestart = true; // disable restart in the menu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

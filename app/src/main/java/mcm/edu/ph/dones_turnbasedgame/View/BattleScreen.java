@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import mcm.edu.ph.dones_turnbasedgame.Controller.BattleAlgorithm;
+import mcm.edu.ph.dones_turnbasedgame.Controller.EnemySelector;
 import mcm.edu.ph.dones_turnbasedgame.Controller.HeroSelector;
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.Controller.QuoteRandomizer;
@@ -47,8 +48,12 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
     private double heroHPB, heroMPB, enemyHPB; //for HP bar
     private int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n;
+    private int HERO_RUN_DUR, HERO_ATK_DUR, HERO_SS1_DUR, HERO_SS2_DUR, HERO_HIT_DUR, HERO_DEATH_DUR,
+            ENEMY_RUN_DUR, ENEMY_ATK_DUR, ENEMY_HIT_DUR, ENEMY_DEATH_DUR;
+    private float HERO_ORIG_POS, ENEMY_ORIG_POS, HERO_RUN1_POS, HERO_RUN2_POS, HERO_ATK_POS, HERO_SS1_POS,
+            ENEMY_RUN_POS, ENEMY_ATK_POS;
     private final String TAG = "BattleScreen";
-    private boolean noRestart = false; // can restart in the menu
+    private boolean noRestart = false; // enable restart in the menu
 
     private AnimationDrawable hero_idleAnim, hero_runAnim, hero_atkAnim, hero_ss1Anim, hero_ss2Anim, hero_hitAnim, hero_deathAnim,
             enemy_idleAnim, enemy_walkAnim, enemy_atkAnim, enemy_hitAnim, enemy_deathAnim;
@@ -61,21 +66,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     private QuoteRandomizer quote = new QuoteRandomizer(this);
     private SfxController sfx = new SfxController();
 
-    private int counter = 0;
+    private int counter = 0; // turn counter
     private int SS1C = 8;
     private int SS2C = 10;
-    private int heroNumber = 1;
-
-    private float HERO_ORIG_POS, ENEMY_ORIG_POS, HERO_RUN1_POS, HERO_RUN2_POS, HERO_ATK_POS, HERO_SS1_POS;
-    private final float ENEMY1_WALK_POS = -800f;
-    private final float ENEMY1_ATK_POS = 200f;
-
-    private int HERO_RUN_DUR, HERO_ATK_DUR, HERO_SS1_DUR, HERO_SS2_DUR, HERO_HIT_DUR, HERO_DEATH_DUR;
-    private final int ENEMY1_WALK_DUR = 1600; // 1.6 seconds
-    private final int ENEMY1_ATK_DUR = 300; // 0.3 seconds (not exact duration; delay before hit)
-    private final int ENEMY1_HIT_DUR = 600; // 0.6 seconds
-    private final int ENEMY1_DEATH_DUR = 600; // 0.6 seconds
-
+    private int heroNumber = 1; // temporary
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +163,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         timer = new Handler(Looper.getMainLooper()); // for delay
 
         generateHero();
+        generateEnemy();
         enableTurnOnly();
         idleSprite();
         heroHPBar();
@@ -190,6 +185,16 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         HERO_SS2_DUR = hero.getHeroSS2Dur(heroNumber);
         HERO_HIT_DUR = hero.getHeroHitDur(heroNumber);
         HERO_DEATH_DUR = hero.getHeroDeathDur(heroNumber);
+    }
+
+    public void generateEnemy(){
+        final EnemySelector enemy = new EnemySelector();
+        ENEMY_RUN_POS = enemy.getEnemyRunPos();
+        ENEMY_ATK_POS = enemy.getEnemyAtkPos();
+        ENEMY_RUN_DUR = enemy.getEnemyRunDur();
+        ENEMY_ATK_DUR = enemy.getEnemyAtkDur();
+        ENEMY_HIT_DUR = enemy.getEnemyHitDur();
+        ENEMY_DEATH_DUR = enemy.getEnemyDeathDur();
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------
@@ -417,8 +422,8 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         enemy1_idleSprite.setVisibility(View.INVISIBLE);
 
         enemy_walkAnim = (AnimationDrawable)enemy1_walkSprite.getDrawable();
-        enemyWalk = ObjectAnimator.ofFloat(enemy1_walkSprite,"translationX",ENEMY1_WALK_POS);
-        enemyWalk.setDuration(ENEMY1_WALK_DUR);
+        enemyWalk = ObjectAnimator.ofFloat(enemy1_walkSprite,"translationX",ENEMY_RUN_POS);
+        enemyWalk.setDuration(ENEMY_RUN_DUR);
 
         enemyWalk.start(); // moves the position of the sprite
         enemy_walkAnim.start(); // starts "walk" animation
@@ -435,7 +440,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
     public void enemyAtkSprite(){
         enemy1_atkSprite.setVisibility(View.VISIBLE);
-        enemy1_atkSprite.setX(ENEMY1_ATK_POS);
+        enemy1_atkSprite.setX(ENEMY_ATK_POS);
 
         enemy_atkAnim = (AnimationDrawable) enemy1_atkSprite.getDrawable();
         enemy_atkAnim.setOneShot(true);
@@ -550,10 +555,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
                                                     }
-                                                }, ENEMY1_DEATH_DUR);
+                                                }, ENEMY_DEATH_DUR);
                                             }
                                         }
-                                    }, ENEMY1_HIT_DUR);
+                                    }, ENEMY_HIT_DUR);
                                 }
                             }, HERO_ATK_DUR);
                         }
@@ -625,7 +630,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                         }
                                     }, HERO_HIT_DUR);
                                 }
-                            }, ENEMY1_ATK_DUR);
+                            }, ENEMY_ATK_DUR);
 
                         }
                     });
@@ -698,10 +703,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
                                                     }
-                                                }, ENEMY1_DEATH_DUR);
+                                                }, ENEMY_DEATH_DUR);
                                             }
                                         }
-                                    }, ENEMY1_HIT_DUR);
+                                    }, ENEMY_HIT_DUR);
                                 }
                             }, HERO_SS1_DUR);
                         }
