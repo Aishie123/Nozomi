@@ -554,8 +554,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                     public void run() {
                                                         enableTurnOnly();
                                                         txtQuote.setText("");
-                                                        enemy_deathAnim.stop();
-                                                        enemy_deathSprite.setImageResource(selectEnemy.getDeathSprite(enemyNum));
                                                         txtLog.setText(hero.getName() + " dealt "+ hero1AtkN + " damage to the enemy.\nYou won!");
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
@@ -624,8 +622,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                     public void run() {
                                                         enableTurnOnly();
                                                         txtQuote.setText("");
-                                                        hero_deathAnim.stop();
-                                                        hero_deathSprite.setImageResource(R.drawable.hero1_death11);
                                                         txtLog.setText(enemy.getName() + " dealt " + enemy1AtkN + " damage to the hero.\nGame over!");
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
@@ -701,8 +697,6 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                     public void run() {
                                                         enableTurnOnly();
                                                         txtQuote.setText("");
-                                                        enemy_deathAnim.stop();
-                                                        enemy_deathSprite.setImageResource(selectEnemy.getDeathSprite(enemyNum));
                                                         txtLog.setText(hero.getName() + " used Double Slash, and dealt " + (hero1AtkN * 2) + " damage to the enemy. You won!");
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
