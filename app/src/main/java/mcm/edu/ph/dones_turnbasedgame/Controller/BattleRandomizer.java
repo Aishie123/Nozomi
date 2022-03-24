@@ -8,11 +8,13 @@ public class BattleRandomizer {
 
         public BattleRandomizer() {}
 
-        public int attack(int atkMin,int atkMax){
-            return random.nextInt(atkMax - atkMin) + atkMin;
-        }
+        public int randomizeAttack(int atkMin, int atkMax){ return random.nextInt(atkMax - atkMin) + atkMin; }
 
-    public int selectEnemy(){
+        public int randomizeAtkSFX(){
+        return random.nextInt(3);
+    }
+
+        public int randomizeEnemy(){
         return random.nextInt(2);
     }
 

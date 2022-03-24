@@ -8,8 +8,6 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import java.util.Random;
-
 import mcm.edu.ph.dones_turnbasedgame.R;
 
 public class MusicPlayerService extends Service {
@@ -122,14 +120,25 @@ public class MusicPlayerService extends Service {
         heroAtkSFX[n].start();
     }
 
-    public void playEnemyAtkSFX(int n){
-        enemyAtkSFX[0] = MediaPlayer.create(this, R.raw.sfx_enemyatk1);
-        enemyAtkSFX[1] = MediaPlayer.create(this, R.raw.sfx_enemyatk2);
-        enemyAtkSFX[2] = MediaPlayer.create(this, R.raw.sfx_enemyatk3);
-        enemyAtkSFX[n].setVolume(100,100);
-        enemyAtkSFX[n].setLooping(false);
-        enemyAtkSFX[n].start();
+    public void playEnemyAtkSFX(int num, int n){
+        if (num == 0){
+            enemyAtkSFX[0] = MediaPlayer.create(this, R.raw.sfx_enemyslash1);
+            enemyAtkSFX[1] = MediaPlayer.create(this, R.raw.sfx_enemyslash2);
+            enemyAtkSFX[2] = MediaPlayer.create(this, R.raw.sfx_enemyslash3);
+            enemyAtkSFX[n].setVolume(100,100);
+            enemyAtkSFX[n].setLooping(false);
+            enemyAtkSFX[n].start();
+        }
+        else {
+            enemyAtkSFX[0] = MediaPlayer.create(this, R.raw.sfx_enemypunch1);
+            enemyAtkSFX[1] = MediaPlayer.create(this, R.raw.sfx_enemypunch2);
+            enemyAtkSFX[2] = MediaPlayer.create(this, R.raw.sfx_enemypunch3);
+            enemyAtkSFX[n].setVolume(200,200);
+            enemyAtkSFX[n].setLooping(false);
+            enemyAtkSFX[n].start();
+        }
     }
+
 
     public void playHeroSS1SFX(){
         MediaPlayer heroSS1SFX = MediaPlayer.create(this, R.raw.sfx_heross1);

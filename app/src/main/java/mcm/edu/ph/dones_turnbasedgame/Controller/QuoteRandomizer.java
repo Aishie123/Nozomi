@@ -10,8 +10,8 @@ public class QuoteRandomizer {
     private final Context context;
 
 
-    public QuoteRandomizer(Context current){
-        this.context = current;
+    public QuoteRandomizer(Context context){
+        this.context = context;
     }
 
     public int quoteCounter(){

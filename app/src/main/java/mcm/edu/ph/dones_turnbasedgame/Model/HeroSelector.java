@@ -3,13 +3,13 @@ package mcm.edu.ph.dones_turnbasedgame.Model;
 @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
 public class HeroSelector extends GameData {
 
-    private float run1Pos, run2Pos, atkPos;
+    private float run1Pos, run2Pos, atkPos, SS1Pos;
     private int runDur, atkDur, SS1Dur, SS2Dur, hitDur, deathDur, num;
     
     public HeroSelector(){} // default constructor
 
     // main data catching constructor
-    public HeroSelector(float run1Pos, float run2Pos, float atkPos,
+    public HeroSelector(float run1Pos, float run2Pos, float atkPos, float SS1Pos,
                         int runDur, int atkDur, int SS1Dur, int SS2Dur, int hitDur, int deathDur, int num){
 
         this.run1Pos = run1Pos;
@@ -21,6 +21,7 @@ public class HeroSelector extends GameData {
         this.num = num;
         
         this.run2Pos = run2Pos;
+        this.SS1Pos = SS1Pos;
         this.SS1Dur = SS1Dur;
         this.SS2Dur = SS2Dur;
 
@@ -34,11 +35,18 @@ public class HeroSelector extends GameData {
 
     }
 
+    // SETTERS
+    public void setRun2Pos(float run2Pos) { this.run2Pos = run2Pos; }
+    public void setSS1Pos(float SS1Pos) { this.SS1Pos = SS1Pos; }
+    public void setSS1Dur(int SS1Dur) { this.SS1Dur = SS1Dur; }
+    public void setSS2Dur(int SS2Dur) {this.SS2Dur = SS2Dur; }
+
+    //GETTERS
     // Hero Positions ----------------------------------------------------------------------------------
 
     public float getRun1Pos(int num) {
         float[] run1Pos = new float[]{
-                725f, //Hero 1
+                800f, //Hero 1
                 0f
         };
         return run1Pos[num];
