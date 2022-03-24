@@ -1,15 +1,16 @@
 package mcm.edu.ph.dones_turnbasedgame.Model;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class HeroData extends GameData {
 
     private int courage, confidence, hope, love;
-    //borrowed variables
-    String name;
+    private String name;
     private int healthPt, manaPt, atkMin, atkMax, lvl;
 
     public HeroData(){}
 
     public HeroData(String name, int lvl, int hp, int mp, int cou, int con, int hope, int love, int atkMin, int atkMax){
+
         this.name = name;
         this.lvl = lvl;
         this.healthPt = hp;
@@ -57,7 +58,7 @@ public class HeroData extends GameData {
     }
 
     @Override
-    public int getAtkMin(){
+    public int getAtkMin() {
         this.atkMin = super.getAtkMin();
         this.atkMin += (hope * 2);
         return atkMin;

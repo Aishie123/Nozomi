@@ -26,14 +26,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import mcm.edu.ph.dones_turnbasedgame.Controller.BattleAlgorithm;
-import mcm.edu.ph.dones_turnbasedgame.Controller.EnemySelector;
-import mcm.edu.ph.dones_turnbasedgame.Controller.HeroSelector;
+import mcm.edu.ph.dones_turnbasedgame.Controller.BattleRandomizer;
+import mcm.edu.ph.dones_turnbasedgame.Model.EnemySelector;
+import mcm.edu.ph.dones_turnbasedgame.Model.HeroSelector;
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.Controller.QuoteRandomizer;
 import mcm.edu.ph.dones_turnbasedgame.Controller.SfxController;
 import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
-import mcm.edu.ph.dones_turnbasedgame.Model.MonsterData;
+import mcm.edu.ph.dones_turnbasedgame.Model.EnemyData;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
 @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal", "SwitchStatementWithoutDefaultBranch"})
@@ -47,11 +47,11 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     private Handler timer;
 
     private double heroHPB, heroMPB, enemyHPB; //for HP bar
-    private int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n;
+    private int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n, enemyNum;
     private int HERO_RUN_DUR, HERO_ATK_DUR, HERO_SS1_DUR, HERO_SS2_DUR, HERO_HIT_DUR, HERO_DEATH_DUR,
             ENEMY_RUN_DUR, ENEMY_ATK_DUR, ENEMY_HIT_DUR, ENEMY_DEATH_DUR;
     private float HERO_ORIG_POS, ENEMY_ORIG_POS, HERO_RUN1_POS, HERO_RUN2_POS, HERO_ATK_POS, HERO_SS1_POS,
-            ENEMY_RUN_POS, ENEMY_ATK_POS;
+            ENEMY_RUN1_POS, ENEMY_ATK_POS;
     private final String TAG = "BattleScreen";
     private boolean noRestart = false; // enable restart in the menu
 
@@ -61,15 +61,15 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
     private MusicPlayerService musicPlayerService;
     private HeroData hero = new HeroData();
-    private MonsterData enemy = new MonsterData();
-    private BattleAlgorithm battle = new BattleAlgorithm();
+    private EnemyData enemy = new EnemyData();
+    private BattleRandomizer battle = new BattleRandomizer();
     private QuoteRandomizer quote = new QuoteRandomizer(this);
     private SfxController sfx = new SfxController();
 
     private int counter = 0; // turn counter
     private int SS1C = 8;
     private int SS2C = 10;
-    private int heroNumber = 1; // temporary
+    private int heroNum = 1; // temporary
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         fullHeroMP = hero.getManaPt();
         curHeroMP = fullHeroMP;
 
-        enemy = new MonsterData(enemyName, 10, 40, 300, 20 );
+        enemy = new EnemyData(enemyName, 10, 40, 300, 20 );
         fullEnemyHP = enemy.getHealthPt();
         curEnemyHP = fullEnemyHP;
 
@@ -174,27 +174,28 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
     public void generateHero(){
         final HeroSelector hero = new HeroSelector();
-        heroNumber--;
-        HERO_RUN1_POS = hero.getHeroRun1Pos(heroNumber);
-        HERO_RUN2_POS = hero.getHeroRun2Pos(heroNumber);
-        HERO_ATK_POS = hero.getHeroAtkPos(heroNumber);
-        HERO_SS1_POS = hero.getHeroSS1Pos(heroNumber);
-        HERO_RUN_DUR = hero.getHeroRunDur(heroNumber);
-        HERO_ATK_DUR = hero.getHeroAtkDur(heroNumber);
-        HERO_SS1_DUR = hero.getHeroSS1Dur(heroNumber);
-        HERO_SS2_DUR = hero.getHeroSS2Dur(heroNumber);
-        HERO_HIT_DUR = hero.getHeroHitDur(heroNumber);
-        HERO_DEATH_DUR = hero.getHeroDeathDur(heroNumber);
+        heroNum--;
+        HERO_RUN1_POS = hero.getRun1Pos(heroNum);
+        HERO_RUN2_POS = hero.getRun2Pos(heroNum);
+        HERO_ATK_POS = hero.getAtkPos(heroNum);
+        HERO_SS1_POS = hero.getSS1Pos(heroNum);
+        HERO_RUN_DUR = hero.getRunDur(heroNum);
+        HERO_ATK_DUR = hero.getAtkDur(heroNum);
+        HERO_SS1_DUR = hero.getSS1Dur(heroNum);
+        HERO_SS2_DUR = hero.getSS2Dur(heroNum);
+        HERO_HIT_DUR = hero.getHitDur(heroNum);
+        HERO_DEATH_DUR = hero.getDeathDur(heroNum);
     }
 
     public void generateEnemy(){
         final EnemySelector enemy = new EnemySelector();
-        ENEMY_RUN_POS = enemy.getEnemyRunPos();
-        ENEMY_ATK_POS = enemy.getEnemyAtkPos();
-        ENEMY_RUN_DUR = enemy.getEnemyRunDur();
-        ENEMY_ATK_DUR = enemy.getEnemyAtkDur();
-        ENEMY_HIT_DUR = enemy.getEnemyHitDur();
-        ENEMY_DEATH_DUR = enemy.getEnemyDeathDur();
+        enemyNum = battle.selectEnemy();
+        ENEMY_RUN1_POS = enemy.getRun1Pos();
+        ENEMY_ATK_POS = enemy.getAtkPos();
+        ENEMY_RUN_DUR = enemy.getRunDur();
+        ENEMY_ATK_DUR = enemy.getAtkDur();
+        ENEMY_HIT_DUR = enemy.getHitDur();
+        ENEMY_DEATH_DUR = enemy.getDeathDur();
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------
@@ -422,7 +423,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         enemy1_idleSprite.setVisibility(View.INVISIBLE);
 
         enemy_walkAnim = (AnimationDrawable)enemy1_walkSprite.getDrawable();
-        enemyWalk = ObjectAnimator.ofFloat(enemy1_walkSprite,"translationX",ENEMY_RUN_POS);
+        enemyWalk = ObjectAnimator.ofFloat(enemy1_walkSprite,"translationX", ENEMY_RUN1_POS);
         enemyWalk.setDuration(ENEMY_RUN_DUR);
 
         enemyWalk.start(); // moves the position of the sprite

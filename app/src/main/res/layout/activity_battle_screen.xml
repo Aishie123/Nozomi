@@ -21,8 +21,9 @@
 
     <View
         android:id="@+id/bgRectangle"
-        android:layout_width="782dp"
+        android:layout_width="wrap_content"
         android:layout_height="46dp"
+        android:scaleType="fitXY"
         android:background="@drawable/bg_darkforestground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -208,8 +209,8 @@
 
     <ImageView
         android:id="@+id/hero1_runSprite"
-        android:layout_width="438dp"
-        android:layout_height="368dp"
+        android:layout_width="428dp"
+        android:layout_height="340dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/hero1_idleSprite"
         app:layout_constraintEnd_toEndOf="@+id/hero1_idleSprite"
@@ -220,8 +221,8 @@
 
     <ImageView
         android:id="@+id/hero1_hitSprite"
-        android:layout_width="438dp"
-        android:layout_height="368dp"
+        android:layout_width="428dp"
+        android:layout_height="340dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/hero1_idleSprite"
         app:layout_constraintEnd_toEndOf="@+id/hero1_idleSprite"
@@ -231,8 +232,8 @@
 
     <ImageView
         android:id="@+id/hero1_ss1Sprite"
-        android:layout_width="438dp"
-        android:layout_height="368dp"
+        android:layout_width="428dp"
+        android:layout_height="340dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/hero1_idleSprite"
         app:layout_constraintEnd_toEndOf="@+id/hero1_idleSprite"
@@ -242,8 +243,8 @@
 
     <ImageView
         android:id="@+id/hero1_deathSprite"
-        android:layout_width="438dp"
-        android:layout_height="368dp"
+        android:layout_width="428dp"
+        android:layout_height="340dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/hero1_idleSprite"
         app:layout_constraintEnd_toEndOf="@+id/hero1_idleSprite"
@@ -313,8 +314,8 @@
 
     <ImageView
         android:id="@+id/hero1_attkSprite"
-        android:layout_width="438dp"
-        android:layout_height="368dp"
+        android:layout_width="428dp"
+        android:layout_height="340dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/hero1_idleSprite"
         app:layout_constraintEnd_toEndOf="@+id/hero1_idleSprite"
@@ -325,33 +326,18 @@
 
     <ImageView
         android:id="@+id/hero1_idleSprite"
-        android:layout_width="438dp"
-        android:layout_height="368dp"
+        android:layout_width="428dp"
+        android:layout_height="340dp"
         android:layout_marginStart="-70dp"
-        android:layout_marginBottom="-30dp"
+        android:layout_marginBottom="-15dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.002"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.727"
-        app:srcCompat="@drawable/hero1_idle1" />
-
-    <ImageView
-        android:id="@+id/enemy1_idleSprite"
-        android:layout_width="428dp"
-        android:layout_height="340dp"
-        android:layout_marginEnd="-75dp"
-        android:scaleX="-1"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.024"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/enemy1_idle1" />
+        app:srcCompat="@drawable/hero1_idle1" />
 
     <ImageView
         android:id="@+id/enemy1_deathSprite"
@@ -367,6 +353,21 @@
         app:layout_constraintTop_toTopOf="@+id/enemy1_idleSprite"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/enemy1_death1" />
+
+    <ImageView
+        android:id="@+id/enemy1_idleSprite"
+        android:layout_width="428dp"
+        android:layout_height="340dp"
+        android:layout_marginEnd="-75dp"
+        android:scaleX="-1"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/enemy1_idle1" />
 
     <TextView
         android:id="@+id/txtEnemy"
