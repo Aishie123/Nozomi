@@ -3,7 +3,7 @@ package mcm.edu.ph.dones_turnbasedgame.Model;
 import android.content.Context;
 
 @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal", "UnnecessaryLocalVariable"})
-public class EnemySelector extends GameData{
+public class EnemySelector extends BattleData {
 
     private float run1Pos, atkPos;
     private int runDur, atkDur, hitDur, deathDur, num,

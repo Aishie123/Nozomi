@@ -1,12 +1,12 @@
 package mcm.edu.ph.dones_turnbasedgame.Model;
 
-public class GameData {
+public class BattleData {
 
         int healthPt, manaPt, atkMin, atkMax, lvl, run1Dur, atkDur, hitDur, deathDur, num;
         String name;
         float atkPos, run1Pos;
 
-        public GameData(){}
+        public BattleData(){}
 
         //SETTERS
         public void setHealthPt(int healthPt) { this.healthPt = healthPt; }

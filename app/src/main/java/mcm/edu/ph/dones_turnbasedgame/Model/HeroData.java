@@ -1,7 +1,7 @@
 package mcm.edu.ph.dones_turnbasedgame.Model;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class HeroData extends GameData {
+public class HeroData extends BattleData {
 
     private int courage, confidence, hope, love;
     private String name;

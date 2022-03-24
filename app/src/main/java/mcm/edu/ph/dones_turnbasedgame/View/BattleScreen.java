@@ -27,10 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import mcm.edu.ph.dones_turnbasedgame.Controller.BattleRandomizer;
+import mcm.edu.ph.dones_turnbasedgame.Model.DialogueData;
 import mcm.edu.ph.dones_turnbasedgame.Model.EnemySelector;
 import mcm.edu.ph.dones_turnbasedgame.Model.HeroSelector;
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
-import mcm.edu.ph.dones_turnbasedgame.Controller.QuoteRandomizer;
+import mcm.edu.ph.dones_turnbasedgame.Controller.DialogueRandomizer;
 import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
 import mcm.edu.ph.dones_turnbasedgame.Model.EnemyData;
 import mcm.edu.ph.dones_turnbasedgame.R;
@@ -61,8 +62,9 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     private MusicPlayerService musicPlayerService;
     private HeroData hero = new HeroData();
     private EnemyData enemy = new EnemyData();
-    private BattleRandomizer battle = new BattleRandomizer();
-    private QuoteRandomizer quote = new QuoteRandomizer(this);
+    private final BattleRandomizer battleR = new BattleRandomizer();
+    private final DialogueData dialogue = new DialogueData();
+    private final DialogueRandomizer dialogueR = new DialogueRandomizer(this);
     private final EnemySelector selectEnemy = new EnemySelector(this);
 
     private int counter = 0; // turn counter
@@ -148,7 +150,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         enemy_idleSprite.setVisibility(View.VISIBLE);
         hero_idleSprite.setVisibility(View.VISIBLE);
 
-        quoteCounter = quote.quoteCounter();
+        quoteCounter = dialogueR.dialogueAtkRandomizer();
 
         //Binding to music service to allow music to unpause. Refer to onServiceConnected method
         Intent musicIntent = new Intent(this, MusicPlayerService.class);
@@ -182,7 +184,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     }
 
     public void generateEnemy(){
-        enemyNum = battle.randomizeEnemy();
+        enemyNum = battleR.randomizeEnemy();
         enemy_idleSprite.setImageResource(selectEnemy.getIdleSprite(enemyNum));
         enemy_runSprite.setImageResource(selectEnemy.getRunSprite(enemyNum));
         enemy_atkSprite.setImageResource(selectEnemy.getAtkSprite(enemyNum));
@@ -474,20 +476,20 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     // onClick --------------------------------------------------------------------------------------------
     @SuppressLint({"SetTextI18n", "NonConstantResourceId", "ObsoleteSdkInt"})
     public void onClick(View v) {
-        int sfxN = battle.randomizeAtkSFX();
-        int hero1AtkN = battle.randomizeAttack(hero.getAtkMin(),hero.getAtkMax());
-        int enemy1AtkN = battle.randomizeAttack(enemy.getAtkMin(),enemy.getAtkMax());
+        int sfxN = battleR.randomizeAtkSFX();
+        int hero1AtkN = battleR.randomizeAttack(hero.getAtkMin(),hero.getAtkMax());
+        int enemy1AtkN = battleR.randomizeAttack(enemy.getAtkMin(),enemy.getAtkMax());
 
         switch (v.getId()){
             case R.id.btnStart:
 
-                //restart battle --------------------------------------------------------------------------------------------
+                //restart battleR --------------------------------------------------------------------------------------------
                 if (counter == -1){
                     recreate();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
 
-                //start of battle --------------------------------------------------------------------------------------------
+                //start of battleR --------------------------------------------------------------------------------------------
                 else if (counter == 0) {
                     heroHPBar();
                     heroMPBar();
@@ -501,7 +503,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 //hero's turn --------------------------------------------------------------------------------------------
                 else if(counter%2 == 1){
                     txtBtn.setText("Next Turn");
-                    txtQuote.setText("'" + quote.quoteHeroAtk(quoteCounter) + "'");
+                    txtQuote.setText("'" + dialogue.getHeroAtkDialogue(quoteCounter) + "'");
                     heroRun = ObjectAnimator.ofFloat(hero_runSprite,"translationX", HERO_RUN1_POS);
                     disableButtons();
                     heroRunSprite();
@@ -539,7 +541,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                             enemy_idleSprite.setVisibility(View.VISIBLE);
 
                                             counter++;
-                                            quoteCounter = quote.quoteCounter();
+                                            quoteCounter = dialogueR.dialogueAtkRandomizer();
 
                                             if(curEnemyHP <= 0){
 
@@ -571,7 +573,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 //enemy's turn --------------------------------------------------------------------------------------------
                 else if(counter%2 !=1) {
                     txtBtn.setText("Attack");
-                    txtQuote.setText("'" + quote.quoteEnemyAtk(quoteCounter) + "'");
+                    txtQuote.setText("'" + dialogue.getEnemyAtkDialogue(quoteCounter) + "'");
                     disableButtons();
                     enemyWalkSprite();
 
@@ -647,7 +649,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 else{
                     curHeroMP-=SS1C;
                     heroMPBar();
-                    txtQuote.setText(quote.quoteHeroSS());
+                    txtQuote.setText(dialogueR.dialogueHeroSS());
                     txtBtn.setText("Next Turn");
                     heroRun = ObjectAnimator.ofFloat(hero_runSprite,"translationX", HERO_RUN2_POS);
                     heroRunSprite();
@@ -728,7 +730,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                     }
 
                     disableButtons();
-                    txtQuote.setText(quote.quoteHeroSS());
+                    txtQuote.setText(dialogueR.dialogueHeroSS());
                     musicPlayerService.playHeroSS2SFX();
                     heroSS2Sprite();
                     timer.postDelayed(new Runnable() {

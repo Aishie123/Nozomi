@@ -1,6 +1,6 @@
 package mcm.edu.ph.dones_turnbasedgame.Model;
 
-public class EnemyData extends GameData{
+public class EnemyData extends BattleData {
 
     private String name;
     private int atkMin, atkMax, healthPt, manaPt;

@@ -1,7 +1,7 @@
 package mcm.edu.ph.dones_turnbasedgame.Model;
 
 @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
-public class HeroSelector extends GameData {
+public class HeroSelector extends BattleData {
 
     private float run1Pos, run2Pos, atkPos, SS1Pos;
     private int runDur, atkDur, SS1Dur, SS2Dur, hitDur, deathDur, num;

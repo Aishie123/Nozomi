@@ -140,10 +140,8 @@ public class SettingsScreen extends AppCompatActivity implements ServiceConnecti
     }
 
     // method for setting volume --------------------------------------------------------------------------------------------------------------
-    private void setVolume()
-    {
-        try
-        {
+    private void setVolume() {
+        try {
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             musicVolBar.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
             musicVolBar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
@@ -168,10 +166,7 @@ public class SettingsScreen extends AppCompatActivity implements ServiceConnecti
                 }
             });
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        catch (Exception e) { e.printStackTrace(); }
     }
 
 
