@@ -26,32 +26,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import mcm.edu.ph.dones_turnbasedgame.Controller.BattleAlgorithm;
-import mcm.edu.ph.dones_turnbasedgame.Controller.EnemySelector;
-import mcm.edu.ph.dones_turnbasedgame.Controller.HeroSelector;
+import mcm.edu.ph.dones_turnbasedgame.Controller.BattleRandomizer;
+import mcm.edu.ph.dones_turnbasedgame.Model.EnemySelector;
+import mcm.edu.ph.dones_turnbasedgame.Model.HeroSelector;
 import mcm.edu.ph.dones_turnbasedgame.Controller.MusicPlayerService;
 import mcm.edu.ph.dones_turnbasedgame.Controller.QuoteRandomizer;
 import mcm.edu.ph.dones_turnbasedgame.Controller.SfxController;
 import mcm.edu.ph.dones_turnbasedgame.Model.HeroData;
-import mcm.edu.ph.dones_turnbasedgame.Model.MonsterData;
+import mcm.edu.ph.dones_turnbasedgame.Model.EnemyData;
 import mcm.edu.ph.dones_turnbasedgame.R;
 
 @SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal", "SwitchStatementWithoutDefaultBranch"})
 public class BattleScreen extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
-    private ImageView enemy1_idleSprite, enemy1_hitSprite, enemy1_deathSprite, enemy1_walkSprite, enemy1_atkSprite,
-            hero1_idleSprite, hero1_runSprite, hero1_atkSprite, hero1_ss1Sprite, hero1_ss2Sprite, hero1_hitSprite, hero1_deathSprite, btnMenu;
+    private ImageView enemy_idleSprite, enemy_hitSprite, enemy_deathSprite, enemy_walkSprite, enemy_atkSprite,
+            hero_idleSprite, hero_runSprite, hero_atkSprite, hero_ss1Sprite, hero_ss2Sprite, hero_hitSprite, hero_deathSprite, btnMenu;
     private ImageButton btnSS1, btnSS2, btnTurn;
     private TextView txtLog, txtQuote, txtBtn, txtEnemy, txtUser, txtHeroHP, txtHeroMP, txtEnemyHP;
     private View heroHPBar, heroMPBar, enemyHPBar;
     private Handler timer;
 
     private double heroHPB, heroMPB, enemyHPB; //for HP bar
-    private int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n;
+    private int fullHeroHP, curHeroHP, fullHeroMP, curHeroMP, fullEnemyHP, curEnemyHP, quoteCounter, n, enemyNum;
     private int HERO_RUN_DUR, HERO_ATK_DUR, HERO_SS1_DUR, HERO_SS2_DUR, HERO_HIT_DUR, HERO_DEATH_DUR,
             ENEMY_RUN_DUR, ENEMY_ATK_DUR, ENEMY_HIT_DUR, ENEMY_DEATH_DUR;
     private float HERO_ORIG_POS, ENEMY_ORIG_POS, HERO_RUN1_POS, HERO_RUN2_POS, HERO_ATK_POS, HERO_SS1_POS,
-            ENEMY_RUN_POS, ENEMY_ATK_POS;
+            ENEMY_RUN1_POS, ENEMY_ATK_POS;
     private final String TAG = "BattleScreen";
     private boolean noRestart = false; // enable restart in the menu
 
@@ -61,15 +61,15 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
     private MusicPlayerService musicPlayerService;
     private HeroData hero = new HeroData();
-    private MonsterData enemy = new MonsterData();
-    private BattleAlgorithm battle = new BattleAlgorithm();
+    private EnemyData enemy = new EnemyData();
+    private BattleRandomizer battle = new BattleRandomizer();
     private QuoteRandomizer quote = new QuoteRandomizer(this);
     private SfxController sfx = new SfxController();
 
     private int counter = 0; // turn counter
     private int SS1C = 8;
     private int SS2C = 10;
-    private int heroNumber = 1; // temporary
+    private int heroNum = 1; // temporary
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,32 +98,32 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         heroMPBar = findViewById(R.id.heroMPBar);
         enemyHPBar = findViewById(R.id.enemyHPBar);
 
-        enemy1_idleSprite = findViewById(R.id.enemy1_idleSprite);
-        enemy1_walkSprite = findViewById(R.id.enemy1_walkSprite);
-        enemy1_atkSprite = findViewById(R.id.enemy1_attackSprite);
-        enemy1_hitSprite = findViewById(R.id.enemy1_hitSprite);
-        enemy1_deathSprite = findViewById(R.id.enemy1_deathSprite);
+        enemy_idleSprite = findViewById(R.id.enemy_idleSprite);
+        enemy_walkSprite = findViewById(R.id.enemy_walkSprite);
+        enemy_atkSprite = findViewById(R.id.enemy_attackSprite);
+        enemy_hitSprite = findViewById(R.id.enemy_hitSprite);
+        enemy_deathSprite = findViewById(R.id.enemy_deathSprite);
 
-        hero1_idleSprite = findViewById(R.id.hero1_idleSprite);
-        hero1_runSprite = findViewById(R.id.hero1_runSprite);
-        hero1_atkSprite = findViewById(R.id.hero1_attkSprite);
-        hero1_ss1Sprite = findViewById(R.id.hero1_ss1Sprite);
-        hero1_ss2Sprite = findViewById(R.id.hero1_ss2Sprite);
-        hero1_hitSprite = findViewById(R.id.hero1_hitSprite);
-        hero1_deathSprite = findViewById(R.id.hero1_deathSprite);
+        hero_idleSprite = findViewById(R.id.hero_idleSprite);
+        hero_runSprite = findViewById(R.id.hero_runSprite);
+        hero_atkSprite = findViewById(R.id.hero_attkSprite);
+        hero_ss1Sprite = findViewById(R.id.hero_ss1Sprite);
+        hero_ss2Sprite = findViewById(R.id.hero_ss2Sprite);
+        hero_hitSprite = findViewById(R.id.hero_hitSprite);
+        hero_deathSprite = findViewById(R.id.hero_deathSprite);
 
-        enemy1_idleSprite.setImageResource(R.drawable.enemy1_idleanim);
-        enemy1_walkSprite.setImageResource(R.drawable.enemy1_walkanim);
-        enemy1_atkSprite.setImageResource(R.drawable.enemy1_attackanim);
-        enemy1_hitSprite.setImageResource(R.drawable.enemy1_hitanim);
-        enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
-        hero1_idleSprite.setImageResource(R.drawable.hero1_idleanim);
-        hero1_runSprite.setImageResource(R.drawable.hero1_runanim);
-        hero1_atkSprite.setImageResource(R.drawable.hero1_attackanim);
-        hero1_ss1Sprite.setImageResource(R.drawable.hero1_ss1anim);
-        hero1_ss2Sprite.setImageResource(R.drawable.hero1_ss2anim);
-        hero1_hitSprite.setImageResource(R.drawable.hero1_hitanim);
-        hero1_deathSprite.setImageResource(R.drawable.hero1_deathanim);
+        enemy_idleSprite.setImageResource(R.drawable.enemy1_idleanim);
+        enemy_walkSprite.setImageResource(R.drawable.enemy1_walkanim);
+        enemy_atkSprite.setImageResource(R.drawable.enemy1_attackanim);
+        enemy_hitSprite.setImageResource(R.drawable.enemy1_hitanim);
+        enemy_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
+        hero_idleSprite.setImageResource(R.drawable.hero1_idleanim);
+        hero_runSprite.setImageResource(R.drawable.hero1_runanim);
+        hero_atkSprite.setImageResource(R.drawable.hero1_attackanim);
+        hero_ss1Sprite.setImageResource(R.drawable.hero1_ss1anim);
+        hero_ss2Sprite.setImageResource(R.drawable.hero1_ss2anim);
+        hero_hitSprite.setImageResource(R.drawable.hero1_hitanim);
+        hero_deathSprite.setImageResource(R.drawable.hero1_deathanim);
 
         Intent intent = getIntent();
         String enemyName = intent.getExtras().getString("enemy");
@@ -135,7 +135,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         fullHeroMP = hero.getManaPt();
         curHeroMP = fullHeroMP;
 
-        enemy = new MonsterData(enemyName, 10, 40, 300, 20 );
+        enemy = new EnemyData(enemyName, 10, 40, 300, 20 );
         fullEnemyHP = enemy.getHealthPt();
         curEnemyHP = fullEnemyHP;
 
@@ -149,10 +149,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         btnSS1.setOnClickListener(this);
         btnSS2.setOnClickListener(this);
 
-        enemy1_deathSprite.setVisibility(View.INVISIBLE);
-        hero1_deathSprite.setVisibility(View.INVISIBLE);
-        enemy1_idleSprite.setVisibility(View.VISIBLE);
-        hero1_idleSprite.setVisibility(View.VISIBLE);
+        enemy_deathSprite.setVisibility(View.INVISIBLE);
+        hero_deathSprite.setVisibility(View.INVISIBLE);
+        enemy_idleSprite.setVisibility(View.VISIBLE);
+        hero_idleSprite.setVisibility(View.VISIBLE);
 
         quoteCounter = quote.quoteCounter();
 
@@ -174,27 +174,28 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
     public void generateHero(){
         final HeroSelector hero = new HeroSelector();
-        heroNumber--;
-        HERO_RUN1_POS = hero.getHeroRun1Pos(heroNumber);
-        HERO_RUN2_POS = hero.getHeroRun2Pos(heroNumber);
-        HERO_ATK_POS = hero.getHeroAtkPos(heroNumber);
-        HERO_SS1_POS = hero.getHeroSS1Pos(heroNumber);
-        HERO_RUN_DUR = hero.getHeroRunDur(heroNumber);
-        HERO_ATK_DUR = hero.getHeroAtkDur(heroNumber);
-        HERO_SS1_DUR = hero.getHeroSS1Dur(heroNumber);
-        HERO_SS2_DUR = hero.getHeroSS2Dur(heroNumber);
-        HERO_HIT_DUR = hero.getHeroHitDur(heroNumber);
-        HERO_DEATH_DUR = hero.getHeroDeathDur(heroNumber);
+        heroNum--;
+        HERO_RUN1_POS = hero.getRun1Pos(heroNum);
+        HERO_RUN2_POS = hero.getRun2Pos(heroNum);
+        HERO_ATK_POS = hero.getAtkPos(heroNum);
+        HERO_SS1_POS = hero.getSS1Pos(heroNum);
+        HERO_RUN_DUR = hero.getRunDur(heroNum);
+        HERO_ATK_DUR = hero.getAtkDur(heroNum);
+        HERO_SS1_DUR = hero.getSS1Dur(heroNum);
+        HERO_SS2_DUR = hero.getSS2Dur(heroNum);
+        HERO_HIT_DUR = hero.getHitDur(heroNum);
+        HERO_DEATH_DUR = hero.getDeathDur(heroNum);
     }
 
     public void generateEnemy(){
         final EnemySelector enemy = new EnemySelector();
-        ENEMY_RUN_POS = enemy.getEnemyRunPos();
-        ENEMY_ATK_POS = enemy.getEnemyAtkPos();
-        ENEMY_RUN_DUR = enemy.getEnemyRunDur();
-        ENEMY_ATK_DUR = enemy.getEnemyAtkDur();
-        ENEMY_HIT_DUR = enemy.getEnemyHitDur();
-        ENEMY_DEATH_DUR = enemy.getEnemyDeathDur();
+        enemyNum = battle.selectEnemy();
+        ENEMY_RUN1_POS = enemy.getRun1Pos(enemyNum);
+        ENEMY_ATK_POS = enemy.getAtkPos(enemyNum);
+        ENEMY_RUN_DUR = enemy.getRunDur(enemyNum);
+        ENEMY_ATK_DUR = enemy.getAtkDur(enemyNum);
+        ENEMY_HIT_DUR = enemy.getHitDur(enemyNum);
+        ENEMY_DEATH_DUR = enemy.getDeathDur(enemyNum);
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------
@@ -326,23 +327,23 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     // idle sprites of characters --------------------------------------------------------------------------------------------------
     public void idleSprite(){
 
-        hero_idleAnim = (AnimationDrawable)hero1_idleSprite.getDrawable();
+        hero_idleAnim = (AnimationDrawable) hero_idleSprite.getDrawable();
         hero_idleAnim.start(); // starts "idle" animation
 
-        enemy_idleAnim = (AnimationDrawable)enemy1_idleSprite.getDrawable();
+        enemy_idleAnim = (AnimationDrawable) enemy_idleSprite.getDrawable();
         enemy_idleAnim.start(); // starts "idle" animation
 
-        hero1_idleSprite.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        hero_idleSprite.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
-                HERO_ORIG_POS = hero1_idleSprite.getLeft(); // gets X position of hero
-                hero1_idleSprite.getViewTreeObserver().removeOnGlobalLayoutListener(this); // removes the listener to prevent being called again
+                HERO_ORIG_POS = hero_idleSprite.getLeft(); // gets X position of hero
+                hero_idleSprite.getViewTreeObserver().removeOnGlobalLayoutListener(this); // removes the listener to prevent being called again
             }
         });
 
-        enemy1_idleSprite.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        enemy_idleSprite.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
-                ENEMY_ORIG_POS = enemy1_idleSprite.getLeft(); // gets X position of enemy
-                enemy1_idleSprite.getViewTreeObserver().removeOnGlobalLayoutListener(this); // removes the listener to prevent being called again
+                ENEMY_ORIG_POS = enemy_idleSprite.getLeft(); // gets X position of enemy
+                enemy_idleSprite.getViewTreeObserver().removeOnGlobalLayoutListener(this); // removes the listener to prevent being called again
             }
         });
 
@@ -352,10 +353,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     //HERO SPRITES ----------------------------------------------------------------------------------------------------------------
     // animation for when hero runs
     public void heroRunSprite(){
-        hero1_runSprite.setVisibility(View.VISIBLE);
-        hero1_idleSprite.setVisibility(View.INVISIBLE);
+        hero_runSprite.setVisibility(View.VISIBLE);
+        hero_idleSprite.setVisibility(View.INVISIBLE);
 
-        hero_runAnim = (AnimationDrawable)hero1_runSprite.getDrawable();
+        hero_runAnim = (AnimationDrawable) hero_runSprite.getDrawable();
         heroRun.setDuration(HERO_RUN_DUR); // sets duration of movement to 0.8 seconds, same as the animation duration
 
         heroRun.start(); // moves the position of the sprite
@@ -363,53 +364,53 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         heroRun.addListener(new AnimatorListenerAdapter() {
             public void onAnimationEnd(Animator animation) {
-                hero1_runSprite.setVisibility(View.INVISIBLE);
+                hero_runSprite.setVisibility(View.INVISIBLE);
                 hero_runAnim.stop();
-                hero1_runSprite.setX(HERO_ORIG_POS); // moves the sprite back to original position when done and invisible
+                hero_runSprite.setX(HERO_ORIG_POS); // moves the sprite back to original position when done and invisible
             }
         });
     }
 
     // animation for when hero attacks
     public void heroAtkSprite(){
-        hero1_atkSprite.setVisibility(View.VISIBLE);
-        hero1_atkSprite.setX(HERO_ATK_POS);
+        hero_atkSprite.setVisibility(View.VISIBLE);
+        hero_atkSprite.setX(HERO_ATK_POS);
 
-        hero_atkAnim = (AnimationDrawable) hero1_atkSprite.getDrawable();
+        hero_atkAnim = (AnimationDrawable) hero_atkSprite.getDrawable();
         hero_atkAnim.setOneShot(true);
         hero_atkAnim.start(); // starts "attack" animation
     }
 
     // animation for when hero takes hit
     public void heroHitSprite(){
-        hero1_hitSprite.setVisibility(View.VISIBLE);
+        hero_hitSprite.setVisibility(View.VISIBLE);
 
-        hero_hitAnim = (AnimationDrawable)hero1_hitSprite.getDrawable();
+        hero_hitAnim = (AnimationDrawable) hero_hitSprite.getDrawable();
         hero_hitAnim.setOneShot(true);
         hero_hitAnim.start(); // starts "take hit" animation
     }
 
     public void heroSS1Sprite(){
-        hero1_ss1Sprite.setVisibility(View.VISIBLE);
-        hero1_ss1Sprite.setX(HERO_SS1_POS);
+        hero_ss1Sprite.setVisibility(View.VISIBLE);
+        hero_ss1Sprite.setX(HERO_SS1_POS);
 
-        hero_ss1Anim = (AnimationDrawable) hero1_ss1Sprite.getDrawable();
+        hero_ss1Anim = (AnimationDrawable) hero_ss1Sprite.getDrawable();
         hero_ss1Anim.setOneShot(true);
         hero_ss1Anim.start(); // starts "Double Slash" animation
     }
 
     public void heroSS2Sprite(){
-        hero1_ss2Sprite.setVisibility(View.VISIBLE);
+        hero_ss2Sprite.setVisibility(View.VISIBLE);
 
-        hero_ss2Anim = (AnimationDrawable)hero1_ss2Sprite.getDrawable();
+        hero_ss2Anim = (AnimationDrawable) hero_ss2Sprite.getDrawable();
         hero_ss2Anim.setOneShot(true);
         hero_ss2Anim.start(); // starts "Healing Shield" animation
     }
 
     public void heroDeathSprite(){
-        hero1_deathSprite.setVisibility(View.VISIBLE);
+        hero_deathSprite.setVisibility(View.VISIBLE);
 
-        hero_deathAnim = (AnimationDrawable)hero1_deathSprite.getDrawable();
+        hero_deathAnim = (AnimationDrawable) hero_deathSprite.getDrawable();
         hero_deathAnim.setOneShot(true);
         hero_deathAnim.start(); // starts "death" animation
     }
@@ -418,11 +419,11 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     //ENEMY SPRITES ---------------------------------------------------------------------------------------------------------------
 
     public void enemyWalkSprite(){
-        enemy1_walkSprite.setVisibility(View.VISIBLE);
-        enemy1_idleSprite.setVisibility(View.INVISIBLE);
+        enemy_walkSprite.setVisibility(View.VISIBLE);
+        enemy_idleSprite.setVisibility(View.INVISIBLE);
 
-        enemy_walkAnim = (AnimationDrawable)enemy1_walkSprite.getDrawable();
-        enemyWalk = ObjectAnimator.ofFloat(enemy1_walkSprite,"translationX",ENEMY_RUN_POS);
+        enemy_walkAnim = (AnimationDrawable) enemy_walkSprite.getDrawable();
+        enemyWalk = ObjectAnimator.ofFloat(enemy_walkSprite,"translationX", ENEMY_RUN1_POS);
         enemyWalk.setDuration(ENEMY_RUN_DUR);
 
         enemyWalk.start(); // moves the position of the sprite
@@ -430,36 +431,36 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
 
         enemyWalk.addListener(new AnimatorListenerAdapter() {
             public void onAnimationEnd(Animator animation) {
-                enemy1_walkSprite.setVisibility(View.INVISIBLE);
+                enemy_walkSprite.setVisibility(View.INVISIBLE);
                 enemy_walkAnim.stop();
-                enemy1_walkSprite.setX(ENEMY_ORIG_POS); // moves the sprite back to original position when done and invisible
+                enemy_walkSprite.setX(ENEMY_ORIG_POS); // moves the sprite back to original position when done and invisible
             }
         });
 
     }
 
     public void enemyAtkSprite(){
-        enemy1_atkSprite.setVisibility(View.VISIBLE);
-        enemy1_atkSprite.setX(ENEMY_ATK_POS);
+        enemy_atkSprite.setVisibility(View.VISIBLE);
+        enemy_atkSprite.setX(ENEMY_ATK_POS);
 
-        enemy_atkAnim = (AnimationDrawable) enemy1_atkSprite.getDrawable();
+        enemy_atkAnim = (AnimationDrawable) enemy_atkSprite.getDrawable();
         enemy_atkAnim.setOneShot(true);
         enemy_atkAnim.start(); // starts "attack" animation
     }
 
     public void enemyDeathSprite(){
-        enemy1_deathSprite.setVisibility(View.VISIBLE);
+        enemy_deathSprite.setVisibility(View.VISIBLE);
 
-        enemy_deathAnim = (AnimationDrawable)enemy1_deathSprite.getDrawable();
+        enemy_deathAnim = (AnimationDrawable) enemy_deathSprite.getDrawable();
         enemy_deathAnim.setOneShot(true);
         enemy_deathAnim.start(); // starts "take hit" animation
 
     }
 
     public void enemyHitSprite(){
-        enemy1_hitSprite.setVisibility(View.VISIBLE);
+        enemy_hitSprite.setVisibility(View.VISIBLE);
 
-        enemy_hitAnim = (AnimationDrawable)enemy1_hitSprite.getDrawable();
+        enemy_hitAnim = (AnimationDrawable) enemy_hitSprite.getDrawable();
         enemy_hitAnim.setOneShot(true);
         enemy_hitAnim.start(); // starts "death" animation
     }
@@ -495,7 +496,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                 else if(counter%2 == 1){
                     txtBtn.setText("Next Turn");
                     txtQuote.setText("'" + quote.quoteHeroAtk(quoteCounter) + "'");
-                    heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX", HERO_RUN1_POS);
+                    heroRun = ObjectAnimator.ofFloat(hero_runSprite,"translationX", HERO_RUN1_POS);
                     disableButtons();
                     heroRunSprite();
 
@@ -509,7 +510,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void run() {
 
-                                    enemy1_idleSprite.setVisibility(View.INVISIBLE);
+                                    enemy_idleSprite.setVisibility(View.INVISIBLE);
                                     enemyHitSprite();
 
                                     timer.postDelayed(new Runnable() {
@@ -524,12 +525,12 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                             enemyHPBar();
 
                                             hero_atkAnim.stop();
-                                            hero1_atkSprite.setVisibility(View.INVISIBLE);
-                                            hero1_idleSprite.setVisibility(View.VISIBLE);
+                                            hero_atkSprite.setVisibility(View.INVISIBLE);
+                                            hero_idleSprite.setVisibility(View.VISIBLE);
 
                                             enemy_hitAnim.stop();
-                                            enemy1_hitSprite.setVisibility(View.INVISIBLE);
-                                            enemy1_idleSprite.setVisibility(View.VISIBLE);
+                                            enemy_hitSprite.setVisibility(View.INVISIBLE);
+                                            enemy_idleSprite.setVisibility(View.VISIBLE);
 
                                             counter++;
                                             quoteCounter = quote.quoteCounter();
@@ -539,10 +540,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                 musicPlayerService.pauseMusic();
                                                 musicPlayerService.playMusic(4);
 
-                                                enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
+                                                enemy_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
 
                                                 enemyDeathSprite();
-                                                enemy1_idleSprite.setVisibility(View.INVISIBLE);
+                                                enemy_idleSprite.setVisibility(View.INVISIBLE);
 
                                                 timer.postDelayed(new Runnable() {
                                                     @Override
@@ -550,7 +551,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                         enableTurnOnly();
                                                         txtQuote.setText("");
                                                         enemy_deathAnim.stop();
-                                                        enemy1_deathSprite.setImageResource(R.drawable.enemy1_death4);
+                                                        enemy_deathSprite.setImageResource(R.drawable.enemy1_death4);
                                                         txtLog.setText(hero.getName() + " dealt "+ hero1AtkN + " damage to the enemy.\nYou won!");
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
@@ -581,7 +582,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                             timer.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    hero1_idleSprite.setVisibility(View.INVISIBLE);
+                                    hero_idleSprite.setVisibility(View.INVISIBLE);
 
                                     heroHitSprite();
 
@@ -596,12 +597,12 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                             heroHPBar();
 
                                             enemy_atkAnim.stop();
-                                            enemy1_atkSprite.setVisibility(View.INVISIBLE);
-                                            enemy1_idleSprite.setVisibility(View.VISIBLE);
+                                            enemy_atkSprite.setVisibility(View.INVISIBLE);
+                                            enemy_idleSprite.setVisibility(View.VISIBLE);
 
                                             hero_hitAnim.stop();
-                                            hero1_hitSprite.setVisibility(View.INVISIBLE);
-                                            hero1_idleSprite.setVisibility(View.VISIBLE);
+                                            hero_hitSprite.setVisibility(View.INVISIBLE);
+                                            hero_idleSprite.setVisibility(View.VISIBLE);
 
                                             counter++;
 
@@ -609,10 +610,10 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                 musicPlayerService.pauseMusic();
                                                 musicPlayerService.playMusic(5);
 
-                                                hero1_deathSprite.setImageResource(R.drawable.hero1_deathanim);
+                                                hero_deathSprite.setImageResource(R.drawable.hero1_deathanim);
                                                 disableButtons();
                                                 heroDeathSprite();
-                                                hero1_idleSprite.setVisibility(View.INVISIBLE);
+                                                hero_idleSprite.setVisibility(View.INVISIBLE);
 
                                                 timer.postDelayed(new Runnable() {
                                                     @Override
@@ -620,7 +621,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                         enableTurnOnly();
                                                         txtQuote.setText("");
                                                         hero_deathAnim.stop();
-                                                        hero1_deathSprite.setImageResource(R.drawable.hero1_death11);
+                                                        hero_deathSprite.setImageResource(R.drawable.hero1_death11);
                                                         txtLog.setText(enemy.getName() + " dealt " + enemy1AtkN + " damage to the hero.\nGame over!");
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
@@ -648,7 +649,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                     heroMPBar();
                     txtQuote.setText(quote.quoteHeroSS());
                     txtBtn.setText("Next Turn");
-                    heroRun = ObjectAnimator.ofFloat(hero1_runSprite,"translationX", HERO_RUN2_POS);
+                    heroRun = ObjectAnimator.ofFloat(hero_runSprite,"translationX", HERO_RUN2_POS);
                     heroRunSprite();
                     disableButtons();
 
@@ -661,7 +662,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void run() {
 
-                                    enemy1_idleSprite.setVisibility(View.INVISIBLE);
+                                    enemy_idleSprite.setVisibility(View.INVISIBLE);
                                     enemyHitSprite();
 
                                     timer.postDelayed(new Runnable() {
@@ -675,22 +676,22 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                             enemyHPBar();
 
                                             hero_ss1Anim.stop();
-                                            hero1_ss1Sprite.setVisibility(View.INVISIBLE);
-                                            hero1_idleSprite.setVisibility(View.VISIBLE);
+                                            hero_ss1Sprite.setVisibility(View.INVISIBLE);
+                                            hero_idleSprite.setVisibility(View.VISIBLE);
 
                                             enemy_hitAnim.stop();
-                                            enemy1_hitSprite.setVisibility(View.INVISIBLE);
-                                            enemy1_idleSprite.setVisibility(View.VISIBLE);
+                                            enemy_hitSprite.setVisibility(View.INVISIBLE);
+                                            enemy_idleSprite.setVisibility(View.VISIBLE);
                                             counter++;
 
                                             if (curEnemyHP <= 0) {
                                                 musicPlayerService.pauseMusic();
                                                 musicPlayerService.playMusic(4);
 
-                                                enemy1_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
+                                                enemy_deathSprite.setImageResource(R.drawable.enemy1_deathanim);
                                                 disableButtons();
                                                 enemyDeathSprite();
-                                                enemy1_idleSprite.setVisibility(View.INVISIBLE);
+                                                enemy_idleSprite.setVisibility(View.INVISIBLE);
 
                                                 timer.postDelayed(new Runnable() {
                                                     @Override
@@ -698,7 +699,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                                                         enableTurnOnly();
                                                         txtQuote.setText("");
                                                         enemy_deathAnim.stop();
-                                                        enemy1_deathSprite.setImageResource(R.drawable.enemy1_death4);
+                                                        enemy_deathSprite.setImageResource(R.drawable.enemy1_death4);
                                                         txtLog.setText(hero.getName() + " used Double Slash, and dealt " + (hero1AtkN * 2) + " damage to the enemy. You won!");
                                                         counter = -1;
                                                         txtBtn.setText("Restart");
@@ -737,7 +738,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             enableTurnOnly();
-                            hero1_ss2Sprite.setVisibility(View.INVISIBLE);
+                            hero_ss2Sprite.setVisibility(View.INVISIBLE);
                             txtLog.setText(hero.getName() + " used Healing Shield, and regained 50% health");
                             txtBtn.setText("Next Turn");
                             heroHPBar();

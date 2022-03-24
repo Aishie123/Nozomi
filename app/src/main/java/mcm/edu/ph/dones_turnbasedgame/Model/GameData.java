@@ -2,12 +2,9 @@ package mcm.edu.ph.dones_turnbasedgame.Model;
 
 public class GameData {
 
-        int healthPt;
-        int manaPt;
+        int healthPt, manaPt, atkMin, atkMax, lvl, run1Dur, atkDur, hitDur, deathDur, num;
         String name;
-        int atkMin;
-        int atkMax;
-        int lvl;
+        float atkPos, run1Pos;
 
         public GameData(){}
 
@@ -19,6 +16,14 @@ public class GameData {
         public void setAtkMax(int atkMax) { this.atkMax = atkMax; }
         public void setLvl(int lvl) { this.lvl = lvl; }
 
+        public void setNum(int num) { this.num = num; }
+        public void setRun1Pos(float run1Pos) { this.run1Pos = run1Pos; }
+        public void setAtkPos(float atkPos) { this.atkPos = atkPos; }
+        public void setRunDur(int runDur) { this.run1Dur = runDur; }
+        public void setAtkDur(int atkDur) { this.atkDur = atkDur; }
+        public void setHitDur(int hitDur) { this.hitDur = hitDur; }
+        public void setDeathDur(int deathDur) { this.deathDur = deathDur; }
+
         //GETTERS
         public int getHealthPt() { return healthPt; }
         public int getManaPt() { return manaPt; }
@@ -26,6 +31,14 @@ public class GameData {
         public int getAtkMin() { return atkMin; }
         public int getAtkMax() { return atkMax; }
         public int getLvl() { return lvl; }
+
+        public int getNum() { return num; }
+        public float getRun1Pos() { return run1Pos; }
+        public float getAtkPos() { return atkPos; }
+        public int getRunDur() { return run1Dur; }
+        public int getAtkDur() { return atkDur; }
+        public int getHitDur() { return hitDur; }
+        public int getDeathDur() { return deathDur; }
 
 }
 

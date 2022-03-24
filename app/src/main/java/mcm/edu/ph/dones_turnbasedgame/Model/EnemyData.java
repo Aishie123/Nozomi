@@ -1,14 +1,13 @@
 package mcm.edu.ph.dones_turnbasedgame.Model;
 
-public class MonsterData extends GameData{
+public class EnemyData extends GameData{
 
-    String name;
-    int atkMin, atkMax, healthPt, manaPt;
+    private String name;
+    private int atkMin, atkMax, healthPt, manaPt;
 
+    public EnemyData(){} // default constructor
 
-    public MonsterData (){}
-
-    public MonsterData(String name, int atkMin, int atkMax, int healthPt, int manaPt){
+    public EnemyData(String name, int atkMin, int atkMax, int healthPt, int manaPt){
         this.name = name;
         this.atkMin = atkMin;
         this.atkMax = atkMax;
