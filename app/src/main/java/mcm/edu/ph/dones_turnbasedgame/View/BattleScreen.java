@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,6 +72,7 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     private int SS1C = 8;
     private int SS2C = 10;
     private int heroNum = 1; // temporary
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -476,6 +478,9 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
     // onClick --------------------------------------------------------------------------------------------
     @SuppressLint({"SetTextI18n", "NonConstantResourceId", "ObsoleteSdkInt"})
     public void onClick(View v) {
+
+        saveClick();
+
         int sfxN = battleR.randomizeAtkSFX();
         int hero1AtkN = battleR.randomizeAttack(hero.getAtkMin(),hero.getAtkMax());
         int enemy1AtkN = battleR.randomizeAttack(enemy.getAtkMin(),enemy.getAtkMax());
@@ -757,6 +762,13 @@ public class BattleScreen extends AppCompatActivity implements View.OnClickListe
         startActivity(goToMenu);
     }
 
+    // saving last click time to avoid double clicks
+    public void saveClick(){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+    }
 
     // call this method to disable buttons ----------------------------------------------------------------------------------------------------------
     public void disableButtons(){

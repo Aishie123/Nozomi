@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +34,7 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
     private String userName, enemyName;
     private final String TAG = "IntroScreen";
     private final boolean noRestart = true; // disable restart in the menu
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +62,9 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
     // onClick -----------------------------------------------------------------------------------------
 
     public void userInput(){
-
             btnNext.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    saveClick();
                     HeroData hero = new HeroData();
                     if (v.getId() == R.id.btnIntroNext){
 
@@ -78,6 +80,7 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
 
                         btnNext.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
+                                saveClick();
                                 enemyName = userInput.getText().toString(); // gets enemy's name from enemy input
                                 Log.d(TAG, "The enemy's name is " + enemyName);
                                 Intent i = new Intent(IntroScreen.this, BattleScreen.class);
@@ -99,7 +102,9 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
             });
     }
 
+    // goes back
     public void back(View v){
+        saveClick();
         enemyQuestion.setVisibility(View.INVISIBLE);
         nameQuestion.setVisibility(View.VISIBLE);
         btnBack.setVisibility(View.INVISIBLE);
@@ -109,9 +114,18 @@ public class IntroScreen extends AppCompatActivity implements ServiceConnection{
 
     // opens menu
     public void introToMenu(View v){
+        saveClick();
         Intent goToMenu = new Intent(IntroScreen.this, MenuScreen.class);
         goToMenu.putExtra("no restart", noRestart);
         startActivity(goToMenu);
+    }
+
+    // saving last click time to avoid double clicks
+    public void saveClick(){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
     }
 
     //changing button shades when pressed -----------------------------------------------------------------------------------------
